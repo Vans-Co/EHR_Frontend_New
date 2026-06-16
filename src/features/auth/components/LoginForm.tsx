@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { loginUser } from "../services/authapi";
+import { loginUser } from "../services/authApi";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] =
