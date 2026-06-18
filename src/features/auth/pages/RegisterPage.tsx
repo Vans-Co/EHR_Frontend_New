@@ -16,6 +16,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { registerUser } from "@/features/auth/services/authApi";
 
 type Role = "PATIENT" | "DOCTOR";
 
@@ -147,17 +148,7 @@ const RegisterPage = () => {
         }),
       };
 
-      const response = await fetch("/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Registration failed");
-      }
+      await registerUser(payload);
 
       navigate("/login");
     } catch {

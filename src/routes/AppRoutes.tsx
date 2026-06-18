@@ -4,6 +4,8 @@ import HomePage from "@/pages/HomePage";
 
 import LoginPage from "@/features/auth/pages/Login";
 import RegisterPage from "@/features/auth/pages/RegisterPage";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPassword";
+import ResetPasswordPage from "@/features/auth/pages/ResetPassword";
 
 import AdminDashboard from "@/features/admin/AdminDashboard";
 import DoctorDashboard from "@/features/doctor/DoctorDashboard";
@@ -36,6 +38,24 @@ const AppRoutes = () => {
         element={
           <RoleBasedRoute>
             <RegisterPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      <Route
+        path="/forgot-password"
+        element={
+          <RoleBasedRoute>
+            <ForgotPasswordPage />
+          </RoleBasedRoute>
+        }
+      />
+
+      <Route
+        path="/reset-password"
+        element={
+          <RoleBasedRoute>
+            <ResetPasswordPage />
           </RoleBasedRoute>
         }
       />

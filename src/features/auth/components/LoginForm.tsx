@@ -144,12 +144,12 @@ const LoginForm = () => {
             Remember me
           </label>
 
-          <button
-            type="button"
+          <Link
+            to="/forgot-password"
             className="text-sm font-semibold text-primary transition hover:underline"
           >
             Forgot password?
-          </button>
+          </Link>
         </div>
 
         <Button

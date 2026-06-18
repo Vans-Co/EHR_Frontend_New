@@ -17,6 +17,26 @@ export interface RegisterRequest {
   email: string;
   password: string;
   role: UserRole;
+  dob: string;
+  gender: "Male" | "Female" | "Other";
+  phoneNo: number;
+  bloodGroup: string;
+  address: {
+    addressLine: string;
+    city: string;
+    state: string;
+    pin_code: number;
+  };
+  emergencyContact?: {
+    contactName: string;
+    relationship: string;
+    contactPhoneNo: number;
+  };
+  doctorProfile?: {
+    specialization: string;
+    licenseNumber: string;
+    degrees: string[];
+  };
 }
 
 // Token Response
