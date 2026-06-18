@@ -21,6 +21,8 @@ interface AuthState {
   ) => void;
 
   logout: () => void;
+
+  restoreSession: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -79,5 +81,34 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       isAuthenticated: false,
     });
+  },
+
+  restoreSession: () => {
+    const accessToken =
+      localStorage.getItem("accessToken");
+
+    const refreshToken =
+      localStorage.getItem("refreshToken");
+
+    const userData =
+      localStorage.getItem("user");
+
+    if (
+      accessToken &&
+      refreshToken &&
+      userData
+    ) {
+      const user = JSON.parse(userData);
+
+      set({
+        user,
+        role: user.role,
+
+        accessToken,
+        refreshToken,
+
+        isAuthenticated: true,
+      });
+    }
   },
 }));

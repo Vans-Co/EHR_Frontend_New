@@ -2,7 +2,6 @@
 export type UserRole =
   | "PATIENT"
   | "DOCTOR"
-  | "HOSPITAL_STAFF"
   | "ADMIN";
 
 // Login Request

@@ -1,47 +1,92 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Login from "../features/auth/pages/Login";
+import HomePage from "@/pages/HomePage";
 
-import PatientDashboard from "../features/patient/PatientDashboard";
-import DoctorDashboard from "../features/doctor/DoctorDashboard";
-import AdminDashboard from "../features/admin/AdminDashboard";
+import LoginPage from "@/features/auth/pages/Login";
+import RegisterPage from "@/features/auth/pages/RegisterPage";
 
-import AuthLayout from "../layouts/AuthLayout";
-import PatientLayout from "../layouts/PatientLayout";
-import DoctorLayout from "../layouts/DoctorLayout";
-import AdminLayout from "../layouts/AdminLayout";
+import AdminDashboard from "@/features/admin/AdminDashboard";
+import DoctorDashboard from "@/features/doctor/DoctorDashboard";
+import PatientDashboard from "@/features/patient/PatientDashboard";
+
+import ProtectedRoute from "@/routes/ProtectedRoute";
+import RoleBasedRoute from "@/routes/RoleBasedRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      {/* Public Routes */}
 
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-      </Route>
+      <Route
+        path="/"
+        element={<HomePage />}
+      />
 
-      <Route element={<PatientLayout />}>
-        <Route
-          path="/patient/dashboard"
-          element={<PatientDashboard />}
-        />
-      </Route>
+      <Route
+        path="/login"
+        element={
+          <RoleBasedRoute>
+            <LoginPage />
+          </RoleBasedRoute>
+        }
+      />
 
-      <Route element={<DoctorLayout />}>
-        <Route
-          path="/doctor/dashboard"
-          element={<DoctorDashboard />}
-        />
-      </Route>
+      <Route
+        path="/register"
+        element={
+          <RoleBasedRoute>
+            <RegisterPage />
+          </RoleBasedRoute>
+        }
+      />
 
-      <Route element={<AdminLayout />}>
-        <Route
-          path="/admin/dashboard"
-          element={<AdminDashboard />}
-        />
-      </Route>
+      {/* Admin Routes */}
 
-      <Route path="*" element={<h1>404 Page Not Found</h1>} />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <ProtectedRoute
+            allowedRoles={["ADMIN"]}
+          >
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Doctor Routes */}
+
+      <Route
+        path="/doctor/dashboard"
+        element={
+          <ProtectedRoute
+            allowedRoles={["DOCTOR"]}
+          >
+            <DoctorDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Patient Routes */}
+
+      <Route
+        path="/patient/dashboard"
+        element={
+          <ProtectedRoute
+            allowedRoles={["PATIENT"]}
+          >
+            <PatientDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Fallback */}
+
+      <Route
+        path="*"
+        element={
+          <Navigate to="/" replace />
+        }
+      />
     </Routes>
   );
 };
