@@ -53,13 +53,18 @@ const LoginForm = () => {
       //   setTimeout(resolve, 1500)
       // );
     await loginUser({ email, password });
-      
-    } catch {
-      setError("Invalid credentials. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+      case "PATIENT":
+    navigate("/patient/dashboard");
+    break;
+
+default:
+    navigate("/");
+  //   } catch {
+  //     setError("Invalid credentials. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="rounded border border-outline-variant bg-surface-container-lowest shadow-xl shadow-slate-900/5">
