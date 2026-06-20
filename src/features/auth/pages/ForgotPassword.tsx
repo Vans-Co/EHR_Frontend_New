@@ -1,11 +1,9 @@
-import ForgotPasswordForm from "@/features/auth/components/ForgotPasswordForm";
-
-const ForgotPassword = () => {
+const Unauthorized = () => {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-container-low px-4 py-8">
-      <ForgotPasswordForm />
-    </main>
+    <div>
+      <h1>Unauthorized Access</h1>
+    </div>
   );
 };
 
-export default ForgotPassword;
+export default Unauthorized;

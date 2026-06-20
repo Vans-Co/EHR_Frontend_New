@@ -21,8 +21,6 @@ interface AuthState {
   ) => void;
 
   logout: () => void;
-
-  restoreSession: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -81,44 +79,5 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       isAuthenticated: false,
     });
-  },
-
-  restoreSession: () => {
-    const accessToken =
-      localStorage.getItem("accessToken");
-
-    const refreshToken =
-      localStorage.getItem("refreshToken");
-
-    const userData =
-      localStorage.getItem("user");
-
-    if (accessToken && refreshToken && userData) {
-      try {
-        const user = JSON.parse(userData);
-
-        set({
-          user,
-          role: user.role,
-
-          accessToken,
-          refreshToken,
-
-          isAuthenticated: true,
-        });
-      } catch {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("user");
-
-        set({
-          user: null,
-          role: null,
-          accessToken: null,
-          refreshToken: null,
-          isAuthenticated: false,
-        });
-      }
-    }
   },
 }));

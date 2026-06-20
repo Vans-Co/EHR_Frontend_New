@@ -1,112 +1,47 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import HomePage from "@/pages/HomePage";
+import Login from "../features/auth/pages/Login";
 
-import LoginPage from "@/features/auth/pages/Login";
-import RegisterPage from "@/features/auth/pages/RegisterPage";
-import ForgotPasswordPage from "@/features/auth/pages/ForgotPassword";
-import ResetPasswordPage from "@/features/auth/pages/ResetPassword";
+import PatientDashboard from "../features/patient/PatientDashboard";
+import DoctorDashboard from "../features/doctor/DoctorDashboard";
+import AdminDashboard from "../features/admin/AdminDashboard";
 
-import AdminDashboard from "@/features/admin/AdminDashboard";
-import DoctorDashboard from "@/features/doctor/DoctorDashboard";
-import PatientDashboard from "@/features/patient/PatientDashboard";
-
-import ProtectedRoute from "@/routes/ProtectedRoute";
-import RoleBasedRoute from "@/routes/RoleBasedRoute";
+import AuthLayout from "../layouts/AuthLayout";
+import PatientLayout from "../layouts/PatientLayout";
+import DoctorLayout from "../layouts/DoctorLayout";
+import AdminLayout from "../layouts/AdminLayout";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Routes */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
-      <Route
-        path="/"
-        element={<HomePage />}
-      />
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+      </Route>
 
-      <Route
-        path="/login"
-        element={
-          <RoleBasedRoute>
-            <LoginPage />
-          </RoleBasedRoute>
-        }
-      />
+      <Route element={<PatientLayout />}>
+        <Route
+          path="/patient/dashboard"
+          element={<PatientDashboard />}
+        />
+      </Route>
 
-      <Route
-        path="/register"
-        element={
-          <RoleBasedRoute>
-            <RegisterPage />
-          </RoleBasedRoute>
-        }
-      />
+      <Route element={<DoctorLayout />}>
+        <Route
+          path="/doctor/dashboard"
+          element={<DoctorDashboard />}
+        />
+      </Route>
 
-      <Route
-        path="/forgot-password"
-        element={
-          <RoleBasedRoute>
-            <ForgotPasswordPage />
-          </RoleBasedRoute>
-        }
-      />
+      <Route element={<AdminLayout />}>
+        <Route
+          path="/admin/dashboard"
+          element={<AdminDashboard />}
+        />
+      </Route>
 
-      <Route
-        path="/reset-password"
-        element={
-          <RoleBasedRoute>
-            <ResetPasswordPage />
-          </RoleBasedRoute>
-        }
-      />
-
-      {/* Admin Routes */}
-
-      <Route
-        path="/admin/dashboard"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ADMIN"]}
-          >
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Doctor Routes */}
-
-      <Route
-        path="/doctor/dashboard"
-        element={
-          <ProtectedRoute
-            allowedRoles={["DOCTOR"]}
-          >
-            <DoctorDashboard />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Patient Routes */}
-
-      <Route
-        path="/patient/dashboard"
-        element={
-          <ProtectedRoute
-            allowedRoles={["PATIENT"]}
-          >
-            <PatientDashboard />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Fallback */}
-
-      <Route
-        path="*"
-        element={
-          <Navigate to="/" replace />
-        }
-      />
+      <Route path="*" element={<h1>404 Page Not Found</h1>} />
     </Routes>
   );
 };
