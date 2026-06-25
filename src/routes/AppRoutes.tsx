@@ -7,9 +7,13 @@ import RegisterPage from "@/features/auth/pages/RegisterPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPassword";
 import ResetPasswordPage from "@/features/auth/pages/ResetPassword";
 
-import AdminDashboard from "@/features/admin/AdminDashboard";
-import DoctorDashboard from "@/features/doctor/DoctorDashboard";
-import PatientDashboard from "@/features/patient/PatientDashboard";
+import AdminDashboard from "@/features/admin/pages/AdminDashboard";
+import DoctorDashboard from "@/features/doctor/pages/DoctorDashboard";
+import PatientDashboard from "@/features/patient/pages/PatientDashboard";
+
+import AdminLayout from "@/layouts/AdminLayout";
+import DoctorLayout from "@/layouts/DoctorLayout";
+import PatientLayout from "@/layouts/PatientLayout";
 
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import RoleBasedRoute from "@/routes/RoleBasedRoute";
@@ -19,10 +23,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Public Routes */}
 
-      <Route
-        path="/"
-        element={<HomePage />}
-      />
+      <Route path="/" element={<HomePage />} />
 
       <Route
         path="/login"
@@ -63,49 +64,56 @@ const AppRoutes = () => {
       {/* Admin Routes */}
 
       <Route
-        path="/admin/dashboard"
+        path="/admin"
         element={
-          <ProtectedRoute
-            allowedRoles={["ADMIN"]}
-          >
-            <AdminDashboard />
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <AdminLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route
+          path="dashboard"
+          element={<AdminDashboard />}
+        />
+      </Route>
 
       {/* Doctor Routes */}
 
       <Route
-        path="/doctor/dashboard"
+        path="/doctor"
         element={
-          <ProtectedRoute
-            allowedRoles={["DOCTOR"]}
-          >
-            <DoctorDashboard />
+          <ProtectedRoute allowedRoles={["DOCTOR"]}>
+            <DoctorLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route
+          path="dashboard"
+          element={<DoctorDashboard />}
+        />
+      </Route>
 
       {/* Patient Routes */}
 
       <Route
-        path="/patient/dashboard"
+        path="/patient"
         element={
-          <ProtectedRoute
-            allowedRoles={["PATIENT"]}
-          >
-            <PatientDashboard />
+          <ProtectedRoute allowedRoles={["PATIENT"]}>
+            <PatientLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route
+          path="dashboard"
+          element={<PatientDashboard />}
+        />
+      </Route>
 
       {/* Fallback */}
 
       <Route
         path="*"
-        element={
-          <Navigate to="/" replace />
-        }
+        element={<Navigate to="/" replace />}
       />
     </Routes>
   );
