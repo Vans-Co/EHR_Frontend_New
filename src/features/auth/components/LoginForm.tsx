@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginUser } from "@/features/auth/services/authApi";
-import { useAuthStore } from "../../../store/authStore";
+import { useAuthStore } from "@/store/authStore";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -57,10 +57,6 @@ const LoginForm = () => {
         default:
           navigate("/");
       }
-      // await new Promise((resolve) =>
-      //   setTimeout(resolve, 1500)
-      // );
-    await loginUser({ email, password });
       
     } catch {
       setError("Invalid credentials. Please try again.");
