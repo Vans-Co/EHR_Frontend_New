@@ -57,6 +57,11 @@ const LoginForm = () => {
         default:
           navigate("/");
       }
+      // await new Promise((resolve) =>
+      //   setTimeout(resolve, 1500)
+      // );
+    await loginUser({ email, password });
+      
     } catch {
       setError("Invalid credentials. Please try again.");
     } finally {
