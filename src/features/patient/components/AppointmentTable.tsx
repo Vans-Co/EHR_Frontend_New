@@ -26,9 +26,9 @@ const AppointmentTable = () => {
     <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
         <h2 className="text-xl font-semibold text-slate-900">Upcoming Appointments</h2>
-        <a href="#" className="text-sm font-semibold text-blue-600 hover:underline">
+        <button type="button" className="text-sm font-semibold text-blue-600 hover:underline">
           View All
-        </a>
+        </button>
       </div>
 
       <div className="overflow-x-auto">
@@ -76,7 +76,7 @@ const AppointmentTable = () => {
                     <button className="text-sm font-medium text-blue-600 hover:underline">
                       {item.action}
                     </button>
-                    <button className="text-slate-400 hover:text-slate-700">
+                    <button type="button" aria-label="More actions" className="text-slate-400 hover:text-slate-700">
                       <MoreVertical className="h-4 w-4" />
                     </button>
                   </div>

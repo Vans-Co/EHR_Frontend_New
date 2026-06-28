@@ -58,7 +58,9 @@ export default function DashboardNavbar({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const pageTitle = useMemo(() => {
-    return routeTitleMap[location.pathname] || "Dashboard";
+    const [, maybeRole, ...rest] = location.pathname.split("/");
+    const key = ["patient", "doctor", "admin"].includes(maybeRole) ? `/${rest.join("/")}` || "/" : location.pathname;
+    return routeTitleMap[key] || "Dashboard";
   }, [location.pathname]);
 
   const initials = useMemo(() => {

@@ -71,10 +71,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route
-          path="dashboard"
-          element={<AdminDashboard />}
-        />
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
 
       {/* Doctor Routes */}
@@ -87,10 +85,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route
-          path="dashboard"
-          element={<DoctorDashboard />}
-        />
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<DoctorDashboard />} />
       </Route>
 
       {/* Patient Routes */}
@@ -103,10 +99,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route
-          path="dashboard"
-          element={<PatientDashboard />}
-        />
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<PatientDashboard />} />
       </Route>
 
       {/* Fallback */}

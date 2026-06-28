@@ -50,8 +50,7 @@ const Sidebar = ({ role }: SidebarProps) => {
         })}
       </div>
 
-      <div className="border-t border-slate-200 p-4">
-        <button className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50">
+        <button type="button" onClick={() => { localStorage.removeItem("accessToken"); localStorage.removeItem("refreshToken"); localStorage.removeItem("user"); window.location.assign("/login"); }} className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50">
           <LogOut className="h-5 w-5" />
           Logout
         </button>

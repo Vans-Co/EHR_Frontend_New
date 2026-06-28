@@ -4,7 +4,7 @@ const WelcomeBanner = () => {
   return (
     <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Welcome back, Sarah</h1>
+        <h1 className="text-3xl font-bold text-slate-900">Welcome back</h1>
         <p className="mt-1 text-sm text-slate-500">
           Your health journey at a glance. You have 2 upcoming consultations this week.
         </p>

@@ -23,7 +23,7 @@ const RecentRecords = () => {
     <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-900">Recent Records</h2>
-        <button className="text-slate-400 hover:text-blue-600">
+        <button type="button" aria-label="Open recent records" className="text-slate-400 hover:text-blue-600">
           <ExternalLink className="h-5 w-5" />
         </button>
       </div>
@@ -39,7 +39,7 @@ const RecentRecords = () => {
               <p className="text-sm font-medium text-slate-900">{record.title}</p>
               <p className="text-sm text-slate-500">{record.meta}</p>
             </div>
-            <button className="text-slate-400 hover:text-blue-600">
+            <button type="button" aria-label="Download record" className="text-slate-400 hover:text-blue-600">
               <Download className="h-4 w-4" />
             </button>
           </div>
