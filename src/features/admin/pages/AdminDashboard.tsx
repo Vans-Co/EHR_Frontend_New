@@ -1,3 +1,7 @@
+import { loginUser } from "@/features/auth/services/authApi";
+
+console.log(loginUser);
+
 const AdminDashboard = () => {
   return (
     <div>

@@ -1,20 +1,23 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/common/Navbar/Navbar";
-import Sidebar from "../components/common/Sidebar/Sidebar";
+
+import Sidebar from "@/components/common/Sidebar/Sidebar";
+import DashboardNavbar from "@/components/common/DashboardNavbar/DashboardNavbar";
 
 const DoctorLayout = () => {
   return (
-    <>
-      <Navbar />
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <DashboardNavbar notificationCount={5} />
 
-      <div style={{ display: "flex" }}>
-        <Sidebar role="doctor" />
+      <div className="flex">
+        <Sidebar role="DOCTOR" />
 
-        <main style={{ padding: "20px" }}>
-          <Outlet />
+        <main className="flex-1 pt-20 lg:ml-64">
+          <div className="p-4 md:p-6">
+            <Outlet />
+          </div>
         </main>
       </div>
-    </>
+    </div>
   );
 };
 

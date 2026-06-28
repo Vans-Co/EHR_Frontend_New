@@ -53,6 +53,7 @@ export interface AuthUser {
   lastName: string;
   email: string;
   role: UserRole;
+  avatar?: string;
 }
 
 // Login Response

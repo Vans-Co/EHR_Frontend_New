@@ -13,8 +13,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { loginUser } from "@/features/auth/services/authApi";
 import { useAuthStore } from "@/store/authStore";
-import { loginUser } from "../services/authApi";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -49,6 +49,7 @@ const LoginForm = () => {
         case "DOCTOR":
           navigate("/doctor/dashboard");
           break;
+          
         case "PATIENT":
           navigate("/patient/dashboard");
           break;
@@ -56,6 +57,7 @@ const LoginForm = () => {
         default:
           navigate("/");
       }
+      
     } catch {
       setError("Invalid credentials. Please try again.");
     } finally {
