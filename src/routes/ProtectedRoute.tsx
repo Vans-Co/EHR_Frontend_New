@@ -19,10 +19,16 @@ const ProtectedRoute = ({
     (state) => state.role
   );
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
 
+   // Original authentication
+   if (!isAuthenticated) {
+   return <Navigate to="/login" replace />;
+}
+
+// Temporary for frontend development without backend
+//if (!isAuthenticated) {
+  //return <>{children}</>;
+//}
   if (
     allowedRoles &&
     role &&

@@ -17,6 +17,8 @@ import PatientLayout from "@/layouts/PatientLayout";
 
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import RoleBasedRoute from "@/routes/RoleBasedRoute";
+import PatientAppointments from "@/features/patient/pages/PatientAppointments";
+
 
 const AppRoutes = () => {
   return (
@@ -101,6 +103,7 @@ const AppRoutes = () => {
       >
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<PatientDashboard />} />
+        <Route path="appointments" element={<PatientAppointments />}/>
       </Route>
 
       {/* Fallback */}

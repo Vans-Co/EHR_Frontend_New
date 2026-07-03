@@ -1,7 +1,11 @@
 import { PlusCircle, Download, CreditCard } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const WelcomeBanner = () => {
+  const navigate = useNavigate();
+
   return (
+    
     <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Welcome back</h1>
@@ -11,7 +15,7 @@ const WelcomeBanner = () => {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button className="flex items-center gap-2 rounded-lg bg-black px-5 py-2 text-sm font-medium text-white hover:opacity-90">
+        <button onClick={() => navigate("/patient/appointments")}className="flex items-center gap-2 rounded-lg bg-black px-5 py-2 text-sm font-medium text-white hover:opacity-90">
           <PlusCircle className="h-4 w-4" />
           Book Appointment
         </button>
