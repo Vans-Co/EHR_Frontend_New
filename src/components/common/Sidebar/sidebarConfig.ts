@@ -56,7 +56,7 @@ export const sidebarConfig: Record<DashboardRole, SidebarConfigItem[]> = {
     {
       id: "medical-records",
       label: "Medical Records",
-      path: "/patient/records",
+      path: "/patient/medical-records",
       icon: FolderOpen,
       section: "Clinical",
     },
