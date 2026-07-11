@@ -21,7 +21,7 @@ const ProtectedRoute = ({
 
 
    // Original authentication
-   if (!isAuthenticated) {
+    if(!isAuthenticated) {
    return <Navigate to="/login" replace />;
    }
 
@@ -30,6 +30,7 @@ const ProtectedRoute = ({
  // {
 //return <>{children}</>;
 //}
+
   if (
     allowedRoles &&
     role &&
