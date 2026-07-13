@@ -45,6 +45,17 @@ type RegisterFormState = {
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
 
+const bloodGroupToEnum: Record<string, string> = {
+  "A+": "A_POSITIVE",
+  "A-": "A_NEGATIVE",
+  "B+": "B_POSITIVE",
+  "B-": "B_NEGATIVE",
+  "AB+": "AB_POSITIVE",
+  "AB-": "AB_NEGATIVE",
+  "O+": "O_POSITIVE",
+  "O-": "O_NEGATIVE",
+};
+
 const roleCards = [
   {
     value: "PATIENT" as const,
@@ -89,6 +100,11 @@ const defaultFormState: RegisterFormState = {
   degrees: [""],
 };
 
+const toMmDdYyyy = (isoDate: string) => {
+  const [year, month, day] = isoDate.split("-");
+  return `${month}-${day}-${year}`;
+};
+
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [formState, setFormState] = useState(defaultFormState);
@@ -121,10 +137,10 @@ const RegisterPage = () => {
         lastName: formState.lastName,
         email: formState.email,
         password: formState.password,
-        dob: formState.dob,
+        dob: toMmDdYyyy(formState.dob),
         gender: formState.gender,
         phoneNo: Number(formState.phoneNo),
-        bloodGroup: formState.bloodGroup,
+        bloodGroup: bloodGroupToEnum[formState.bloodGroup],
         role: formState.role,
         address: {
           addressLine: formState.addressLine,

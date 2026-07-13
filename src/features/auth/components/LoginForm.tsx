@@ -38,10 +38,15 @@ const LoginForm = () => {
         email,
         password,
       });
+      console.log(response)
 
-      login(response.user, response.accessToken, response.refreshToken);
+      const user = response.loginResponse.userResponseDTO;
+      const accessToken = response.tokenResponse.generateAccessToken;
+      const refreshToken = response.tokenResponse.generateRefreshToken;
 
-      switch (response.user.role) {
+      login(user, accessToken, refreshToken);
+
+      switch (user.role) {
         case "ADMIN":
           navigate("/admin/dashboard");
           break;
@@ -58,8 +63,9 @@ const LoginForm = () => {
           navigate("/");
       }
       
-    } catch {
+    } catch(err) {
       setError("Invalid credentials. Please try again.");
+      console.log(err);
     } finally {
       setLoading(false);
     }

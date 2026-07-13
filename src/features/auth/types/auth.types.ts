@@ -40,26 +40,36 @@ export interface RegisterRequest {
 }
 
 // Token Response
-export interface TokenResponse {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+export interface Address {
+  addressLine: string;
+  pin_code: number;
+  city: string;
+  state: string;
 }
 
-// Auth User
 export interface AuthUser {
-  id: number;
+  email: string;
+  ehrId: number;
   firstName: string;
   lastName: string;
-  email: string;
-  role: UserRole;
-  avatar?: string;
+  phoneNo: number;
+  dob: string;
+  gender: string;
+  role: string;
+  bloodGroup: string;
+  address: Address;
 }
 
-// Login Response
+export interface TokenResponse {
+  generateAccessToken: string;
+  generateRefreshToken: string;
+}
+
 export interface LoginResponse {
-  user: AuthUser;
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+  loginResponse: {
+    status: boolean;
+    message: string;
+    userResponseDTO: AuthUser;
+  };
+  tokenResponse: TokenResponse;
 }
