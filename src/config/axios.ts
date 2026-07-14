@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 
 const api = axios.create({
- baseURL: import.meta.env.VITE_API_URL || "https://ehrbackend-production-a3a0.up.railway.app/api",
+ baseURL: "https://ehrbackend-production-a3a0.up.railway.app/api", // putting url directly for testing
   headers: {
     "Content-Type": "application/json",
   },
