@@ -27,7 +27,7 @@ const ProtectedRoute = ({
 
  if (!isAuthenticated) {
   // TEMP: Bypass authentication during frontend development
-  return <>{children}</>;
+  return <Navigate to="/login" replace />;
 }
 
   if (
