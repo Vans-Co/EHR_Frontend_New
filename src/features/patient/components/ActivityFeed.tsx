@@ -1,54 +1,126 @@
-import { CheckCircle2, FileText, AlertCircle } from "lucide-react";
+import {
+  Activity,
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+} from "lucide-react";
 
 const activities = [
   {
     title: "Appointment Booked",
-    description: "with Dr. Lawson",
-    time: "2 hours ago",
-    dotClass: "bg-blue-600 text-white",
-    icon: <CheckCircle2 className="h-3 w-3" />,
+    description: "Dr. Lawson • Cardiology",
+    time: "2 hrs ago",
+    color: "bg-emerald-500",
+    icon: CheckCircle2,
   },
   {
     title: "Lab Report Uploaded",
-    description: "by City Labs",
-    time: "Yesterday, 4:30 PM",
-    dotClass: "bg-slate-100 border border-slate-300 text-blue-600",
-    icon: <FileText className="h-3 w-3" />,
+    description: "CBC Report • City Labs",
+    time: "Yesterday",
+    color: "bg-primary",
+    icon: FileText,
   },
   {
     title: "Medication Reminder",
     description: "Lisinopril 10mg",
-    time: "Today, 8:00 AM",
-    dotClass: "bg-red-600 text-white",
-    icon: <AlertCircle className="h-3 w-3" />,
+    time: "Today • 8:00 AM",
+    color: "bg-red-500",
+    icon: AlertCircle,
   },
 ];
 
 const ActivityFeed = () => {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="mb-6 text-xl font-semibold text-slate-900">Activity Feed</h2>
+    <section className="flex h-full flex-col rounded-[30px] border border-white/20 bg-white/70 p-5 shadow-[0_15px_35px_rgba(0,0,0,0.08)] backdrop-blur-xl">
 
-      <div className="relative space-y-6">
-        <div className="absolute bottom-2 left-[11px] top-2 w-px bg-slate-200" />
+      {/* Header */}
 
-        {activities.map((item) => (
-          <div key={item.title} className="relative pl-5">
-            <div
-              className={`absolute left-0 top-1 z-10 flex h-[22px] w-[22px] items-center justify-center rounded-full ${item.dotClass}`}
-            >
-              {item.icon}
-            </div>
+      <div className="mb-4 flex items-center justify-between">
 
-            <div className="ml-4">
-              <p className="text-sm text-slate-900">
-                <span className="font-bold">{item.title}</span> {item.description}
-              </p>
-              <p className="text-xs text-slate-400">{item.time}</p>
-            </div>
-          </div>
-        ))}
+        <div>
+
+          <p className="text-sm text-on-surface-variant">
+            Recent Updates
+          </p>
+
+          <h2 className="mt-1 text-xl font-bold text-on-background">
+            Activity Feed
+          </h2>
+
+        </div>
+
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10">
+
+          <Activity
+            size={20}
+            className="text-primary"
+          />
+
+        </div>
+
       </div>
+
+      {/* Timeline */}
+
+      <div className="relative flex-1">
+
+        <div className="absolute left-[18px] top-2 bottom-2 w-px bg-slate-200" />
+
+        <div className="space-y-3">
+
+          {activities.map((item) => {
+
+            const Icon = item.icon;
+
+            return (
+
+              <div
+                key={item.title}
+                className="relative flex items-start gap-3"
+              >
+
+                <div
+                  className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white shadow-sm ${item.color}`}
+                >
+
+                  <Icon size={16} />
+
+                </div>
+
+                <div className="flex-1 rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3 transition hover:shadow-sm">
+
+                  <div className="flex items-start justify-between">
+
+                    <div>
+
+                      <h3 className="text-sm font-semibold text-on-background">
+                        {item.title}
+                      </h3>
+
+                      <p className="mt-1 text-xs text-on-surface-variant">
+                        {item.description}
+                      </p>
+
+                    </div>
+
+                    <span className="whitespace-nowrap text-xs text-on-surface-variant">
+                      {item.time}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            );
+
+          })}
+
+        </div>
+
+      </div>
+
     </section>
   );
 };

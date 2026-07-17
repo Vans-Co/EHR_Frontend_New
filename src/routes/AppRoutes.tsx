@@ -21,7 +21,10 @@ import RoleBasedRoute from "@/routes/RoleBasedRoute";
 const AppRoutes = () => {
   return (
     <Routes>
+
+      {/* ========================= */}
       {/* Public Routes */}
+      {/* ========================= */}
 
       <Route path="/" element={<HomePage />} />
 
@@ -61,35 +64,9 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Admin Routes */}
-
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <AdminLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-      </Route>
-
-      {/* Doctor Routes */}
-
-      <Route
-        path="/doctor"
-        element={
-          <ProtectedRoute allowedRoles={["DOCTOR"]}>
-            <DoctorLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<DoctorDashboard />} />
-      </Route>
-
-      {/* Patient Routes */}
+      {/* ========================= */}
+      {/* Patient */}
+      {/* ========================= */}
 
       <Route
         path="/patient"
@@ -99,16 +76,87 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<PatientDashboard />} />
+        <Route
+          index
+          element={<Navigate to="dashboard" replace />}
+        />
+
+        <Route
+          path="dashboard"
+          element={<PatientDashboard />}
+        />
+
+        {/* Future Patient Routes */}
+
+        {/*
+        <Route path="appointments" element={<PatientAppointments />} />
+        <Route path="medical-records" element={<PatientMedicalRecords />} />
+        <Route path="prescriptions" element={<PatientPrescriptions />} />
+        <Route path="billing" element={<PatientBilling />} />
+        <Route path="insurance" element={<PatientInsurance />} />
+        <Route path="profile" element={<PatientProfile />} />
+        <Route path="settings" element={<PatientSettings />} />
+        */}
+
       </Route>
 
-      {/* Fallback */}
+      {/* ========================= */}
+      {/* Doctor */}
+      {/* ========================= */}
+
+      <Route
+        path="/doctor"
+        element={
+          <ProtectedRoute allowedRoles={["DOCTOR"]}>
+            <DoctorLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          index
+          element={<Navigate to="dashboard" replace />}
+        />
+
+        <Route
+          path="dashboard"
+          element={<DoctorDashboard />}
+        />
+
+      </Route>
+
+      {/* ========================= */}
+      {/* Admin */}
+      {/* ========================= */}
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          index
+          element={<Navigate to="dashboard" replace />}
+        />
+
+        <Route
+          path="dashboard"
+          element={<AdminDashboard />}
+        />
+
+      </Route>
+
+      {/* ========================= */}
+      {/* 404 */}
+      {/* ========================= */}
 
       <Route
         path="*"
         element={<Navigate to="/" replace />}
       />
+
     </Routes>
   );
 };

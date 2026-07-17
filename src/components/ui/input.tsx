@@ -1,19 +1,58 @@
-import * as React from "react"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
-  return (
-    <input
-      type={type}
-      data-slot="input"
-      className={cn(
-        "h-10 w-full min-w-0 border border-transparent border-b-input bg-transparent px-0 py-1 text-base transition-[color,border-color] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-b-ring disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-b-destructive md:text-sm dark:aria-invalid:border-b-destructive/50",
-        className
-      )}
-      {...props}
-    />
-  )
-}
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        ref={ref}
+        type={type}
+        data-slot="input"
+        className={cn(
+          // Layout
+          "flex h-14 w-full rounded-2xl",
 
-export { Input }
+          // Background
+          "bg-white",
+
+          // Border
+          "border border-slate-200",
+
+          // Padding
+          "px-4",
+
+          // Typography
+          "text-[15px] text-slate-900",
+          "placeholder:text-slate-400",
+
+          // Shadow
+          "shadow-sm",
+
+          // Animation
+          "transition-all duration-300",
+
+          // Focus
+          "focus:border-primary",
+          "focus:ring-4",
+          "focus:ring-primary/10",
+          "focus:outline-none",
+
+          // Disabled
+          "disabled:cursor-not-allowed",
+          "disabled:bg-slate-100",
+          "disabled:text-slate-400",
+
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+
+Input.displayName = "Input";
+
+export { Input };

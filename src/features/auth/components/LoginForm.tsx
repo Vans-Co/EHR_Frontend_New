@@ -1,36 +1,50 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  Mail,
+  Lock,
   AlertCircle,
   ArrowRight,
-  Eye,
-  EyeOff,
-  Loader2,
-  LockKeyhole,
-  Mail,
+  User,
+  Stethoscope,
   ShieldCheck,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import AppButton from "@/components/common/AppButton";
+import AppInput from "@/components/common/AppInput";
+
 import { loginUser } from "@/features/auth/services/authApi";
 import { useAuthStore } from "@/store/authStore";
+
+import type { UserRole } from "../types/auth.types";
 
 const LoginForm = () => {
   const navigate = useNavigate();
 
   const login = useAuthStore((state) => state.login);
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [role, setRole] =
+    useState<UserRole>("PATIENT");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const handleSubmit = async (
+    e: FormEvent
+  ) => {
     e.preventDefault();
 
     setLoading(true);
+
     setError("");
 
     try {
@@ -38,13 +52,21 @@ const LoginForm = () => {
         email,
         password,
       });
-      console.log(response)
 
-      const user = response.loginResponse.userResponseDTO;
-      const accessToken = response.tokenResponse.generateAccessToken;
-      const refreshToken = response.tokenResponse.generateRefreshToken;
+      const user =
+        response.loginResponse.user;
 
-      login(user, accessToken, refreshToken);
+      const accessToken =
+        response.tokenResponse.accessToken;
+
+      const refreshToken =
+        response.tokenResponse.refreshToken;
+
+      login(
+        user,
+        accessToken,
+        refreshToken
+      );
 
       switch (user.role) {
         case "ADMIN":
@@ -54,7 +76,7 @@ const LoginForm = () => {
         case "DOCTOR":
           navigate("/doctor/dashboard");
           break;
-          
+
         case "PATIENT":
           navigate("/patient/dashboard");
           break;
@@ -62,136 +84,199 @@ const LoginForm = () => {
         default:
           navigate("/");
       }
-      
-    } catch(err) {
-      setError("Invalid credentials. Please try again.");
-      console.log(err);
+    } catch {
+      setError(
+        "Invalid email or password."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="rounded border border-outline-variant bg-surface-container-lowest shadow-xl shadow-slate-900/5">
-      <div className="border-b border-outline-variant px-6 py-6 sm:px-8">
-        <div className="flex items-start justify-between gap-5">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
-              Secure Login
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-normal text-on-background">
-              Welcome back
-            </h1>
-            <p className="mt-2 max-w-sm text-sm leading-6 text-on-surface-variant">
-              Sign in to your Vans Healthcare workspace.
-            </p>
-          </div>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6"
+    >
+      {/* Role */}
 
-          <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded bg-secondary/10 text-secondary sm:flex">
-            <ShieldCheck size={21} />
-          </span>
+      <div>
+
+        <label className="mb-3 block text-sm font-semibold text-slate-700">
+
+          Login As
+
+        </label>
+
+        <div className="grid grid-cols-3 gap-3">
+
+          <button
+            type="button"
+            onClick={() =>
+              setRole("PATIENT")
+            }
+            className={`rounded-2xl border p-4 transition ${
+              role === "PATIENT"
+                ? "border-primary bg-primary text-white"
+                : "bg-white hover:bg-slate-50"
+            }`}
+          >
+            <User className="mx-auto mb-2" />
+
+            <p className="text-sm font-semibold">
+
+              Patient
+
+            </p>
+
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setRole("DOCTOR")
+            }
+            className={`rounded-2xl border p-4 transition ${
+              role === "DOCTOR"
+                ? "border-primary bg-primary text-white"
+                : "bg-white hover:bg-slate-50"
+            }`}
+          >
+            <Stethoscope className="mx-auto mb-2" />
+
+            <p className="text-sm font-semibold">
+
+              Doctor
+
+            </p>
+
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setRole("ADMIN")
+            }
+            className={`rounded-2xl border p-4 transition ${
+              role === "ADMIN"
+                ? "border-primary bg-primary text-white"
+                : "bg-white hover:bg-slate-50"
+            }`}
+          >
+            <ShieldCheck className="mx-auto mb-2" />
+
+            <p className="text-sm font-semibold">
+
+              Admin
+
+            </p>
+
+          </button>
+
         </div>
+
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5 px-6 py-6 sm:px-8">
-        {error && (
-          <div className="flex items-start gap-3 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>{error}</span>
-          </div>
+      {error && (
+
+        <div className="flex items-center gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-600">
+
+          <AlertCircle size={18} />
+
+          <span className="text-sm">
+
+            {error}
+
+          </span>
+
+        </div>
+
+      )}
+
+      <AppInput
+        label="Email Address"
+        type="email"
+        placeholder="Enter your email"
+        required
+        value={email}
+        onChange={(e) =>
+          setEmail(e.target.value)
+        }
+        leftIcon={<Mail size={18} />}
+      />
+
+      <AppInput
+        label="Password"
+        type="password"
+        placeholder="Enter your password"
+        required
+        value={password}
+        onChange={(e) =>
+          setPassword(e.target.value)
+        }
+        leftIcon={<Lock size={18} />}
+      />
+
+      <div className="flex items-center justify-between">
+
+        <label className="flex items-center gap-2 text-sm text-slate-600">
+
+          <input type="checkbox" />
+
+          Remember Me
+
+        </label>
+
+        <Link
+          to="/forgot-password"
+          className="text-sm font-semibold text-primary hover:underline"
+        >
+          Forgot Password?
+        </Link>
+
+      </div>
+
+      <AppButton
+        loading={loading}
+        type="submit"
+        className="w-full bg-primary text-white hover:bg-primary/90"
+      >
+        {!loading && (
+          <>
+            Sign In
+
+            <ArrowRight
+              className="ml-2"
+              size={18}
+            />
+          </>
+        )}
+      </AppButton>
+
+      <div className="rounded-2xl bg-slate-50 p-4 text-center text-sm text-slate-600">
+
+        {role === "PATIENT" ? (
+          <>
+            New Patient?{" "}
+
+            <Link
+              to="/register"
+              className="font-semibold text-primary hover:underline"
+            >
+              Create Patient Account
+            </Link>
+          </>
+        ) : (
+          <>
+            {role === "DOCTOR"
+              ? "Doctor accounts are created by the Administrator."
+              : "Administrator accounts are managed by the System Administrator."}
+          </>
         )}
 
-        <label className="block space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-outline">
-            Email Address
-          </span>
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant" />
-            <Input
-              type="email"
-              placeholder="name@healthcare.com"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="h-11 pl-10"
-            />
-          </div>
-        </label>
-
-        <label className="block space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-outline">
-            Password
-          </span>
-          <div className="relative">
-            <LockKeyhole className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant" />
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="h-11 px-10"
-            />
-            <button
-              type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant transition hover:text-on-surface"
-              onClick={() => setShowPassword((current) => !current)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-        </label>
-
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <label className="flex items-center gap-2 text-sm text-on-surface-variant">
-            <input
-              id="remember"
-              type="checkbox"
-              className="h-4 w-4 rounded border-outline-variant text-secondary focus:ring-secondary"
-            />
-            Remember me
-          </label>
-
-          <Link
-            to="/forgot-password"
-            className="text-sm font-semibold text-primary transition hover:underline"
-          >
-            Forgot password?
-          </Link>
-        </div>
-
-        <Button
-          type="submit"
-          disabled={loading}
-          className="h-11 w-full rounded bg-primary text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/15 hover:bg-primary/90"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Authenticating...
-            </>
-          ) : (
-            <>
-              Sign In
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </>
-          )}
-        </Button>
-
-        <div className="rounded border border-outline-variant bg-surface-container-low p-4 text-sm leading-6 text-on-surface-variant">
-          Access is protected by role-based authentication for admins, doctors,
-          and patients.
-        </div>
-      </form>
-
-      <div className="border-t border-outline-variant px-6 py-5 text-center sm:px-8">
-        <p className="text-sm text-on-surface-variant">
-          New to Vans Healthcare?{" "}
-          <Link to="/register" className="font-semibold text-primary hover:underline">
-            Create an account
-          </Link>
-        </p>
       </div>
-    </div>
+
+    </form>
   );
 };
 

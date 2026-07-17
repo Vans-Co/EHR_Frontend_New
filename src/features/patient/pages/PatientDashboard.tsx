@@ -1,37 +1,39 @@
-import WelcomeBanner from "../components/WelcomeBanner";
-import KPISection from "../components/KPISection";
-import HealthProfileCard from "../components/HealthProfileCard";
-import AppointmentTable from "../components/AppointmentTable";
-import AppointmentTrends from "../components/AppointmentTrends";
-import WellnessScore from "../components/WellnessScore";
-import RecentRecords from "../components/RecentRecords";
-import FinancialOverview from "../components/FinancialOverview";
-import ActivityFeed from "../components/ActivityFeed";
+import WelcomeBanner from "@/features/patient/components/WelcomeBanner";
+import KPISection from "@/features/patient/components/KPISection";
+import HealthProfileCard from "@/features/patient/components/HealthProfileCard";
+import ActivityFeed from "@/features/patient/components/ActivityFeed";
+import FinancialOverview from "@/features/patient/components/FinancialOverview";
 
 const PatientDashboard = () => {
   return (
-    <div className="space-y-6">
+    <div className="mx-auto flex w-full max-w-[1700px] flex-col gap-7">
+
+      {/* Welcome Banner */}
       <WelcomeBanner />
 
+      {/* Next Appointment + KPI Cards */}
       <KPISection />
 
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 space-y-6 lg:col-span-8">
-          <HealthProfileCard />
-          <AppointmentTable />
+      {/* Health Profile */}
+      <section>
+        <HealthProfileCard />
+      </section>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <AppointmentTrends />
-            <WellnessScore />
-          </div>
+      {/* Financial + Activity */}
+      <section className="grid items-stretch gap-6 xl:grid-cols-10">
+
+        {/* Financial Overview - 60% */}
+        <div className="xl:col-span-6 h-full">
+          <FinancialOverview />
         </div>
 
-        <div className="col-span-12 space-y-6 lg:col-span-4">
-          <RecentRecords />
-          <FinancialOverview />
+        {/* Activity Feed - 40% */}
+        <div className="xl:col-span-4 h-full">
           <ActivityFeed />
         </div>
-      </div>
+
+      </section>
+
     </div>
   );
 };
