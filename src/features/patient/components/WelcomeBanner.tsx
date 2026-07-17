@@ -5,8 +5,16 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { useAuthStore } from "@/store/authStore";
+import type { WelcomeData } from "@/features/patient/types/dashboard.types";
 
-const WelcomeBanner = () => {
+interface WelcomeBannerProps {
+  data: WelcomeData;
+}
+
+const WelcomeBanner = ({
+  data,
+}: WelcomeBannerProps) => {
+
   const user = useAuthStore((state) => state.user);
 
   const hour = new Date().getHours();
@@ -143,11 +151,11 @@ const WelcomeBanner = () => {
           <div className="lg:text-right">
 
             <p className="text-sm font-medium text-slate-500">
-              {format(new Date(), "EEEE")}
+              {format(new Date(data.todayDate), "EEEE")}
             </p>
 
             <p className="mt-1 text-2xl font-bold text-slate-900">
-              {format(new Date(), "dd MMM yyyy")}
+              {format(new Date(data.todayDate), "dd MMM yyyy")}
             </p>
 
           </div>
@@ -155,6 +163,7 @@ const WelcomeBanner = () => {
         </div>
 
       </div>
+
     </section>
   );
 };

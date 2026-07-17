@@ -6,29 +6,39 @@ import {
   Scan,
 } from "lucide-react";
 
-const reports = [
-  {
-    title: "Blood Test",
-    date: "Today",
-    icon: <FlaskConical className="h-4 w-4" />,
-  },
-  {
-    title: "ECG Report",
-    date: "Yesterday",
-    icon: <HeartPulse className="h-4 w-4" />,
-  },
-  {
-    title: "Chest X-Ray",
-    date: "18 Jun",
-    icon: <Scan className="h-4 w-4" />,
-  },
-];
+import type {
+  ReportsData,
+  ReportItem,
+} from "@/features/patient/types/dashboard.types";
 
-const ReportsCard = () => {
+interface ReportsCardProps {
+  data: ReportsData;
+}
+
+const getIcon = (type: ReportItem["type"]) => {
+  switch (type) {
+    case "lab":
+      return <FlaskConical className="h-4 w-4" />;
+
+    case "ecg":
+      return <HeartPulse className="h-4 w-4" />;
+
+    case "xray":
+      return <Scan className="h-4 w-4" />;
+
+    default:
+      return <FileText className="h-4 w-4" />;
+  }
+};
+
+const ReportsCard = ({
+  data,
+}: ReportsCardProps) => {
   return (
     <section
       className="
         relative
+        h-full
         overflow-hidden
         rounded-[28px]
         bg-gradient-to-br
@@ -43,11 +53,11 @@ const ReportsCard = () => {
 
       <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10 blur-3xl" />
 
-      <div className="relative">
+      <div className="relative flex h-full flex-col">
 
         {/* Header */}
 
-        <div className="mb-5 flex items-center justify-between">
+        <div className="flex items-center justify-between">
 
           <div className="flex items-center gap-3">
 
@@ -62,14 +72,14 @@ const ReportsCard = () => {
               </p>
 
               <p className="text-xs text-cyan-100">
-                Recent documents
+                {data.total} Reports • Updated {data.lastUpdated}
               </p>
 
             </div>
 
           </div>
 
-          <button className="rounded-full bg-white/15 p-2 backdrop-blur-md hover:bg-white/20">
+          <button className="rounded-full bg-white/15 p-2 backdrop-blur-md transition hover:bg-white/20">
             <ArrowUpRight className="h-4 w-4 text-white" />
           </button>
 
@@ -77,11 +87,12 @@ const ReportsCard = () => {
 
         {/* Reports */}
 
-        <div className="space-y-3">
+        <div className="mt-5 flex-1 space-y-3">
 
-          {reports.map((report) => (
+          {data.reports.map((report) => (
+
             <div
-              key={report.title}
+              key={report.id}
               className="
                 flex
                 items-center
@@ -89,27 +100,33 @@ const ReportsCard = () => {
                 rounded-2xl
                 bg-white/10
                 px-3
-                py-2.5
+                py-3
                 backdrop-blur-md
               "
             >
+
               <div className="flex items-center gap-3">
 
                 <div className="rounded-xl bg-white/15 p-2 text-white">
-                  {report.icon}
+                  {getIcon(report.type)}
                 </div>
 
-                <span className="text-sm font-medium text-white">
-                  {report.title}
-                </span>
+                <div>
+
+                  <p className="text-sm font-semibold text-white">
+                    {report.title}
+                  </p>
+
+                  <p className="text-xs text-cyan-100">
+                    {report.date}
+                  </p>
+
+                </div>
 
               </div>
 
-              <span className="text-xs text-cyan-100">
-                {report.date}
-              </span>
-
             </div>
+
           ))}
 
         </div>
@@ -127,7 +144,7 @@ const ReportsCard = () => {
             border
             border-white/20
             bg-white/10
-            py-2.5
+            py-3
             text-sm
             font-medium
             text-white
@@ -140,6 +157,7 @@ const ReportsCard = () => {
         </button>
 
       </div>
+
     </section>
   );
 };

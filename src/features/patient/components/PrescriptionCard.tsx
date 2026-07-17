@@ -5,33 +5,73 @@ import {
   Moon,
 } from "lucide-react";
 
-const medicines = [
-  {
-    name: "Lisinopril",
-    dosage: "10 mg",
-    time: "Morning",
-    icon: <Sunrise className="h-4 w-4 text-white" />,
-  },
-  {
-    name: "Metformin",
-    dosage: "500 mg",
-    time: "Night",
-    icon: <Moon className="h-4 w-4 text-white" />,
-  },
-];
+import type {
+  PrescriptionData,
+  PrescriptionMedicine,
+} from "@/features/patient/types/dashboard.types";
 
-const PrescriptionCard = () => {
+interface PrescriptionCardProps {
+  data: PrescriptionData;
+}
+
+const getMedicineIcon = (
+  medicine: PrescriptionMedicine,
+) => {
+  const dosage = medicine.dosage.toLowerCase();
+
+  if (
+    dosage.includes("morning") ||
+    dosage.includes("breakfast") ||
+    dosage.includes("am")
+  ) {
+    return <Sunrise className="h-4 w-4 text-white" />;
+  }
+
+  return <Moon className="h-4 w-4 text-white" />;
+};
+
+const getMedicineTime = (
+  medicine: PrescriptionMedicine,
+) => {
+  const dosage = medicine.dosage.toLowerCase();
+
+  if (
+    dosage.includes("morning") ||
+    dosage.includes("breakfast") ||
+    dosage.includes("am")
+  ) {
+    return "Morning";
+  }
+
+  if (
+    dosage.includes("night") ||
+    dosage.includes("pm")
+  ) {
+    return "Night";
+  }
+
+  if (dosage.includes("evening")) {
+    return "Evening";
+  }
+
+  return "Daily";
+};
+
+const PrescriptionCard = ({
+  data,
+}: PrescriptionCardProps) => {
   return (
     <section
       className="
         relative
+        h-full
         overflow-hidden
         rounded-[30px]
         bg-gradient-to-br
         from-[#D9FBFD]
         via-[#EAFBFF]
         to-[#F5F9FF]
-        p-5
+        p-4
         shadow-[0_18px_40px_rgba(0,175,198,.18)]
       "
     >
@@ -50,8 +90,8 @@ const PrescriptionCard = () => {
           <div
             className="
               flex
-              h-14
-              w-14
+              h-12
+              w-12
               items-center
               justify-center
               rounded-2xl
@@ -61,14 +101,14 @@ const PrescriptionCard = () => {
               shadow-lg
             "
           >
-            <Pill className="h-7 w-7 text-white" />
+            <Pill className="h-6 w-6 text-white" />
           </div>
 
           <button
             className="
               flex
-              h-10
-              w-10
+              h-9
+              w-9
               items-center
               justify-center
               rounded-full
@@ -85,21 +125,27 @@ const PrescriptionCard = () => {
 
         {/* Heading */}
 
-        <div className="mt-7">
+        <div className="mt-4">
 
           <p className="text-lg font-medium text-slate-700">
             Today's Medicines
+          </p>
+
+          <p className="mt-1 text-xs text-slate-500">
+            {data.active} Active Prescription
+            {data.active !== 1 ? "s" : ""}
           </p>
 
         </div>
 
         {/* Medicine List */}
 
-        <div className="mt-5 space-y-3">
+        <div className="mt-3 flex-1 space-y-2">
 
-          {medicines.map((medicine) => (
+          {data.medicines.map((medicine) => (
+
             <div
-              key={medicine.name}
+              key={medicine.id}
               className="
                 flex
                 items-center
@@ -107,17 +153,18 @@ const PrescriptionCard = () => {
                 rounded-2xl
                 bg-white/45
                 px-3
-                py-3
+                py-2
                 backdrop-blur-xl
               "
             >
+
               <div className="flex items-center gap-3">
 
                 <div
                   className="
                     flex
-                    h-10
-                    w-10
+                    h-9
+                    w-9
                     items-center
                     justify-center
                     rounded-xl
@@ -126,7 +173,7 @@ const PrescriptionCard = () => {
                     to-[#5B5FEF]
                   "
                 >
-                  {medicine.icon}
+                  {getMedicineIcon(medicine)}
                 </div>
 
                 <div>
@@ -144,10 +191,11 @@ const PrescriptionCard = () => {
               </div>
 
               <span className="text-xs font-semibold text-slate-600">
-                {medicine.time}
+                {getMedicineTime(medicine)}
               </span>
 
             </div>
+
           ))}
 
         </div>
@@ -156,14 +204,15 @@ const PrescriptionCard = () => {
 
         <div
           className="
-            mt-5
+            mt-3
             rounded-2xl
             bg-white/45
             px-4
-            py-3
+            py-2
             backdrop-blur-xl
           "
         >
+
           <div className="flex items-center justify-between">
 
             <div>
@@ -173,7 +222,7 @@ const PrescriptionCard = () => {
               </p>
 
               <p className="mt-1 text-sm font-semibold text-slate-800">
-                18 July 2026
+                {data.nextRefill}
               </p>
 
             </div>
@@ -191,7 +240,7 @@ const PrescriptionCard = () => {
                 text-white
               "
             >
-              2 Refills
+              {data.active} Active
             </span>
 
           </div>
@@ -199,6 +248,7 @@ const PrescriptionCard = () => {
         </div>
 
       </div>
+
     </section>
   );
 };

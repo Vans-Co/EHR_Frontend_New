@@ -21,14 +21,15 @@ const ProtectedRoute = ({
 
 
    // Original authentication
-   // if(!isAuthenticated) {
-   //return <Navigate to="/login" replace />;
-  // }
+     if(!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+    }
 
- if (!isAuthenticated) {
-  // TEMP: Bypass authentication during frontend development
-  return <Navigate to="/login" replace />;
-}
+ // Temporary for frontend development without backend
+  //if (!isAuthenticated) 
+ //{
+ // return <>{children}</>;
+//}
 
   if (
     allowedRoles &&

@@ -6,8 +6,22 @@ import {
   MapPin,
   Stethoscope,
 } from "lucide-react";
+import { format, isTomorrow } from "date-fns";
+import type { NextAppointment } from "@/features/patient/types/dashboard.types";
 
-const NextAppointmentCard = () => {
+interface NextAppointmentCardProps {
+  data: NextAppointment;
+}
+
+const NextAppointmentCard = ({
+  data,
+}: NextAppointmentCardProps) => {
+  const appointmentDate = new Date(data.date);
+
+  const appointmentLabel = isTomorrow(appointmentDate)
+    ? "Tomorrow"
+    : format(appointmentDate, "dd MMM yyyy");
+
   return (
     <section
       className="
@@ -68,11 +82,11 @@ const NextAppointmentCard = () => {
               </p>
 
               <h2 className="mt-1 text-3xl font-bold text-slate-900">
-                Tomorrow
+                {appointmentLabel}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Tuesday • 10:30 AM
+                {format(appointmentDate, "EEEE")} • {data.time}
               </p>
 
             </div>
@@ -123,7 +137,7 @@ const NextAppointmentCard = () => {
               </p>
 
               <p className="font-semibold text-slate-900">
-                10:30 AM
+                {data.time}
               </p>
 
             </div>
@@ -143,11 +157,11 @@ const NextAppointmentCard = () => {
               </p>
 
               <p className="font-semibold text-slate-900">
-                Dr. Aris
+                {data.doctorName}
               </p>
 
               <p className="text-sm text-slate-500">
-                Cardiology
+                {data.specialization}
               </p>
 
             </div>
@@ -167,7 +181,7 @@ const NextAppointmentCard = () => {
               </p>
 
               <p className="font-semibold text-slate-900">
-                Vans Healthcare
+                {data.hospital}
               </p>
 
             </div>

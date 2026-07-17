@@ -5,31 +5,46 @@ import {
   FileText,
 } from "lucide-react";
 
-const activities = [
-  {
-    title: "Appointment Booked",
-    description: "Dr. Lawson • Cardiology",
-    time: "2 hrs ago",
-    color: "bg-emerald-500",
-    icon: CheckCircle2,
-  },
-  {
-    title: "Lab Report Uploaded",
-    description: "CBC Report • City Labs",
-    time: "Yesterday",
-    color: "bg-primary",
-    icon: FileText,
-  },
-  {
-    title: "Medication Reminder",
-    description: "Lisinopril 10mg",
-    time: "Today • 8:00 AM",
-    color: "bg-red-500",
-    icon: AlertCircle,
-  },
-];
+import type {
+  ActivityItem,
+} from "@/features/patient/types/dashboard.types";
 
-const ActivityFeed = () => {
+interface ActivityFeedProps {
+  data: ActivityItem[];
+}
+
+const getActivityIcon = (type: ActivityItem["type"]) => {
+  switch (type) {
+    case "appointment":
+      return {
+        icon: CheckCircle2,
+        color: "bg-emerald-500",
+      };
+
+    case "report":
+      return {
+        icon: FileText,
+        color: "bg-primary",
+      };
+
+    case "medication":
+      return {
+        icon: AlertCircle,
+        color: "bg-red-500",
+      };
+
+    default:
+      return {
+        icon: Activity,
+        color: "bg-slate-500",
+      };
+  }
+};
+
+const ActivityFeed = ({
+  data,
+}: ActivityFeedProps) => {
+
   return (
     <section className="flex h-full flex-col rounded-[30px] border border-white/20 bg-white/70 p-5 shadow-[0_15px_35px_rgba(0,0,0,0.08)] backdrop-blur-xl">
 
@@ -64,23 +79,26 @@ const ActivityFeed = () => {
 
       <div className="relative flex-1">
 
-        <div className="absolute left-[18px] top-2 bottom-2 w-px bg-slate-200" />
+        <div className="absolute bottom-2 left-[18px] top-2 w-px bg-slate-200" />
 
         <div className="space-y-3">
 
-          {activities.map((item) => {
+          {data.map((item) => {
 
-            const Icon = item.icon;
+            const {
+              icon: Icon,
+              color,
+            } = getActivityIcon(item.type);
 
             return (
 
               <div
-                key={item.title}
+                key={item.id}
                 className="relative flex items-start gap-3"
               >
 
                 <div
-                  className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white shadow-sm ${item.color}`}
+                  className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white shadow-sm ${color}`}
                 >
 
                   <Icon size={16} />

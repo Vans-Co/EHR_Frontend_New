@@ -6,7 +6,15 @@ import {
   Wallet,
 } from "lucide-react";
 
-const FinancialOverview = () => {
+import type { FinancialData } from "@/features/patient/types/dashboard.types";
+
+interface FinancialOverviewProps {
+  data: FinancialData;
+}
+
+const FinancialOverview = ({
+  data,
+}: FinancialOverviewProps) => {
   return (
     <section className="h-full rounded-[30px] border border-white/20 bg-white/70 p-5 shadow-[0_15px_35px_rgba(0,0,0,0.08)] backdrop-blur-xl">
 
@@ -15,6 +23,7 @@ const FinancialOverview = () => {
       <div className="mb-4 flex items-center justify-between">
 
         <div>
+
           <p className="text-sm text-on-surface-variant">
             Billing & Insurance
           </p>
@@ -22,13 +31,16 @@ const FinancialOverview = () => {
           <h2 className="mt-1 text-xl font-bold text-on-background">
             Financial Overview
           </h2>
+
         </div>
 
         <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10">
+
           <Wallet
             size={20}
             className="text-primary"
           />
+
         </div>
 
       </div>
@@ -46,11 +58,11 @@ const FinancialOverview = () => {
             </p>
 
             <h3 className="mt-1 text-3xl font-bold text-red-600">
-              $145.00
+              ${data.outstandingBalance.toFixed(2)}
             </h3>
 
             <p className="mt-1 text-sm text-slate-500">
-              Cardiology Lab Work • May 12
+              {data.billTitle}
             </p>
 
           </div>
@@ -63,8 +75,11 @@ const FinancialOverview = () => {
         </div>
 
         <button className="mt-3 inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
+
           Pay Now
+
           <ArrowRight size={15} />
+
         </button>
 
       </div>
@@ -91,16 +106,16 @@ const FinancialOverview = () => {
           </div>
 
           <p className="text-xs text-on-surface-variant">
-            Aetna Claim #8291
+            {data.insurance.provider} Claim #{data.insurance.claimNumber}
           </p>
 
           <span className="mt-2 inline-flex rounded-full bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700">
-            Approved
+            {data.insurance.status}
           </span>
 
         </div>
 
-        {/* Payment */}
+        {/* Recent Payment */}
 
         <div className="rounded-2xl bg-slate-50/90 p-3">
 
@@ -118,11 +133,11 @@ const FinancialOverview = () => {
           </div>
 
           <p className="text-xs text-on-surface-variant">
-            Pharmacy Co-pay
+            {data.recentPayment.title}
           </p>
 
           <p className="mt-2 text-lg font-bold text-primary">
-            $15.00
+            ${data.recentPayment.amount.toFixed(2)}
           </p>
 
         </div>

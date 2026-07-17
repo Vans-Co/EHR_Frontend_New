@@ -9,6 +9,7 @@ const WellnessScore = () => {
     <section
       className="
         relative
+        h-full
         overflow-hidden
         rounded-[30px]
         border
@@ -31,7 +32,7 @@ const WellnessScore = () => {
 
       <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex h-full flex-col">
 
         {/* Header */}
 
@@ -68,44 +69,49 @@ const WellnessScore = () => {
 
         </div>
 
-        {/* Circle */}
+        {/* Progress Circle */}
 
-        <div className="relative mt-5 flex justify-center">
+        <div className="my-6 flex justify-center">
 
-          <svg
-            className="h-32 w-32 -rotate-90"
-            viewBox="0 0 36 36"
-          >
-            <path
-              d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831"
-              fill="none"
-              stroke="#D6E6FF"
-              strokeWidth="3"
-            />
+          <div className="relative h-32 w-32">
 
-            <path
-              d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831"
-              fill="none"
-              stroke="#2F6BFF"
-              strokeWidth="3"
-              strokeDasharray="92,100"
-              strokeLinecap="round"
-            />
-          </svg>
+            <svg
+              className="h-32 w-32 -rotate-90"
+              viewBox="0 0 36 36"
+            >
+              <path
+                d="M18 2.0845
+                   a 15.9155 15.9155 0 0 1 0 31.831
+                   a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none"
+                stroke="#D6E6FF"
+                strokeWidth="3"
+              />
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <path
+                d="M18 2.0845
+                   a 15.9155 15.9155 0 0 1 0 31.831
+                   a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none"
+                stroke="#2F6BFF"
+                strokeWidth="3"
+                strokeDasharray="92,100"
+                strokeLinecap="round"
+              />
 
-            <span className="text-4xl font-bold text-slate-900">
-              92
-            </span>
+            </svg>
 
-            <span className="text-sm font-medium text-slate-600">
-              /100
-            </span>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+
+              <span className="text-4xl font-bold text-slate-900">
+                92
+              </span>
+
+              <span className="text-sm font-medium text-slate-600">
+                /100
+              </span>
+
+            </div>
 
           </div>
 
@@ -113,17 +119,18 @@ const WellnessScore = () => {
 
         {/* Bottom Stats */}
 
-        <div className="mt-5 grid grid-cols-3 gap-2">
+        <div className="mt-auto grid grid-cols-3 gap-3">
 
           <div
             className="
               rounded-2xl
-              bg-white/35
-              py-2.5
+              bg-white/40
+              py-3
               text-center
               backdrop-blur-md
             "
           >
+
             <Heart className="mx-auto mb-1 h-4 w-4 text-[#2F6BFF]" />
 
             <p className="text-lg font-bold text-slate-900">
@@ -139,12 +146,13 @@ const WellnessScore = () => {
           <div
             className="
               rounded-2xl
-              bg-white/35
-              py-2.5
+              bg-white/40
+              py-3
               text-center
               backdrop-blur-md
             "
           >
+
             <Footprints className="mx-auto mb-1 h-4 w-4 text-[#2F6BFF]" />
 
             <p className="text-lg font-bold text-slate-900">
@@ -160,12 +168,13 @@ const WellnessScore = () => {
           <div
             className="
               rounded-2xl
-              bg-white/35
-              py-2.5
+              bg-white/40
+              py-3
               text-center
               backdrop-blur-md
             "
           >
+
             <Activity className="mx-auto mb-1 h-4 w-4 text-[#2F6BFF]" />
 
             <p className="text-lg font-bold text-slate-900">
