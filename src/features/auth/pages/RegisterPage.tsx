@@ -143,14 +143,34 @@ const Register = () => {
     setStep((prev) => prev - 1);
   };
 
+  const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+
+  const bloodGroupToEnum: Record<string, string> = {
+    "A+": "A_POSITIVE",
+    "A-": "A_NEGATIVE",
+    "B+": "B_POSITIVE",
+    "B-": "B_NEGATIVE",
+    "AB+": "AB_POSITIVE",
+    "AB-": "AB_NEGATIVE",
+    "O+": "O_POSITIVE",
+    "O-": "O_NEGATIVE",
+  };
+
+  const toMmDdYyyy = (isoDate: string) => {
+    const [year, month, day] = isoDate.split("-");
+    return `${month}-${day}-${year}`;
+  };
+
   const handleSubmit = async () => {
     if (!validateStep()) return;
 
     setLoading(true);
 
     setError("");
+    console.log("here")
 
     try {
+    console.log("there")
       await registerUser({
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -161,7 +181,7 @@ const Register = () => {
 
         role: "PATIENT",
 
-        dob: formData.dob,
+        dob: toMmDdYyyy(formData.dob),
 
         gender:
           formData.gender as
@@ -174,7 +194,7 @@ const Register = () => {
         ),
 
         bloodGroup:
-          formData.bloodGroup,
+          bloodGroupToEnum[formData.bloodGroup],
 
         address: {
           addressLine:
