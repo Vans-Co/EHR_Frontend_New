@@ -117,7 +117,7 @@ export interface LoginResponse {
   loginResponse: {
     status: boolean;
     message: string;
-    user: AuthUser;
+    userResponseDTO: AuthUser;
   };
 
   tokenResponse: TokenResponse;
