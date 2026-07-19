@@ -52,7 +52,6 @@ const LoginForm = () => {
         email,
         password,
       });
-      console.log("came here")
 
       const user =
         response.loginResponse.userResponseDTO;
@@ -62,15 +61,12 @@ const LoginForm = () => {
 
       const refreshToken =
         response.tokenResponse.refreshToken;
-      console.log("here?")
 
-      console.log(response)
       login(
         user,
         accessToken,
         refreshToken
       );
-      console.log(user.role)
 
       switch (user.role) {
         case "ADMIN":
