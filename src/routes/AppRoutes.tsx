@@ -9,7 +9,15 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPassword";
 
 import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import DoctorDashboard from "@/features/doctor/pages/DoctorDashboard";
+import PatientAllergies from "@/features/patient/pages/PatientAllergies";
 import PatientDashboard from "@/features/patient/pages/PatientDashboard";
+import PatientBilling from "@/features/patient/pages/PatientBilling";
+import PatientBillingDue from "@/features/patient/pages/PatientBillingDue";
+import PatientBillingHistory from "@/features/patient/pages/PatientBillingHistory";
+import PatientBillingInvoiceDetails from "@/features/patient/pages/PatientBillingInvoiceDetails";
+import PatientBillingRecurring from "@/features/patient/pages/PatientBillingRecurring";
+import PatientProfile from "@/features/patient/pages/PatientProfile";
+import PatientProfileEdit from "@/features/patient/pages/PatientProfileEdit";
 
 import AdminLayout from "@/layouts/AdminLayout";
 import DoctorLayout from "@/layouts/DoctorLayout";
@@ -86,17 +94,45 @@ const AppRoutes = () => {
           element={<PatientDashboard />}
         />
 
-        {/* Future Patient Routes */}
+        <Route
+          path="profile"
+          element={<PatientProfile />}
+        />
 
-        {/*
-        <Route path="appointments" element={<PatientAppointments />} />
-        <Route path="medical-records" element={<PatientMedicalRecords />} />
-        <Route path="prescriptions" element={<PatientPrescriptions />} />
-        <Route path="billing" element={<PatientBilling />} />
-        <Route path="insurance" element={<PatientInsurance />} />
-        <Route path="profile" element={<PatientProfile />} />
-        <Route path="settings" element={<PatientSettings />} />
-        */}
+        <Route
+          path="profile/edit"
+          element={<PatientProfileEdit />}
+        />
+
+        <Route
+          path="billing"
+          element={<PatientBilling />}
+        />
+
+        <Route
+          path="billing/invoices/:id"
+          element={<PatientBillingInvoiceDetails />}
+        />
+
+        <Route
+          path="billing/due"
+          element={<PatientBillingDue />}
+        />
+
+        <Route
+          path="billing/history"
+          element={<PatientBillingHistory />}
+        />
+
+        <Route
+          path="billing/recurring"
+          element={<PatientBillingRecurring />}
+        />
+
+        <Route
+          path="allergies"
+          element={<PatientAllergies />}
+        />
 
       </Route>
 

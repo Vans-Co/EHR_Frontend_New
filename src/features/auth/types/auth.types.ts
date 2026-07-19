@@ -80,7 +80,7 @@ export interface RegisterRequest {
 // ===============================
 
 export interface AuthUser {
-  ehrId: number;
+  ehrId: string;
 
   firstName: string;
   lastName: string;

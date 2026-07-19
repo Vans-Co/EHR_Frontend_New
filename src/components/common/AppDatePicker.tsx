@@ -9,6 +9,9 @@ interface AppDatePickerProps
   error?: string;
   helperText?: string;
   required?: boolean;
+  containerClassName?: string;
+  labelClassName?: string;
+  inputWrapperClassName?: string;
 }
 
 const AppDatePicker = forwardRef<
@@ -22,15 +25,23 @@ const AppDatePicker = forwardRef<
       helperText,
       required,
       className,
+      containerClassName,
+      labelClassName,
+      inputWrapperClassName,
       ...props
     },
     ref
   ) => {
     return (
-      <div className="space-y-2">
+      <div className={cn("space-y-2", containerClassName)}>
 
         {label && (
-          <label className="block text-sm font-semibold text-on-background">
+          <label
+            className={cn(
+              "block text-sm font-semibold text-on-background",
+              labelClassName
+            )}
+          >
 
             {label}
 
@@ -52,6 +63,8 @@ const AppDatePicker = forwardRef<
             "focus-within:border-primary",
             "focus-within:ring-4",
             "focus-within:ring-primary/10"
+            ,
+            inputWrapperClassName
           )}
         >
 

@@ -1,15 +1,6 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
-import {
-  Bell,
-  ChevronDown,
-  Menu,
-  Search,
-} from "lucide-react";
+import { Bell, ChevronDown, Menu, Search } from "lucide-react";
 
 import { format } from "date-fns";
 
@@ -24,93 +15,56 @@ interface NavbarProps {
   onMenuClick?: () => void;
 }
 
-const Navbar = ({
-  onMenuClick,
-}: NavbarProps) => {
+const Navbar = ({ onMenuClick }: NavbarProps) => {
+  const authUser = useAuthStore((state) => state.user);
 
- const authUser = useAuthStore(
-  (state) => state.user
-);
-
-const user =
-  authUser ?? {
+  const user = authUser ?? {
     firstName: "Patient",
     lastName: "",
     email: "patient@demo.com",
     role: "PATIENT",
   };
-  const [
-    showNotifications,
-    setShowNotifications,
-  ] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
-  const [
-    showUserMenu,
-    setShowUserMenu,
-  ] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
-  const notificationRef =
-    useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
-  const userMenuRef =
-    useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-
-    const handleClickOutside = (
-      event: MouseEvent
-    ) => {
-
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         notificationRef.current &&
-        !notificationRef.current.contains(
-          event.target as Node
-        )
+        !notificationRef.current.contains(event.target as Node)
       ) {
         setShowNotifications(false);
       }
 
       if (
         userMenuRef.current &&
-        !userMenuRef.current.contains(
-          event.target as Node
-        )
+        !userMenuRef.current.contains(event.target as Node)
       ) {
         setShowUserMenu(false);
       }
-
     };
 
-    document.addEventListener(
-      "mousedown",
-      handleClickOutside
-    );
+    document.addEventListener("mousedown", handleClickOutside);
 
-    return () =>
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
-
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const greeting = (() => {
+    const hour = new Date().getHours();
 
-    const hour =
-      new Date().getHours();
+    if (hour < 12) return "Good Morning";
 
-    if (hour < 12)
-      return "Good Morning";
-
-    if (hour < 17)
-      return "Good Afternoon";
+    if (hour < 17) return "Good Afternoon";
 
     return "Good Evening";
-
   })();
 
   return (
-
     <header
       className="
         sticky
@@ -127,12 +81,11 @@ const user =
         backdrop-blur-xl
       "
     >
-            {/* ========================= */}
+      {/* ========================= */}
       {/* Left Section */}
       {/* ========================= */}
 
       <div className="flex items-center gap-5">
-
         {/* Mobile Menu */}
 
         <button
@@ -150,51 +103,28 @@ const user =
             lg:hidden
           "
         >
-          <Menu
-            size={22}
-            className="text-on-background"
-          />
+          <Menu size={22} className="text-on-background" />
         </button>
 
         {/* Mobile Logo */}
 
         <div className="lg:hidden">
-          <AppLogo
-            size="xs"
-            clickable
-          />
+          <AppLogo size="xs" clickable />
         </div>
 
         {/* Greeting */}
 
         <div>
-
           <h2 className="text-2xl font-bold text-on-background">
-
             {greeting}
-
-            {user && (
-              <>
-                {" "}
-                {user.firstName}
-              </>
-            )}
-
+            {user && <> {user.firstName}</>}
             👋
-
           </h2>
 
           <p className="mt-1 text-sm text-on-surface-variant">
-
-            {format(
-              new Date(),
-              "EEEE, dd MMMM yyyy"
-            )}
-
+            {format(new Date(), "EEEE, dd MMMM yyyy")}
           </p>
-
         </div>
-
       </div>
 
       {/* ========================= */}
@@ -210,9 +140,7 @@ const user =
           lg:block
         "
       >
-
         <div className="relative">
-
           <Search
             size={18}
             className="
@@ -246,9 +174,7 @@ const user =
               focus:ring-primary/10
             "
           />
-
         </div>
-
       </div>
 
       {/* ========================= */}
@@ -256,20 +182,15 @@ const user =
       {/* ========================= */}
 
       <div className="flex items-center gap-4">
-                {/* ========================= */}
+        {/* ========================= */}
         {/* Notifications */}
         {/* ========================= */}
 
-        <div
-          className="relative"
-          ref={notificationRef}
-        >
+        <div className="relative" ref={notificationRef}>
           <button
             type="button"
             onClick={() => {
-              setShowNotifications(
-                !showNotifications
-              );
+              setShowNotifications(!showNotifications);
 
               setShowUserMenu(false);
             }}
@@ -286,10 +207,7 @@ const user =
               hover:bg-primary/10
             "
           >
-            <Bell
-              size={22}
-              className="text-on-background"
-            />
+            <Bell size={22} className="text-on-background" />
 
             {/* Notification Badge */}
 
@@ -307,9 +225,7 @@ const user =
             />
           </button>
 
-          {showNotifications && (
-            <NotificationDropdown />
-          )}
+          {showNotifications && <NotificationDropdown />}
         </div>
 
         {/* Divider */}
@@ -328,20 +244,13 @@ const user =
         {/* User Profile */}
         {/* ========================= */}
 
-        <div
-          className="relative"
-          ref={userMenuRef}
-        >
+        <div className="relative" ref={userMenuRef}>
           <button
             type="button"
             onClick={() => {
-              setShowUserMenu(
-                !showUserMenu
-              );
+              setShowUserMenu(!showUserMenu);
 
-              setShowNotifications(
-                false
-              );
+              setShowNotifications(false);
             }}
             className="
               flex
@@ -379,20 +288,11 @@ const user =
             {/* User Info */}
 
             <div className="hidden text-left md:block">
-
               <p className="font-semibold text-on-background">
-
-                {user?.firstName}{" "}
-                {user?.lastName}
-
+                {user?.firstName} {user?.lastName}
               </p>
 
-              <p className="text-xs text-on-surface-variant">
-
-                {user?.role}
-
-              </p>
-
+              <p className="text-xs text-on-surface-variant">{user?.role}</p>
             </div>
 
             <ChevronDown
@@ -401,16 +301,11 @@ const user =
             />
           </button>
 
-          {showUserMenu && (
-            <UserMenu />
-          )}
+          {showUserMenu && <UserMenu />}
         </div>
-
       </div>
-          </header>
-
+    </header>
   );
-
 };
 
 export default Navbar;

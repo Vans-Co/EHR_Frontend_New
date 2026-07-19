@@ -9,7 +9,15 @@ import {
   UserRound,
 } from "lucide-react";
 
-const HealthProfileCard = () => {
+import type { HealthProfileData } from "@/features/patient/types/dashboard.types";
+
+interface HealthProfileCardProps {
+  data: HealthProfileData;
+}
+
+const HealthProfileCard = ({
+  data,
+}: HealthProfileCardProps) => {
   return (
     <section className="relative overflow-hidden rounded-[30px] bg-gradient-to-br from-[#1976E8] via-[#1693EA] to-[#09B5D8] p-6 shadow-[0_20px_45px_rgba(16,120,230,.18)]">
 
@@ -66,7 +74,7 @@ const HealthProfileCard = () => {
             </p>
 
             <h3 className="mt-1 text-lg font-semibold text-white">
-              O+
+              {data.bloodGroup}
             </h3>
 
           </div>
@@ -82,7 +90,7 @@ const HealthProfileCard = () => {
             </p>
 
             <h3 className="mt-1 text-lg font-semibold text-white">
-              None
+              {data.allergies}
             </h3>
 
           </div>
@@ -98,7 +106,7 @@ const HealthProfileCard = () => {
             </p>
 
             <h3 className="mt-1 text-lg font-semibold text-white">
-              Healthy
+              {data.condition}
             </h3>
 
           </div>
@@ -118,7 +126,7 @@ const HealthProfileCard = () => {
                 </p>
 
                 <h3 className="mt-1 text-lg font-semibold text-white">
-                  +91 98765 43210
+                  {data.emergencyContact.phone}
                 </h3>
 
               </div>
@@ -130,7 +138,7 @@ const HealthProfileCard = () => {
                 </p>
 
                 <p className="font-medium text-white">
-                  Father
+                  {data.emergencyContact.relation}
                 </p>
 
               </div>
@@ -156,7 +164,7 @@ const HealthProfileCard = () => {
             </p>
 
             <h3 className="mt-1 text-base font-semibold text-white">
-              1 Active
+              {data.medication}
             </h3>
 
           </div>
@@ -172,7 +180,7 @@ const HealthProfileCard = () => {
             </p>
 
             <h3 className="mt-1 text-base font-semibold text-white">
-              Dr. Julian
+              {data.primaryDoctor}
             </h3>
 
           </div>
@@ -188,7 +196,7 @@ const HealthProfileCard = () => {
             </p>
 
             <h3 className="mt-1 text-base font-semibold text-white">
-              12 Oct 2025
+              {data.lastVisit}
             </h3>
 
           </div>
@@ -204,7 +212,7 @@ const HealthProfileCard = () => {
             </p>
 
             <h3 className="mt-1 text-base font-semibold text-white">
-              PT-20481
+              {data.patientId}
             </h3>
 
           </div>

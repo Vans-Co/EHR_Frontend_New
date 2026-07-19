@@ -2,8 +2,6 @@ import type { DashboardData } from "../types/dashboard.types";
 
 export const patientDashboardData: DashboardData = {
   welcome: {
-    greeting: "Good Morning",
-    patientName: "Heer Dave",
     todayDate: "17 July 2026",
 
     nextAppointment: {
@@ -19,11 +17,13 @@ export const patientDashboardData: DashboardData = {
     reports: {
       total: 14,
       lastUpdated: "2 days ago",
+      reports: [],
     },
 
     prescriptions: {
       active: 3,
       nextRefill: "22 Jul",
+      medicines: [],
     },
 
     wellness: {

@@ -16,6 +16,9 @@ interface AppSelectProps
   helperText?: string;
   required?: boolean;
   leftIcon?: React.ReactNode;
+  containerClassName?: string;
+  labelClassName?: string;
+  inputWrapperClassName?: string;
 }
 
 const AppSelect = forwardRef<
@@ -31,15 +34,23 @@ const AppSelect = forwardRef<
       required,
       leftIcon,
       className,
+      containerClassName,
+      labelClassName,
+      inputWrapperClassName,
       ...props
     },
     ref
   ) => {
     return (
-      <div className="space-y-2">
+      <div className={cn("space-y-2", containerClassName)}>
 
         {label && (
-          <label className="block text-sm font-semibold text-on-background">
+          <label
+            className={cn(
+              "block text-sm font-semibold text-on-background",
+              labelClassName
+            )}
+          >
             {label}
             {required && (
               <span className="ml-1 text-red-500">*</span>
@@ -58,6 +69,8 @@ const AppSelect = forwardRef<
             "focus-within:border-primary",
             "focus-within:ring-4",
             "focus-within:ring-primary/10"
+            ,
+            inputWrapperClassName
           )}
         >
 

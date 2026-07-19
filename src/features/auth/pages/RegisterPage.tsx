@@ -143,8 +143,6 @@ const Register = () => {
     setStep((prev) => prev - 1);
   };
 
-  const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
-
   const bloodGroupToEnum: Record<string, string> = {
     "A+": "A_POSITIVE",
     "A-": "A_NEGATIVE",
@@ -167,10 +165,8 @@ const Register = () => {
     setLoading(true);
 
     setError("");
-    console.log("here")
 
     try {
-    console.log("there")
       await registerUser({
         firstName: formData.firstName,
         lastName: formData.lastName,

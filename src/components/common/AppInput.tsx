@@ -12,6 +12,9 @@ interface AppInputProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   required?: boolean;
+  containerClassName?: string;
+  labelClassName?: string;
+  inputWrapperClassName?: string;
 }
 
 const AppInput = forwardRef<HTMLInputElement, AppInputProps>(
@@ -24,6 +27,9 @@ const AppInput = forwardRef<HTMLInputElement, AppInputProps>(
       rightIcon,
       required,
       className,
+      containerClassName,
+      labelClassName,
+      inputWrapperClassName,
       type = "text",
       ...props
     },
@@ -40,10 +46,15 @@ const AppInput = forwardRef<HTMLInputElement, AppInputProps>(
         : type;
 
     return (
-      <div className="space-y-2">
+      <div className={cn("space-y-2", containerClassName)}>
 
         {label && (
-          <label className="block text-sm font-semibold text-on-background">
+          <label
+            className={cn(
+              "block text-sm font-semibold text-on-background",
+              labelClassName
+            )}
+          >
 
             {label}
 
@@ -67,6 +78,8 @@ const AppInput = forwardRef<HTMLInputElement, AppInputProps>(
             "focus-within:ring-4",
 
             "focus-within:ring-primary/10"
+            ,
+            inputWrapperClassName
           )}
         >
 

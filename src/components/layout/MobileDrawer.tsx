@@ -17,9 +17,14 @@ const MobileDrawer = ({
   open,
   onClose,
 }: MobileDrawerProps) => {
+  const navigate = useNavigate();
 
   const user = useAuthStore(
     (state) => state.user
+  );
+
+  const logout = useAuthStore(
+    (state) => state.logout
   );
 
   const role =
@@ -29,20 +34,16 @@ const MobileDrawer = ({
 
   const items =
     sidebarItems[role];
-      if (!open) return null;
- const navigate = useNavigate();
 
-const logout = useAuthStore(
-  (state) => state.logout
-);
+  if (!open) return null;
 
-const handleLogout = () => {
-  logout();
-  onClose();
-  navigate("/login", {
-    replace: true,
-  });
-};
+  const handleLogout = () => {
+    logout();
+    onClose();
+    navigate("/login", {
+      replace: true,
+    });
+  };
   return (
 
     <>

@@ -1,8 +1,4 @@
-import {
-  CalendarPlus,
-  FileText,
-  ArrowRight,
-} from "lucide-react";
+import { CalendarPlus, FileText, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { useAuthStore } from "@/store/authStore";
 import type { WelcomeData } from "@/features/patient/types/dashboard.types";
@@ -11,20 +7,13 @@ interface WelcomeBannerProps {
   data: WelcomeData;
 }
 
-const WelcomeBanner = ({
-  data,
-}: WelcomeBannerProps) => {
-
+const WelcomeBanner = ({ data }: WelcomeBannerProps) => {
   const user = useAuthStore((state) => state.user);
 
   const hour = new Date().getHours();
 
   const greeting =
-    hour < 12
-      ? "Good Morning"
-      : hour < 17
-      ? "Good Afternoon"
-      : "Good Evening";
+    hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
 
   return (
     <section
@@ -49,15 +38,12 @@ const WelcomeBanner = ({
       <div className="absolute -bottom-20 left-10 h-56 w-56 rounded-full bg-cyan-100/40 blur-3xl" />
 
       <div className="relative z-10">
-
         {/* Top */}
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-
           {/* Left */}
 
           <div>
-
             <p className="text-sm font-medium uppercase tracking-wider text-sky-600">
               Dashboard
             </p>
@@ -70,14 +56,13 @@ const WelcomeBanner = ({
             </h1>
 
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-              Welcome back! Here's your healthcare overview for today.
-              Stay on top of appointments, reports and prescriptions.
+              Welcome back! Here's your healthcare overview for today. Stay on
+              top of appointments, reports and prescriptions.
             </p>
 
             {/* Actions */}
 
             <div className="mt-6 flex flex-wrap gap-3">
-
               <button
                 className="
                   group
@@ -99,9 +84,7 @@ const WelcomeBanner = ({
                 "
               >
                 <CalendarPlus size={18} />
-
                 Book Appointment
-
                 <ArrowRight
                   size={16}
                   className="transition group-hover:translate-x-1"
@@ -133,23 +116,18 @@ const WelcomeBanner = ({
                 "
               >
                 <FileText size={18} />
-
                 View Records
-
                 <ArrowRight
                   size={16}
                   className="transition group-hover:translate-x-1"
                 />
               </button>
-
             </div>
-
           </div>
 
           {/* Right */}
 
           <div className="lg:text-right">
-
             <p className="text-sm font-medium text-slate-500">
               {format(new Date(data.todayDate), "EEEE")}
             </p>
@@ -157,13 +135,9 @@ const WelcomeBanner = ({
             <p className="mt-1 text-2xl font-bold text-slate-900">
               {format(new Date(data.todayDate), "dd MMM yyyy")}
             </p>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 };
