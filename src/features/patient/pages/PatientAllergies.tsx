@@ -43,6 +43,7 @@ import {
   updatePatientAllergy,
 } from "@/features/patient/services/patientAllergiesApi";
 import { useAuthStore } from "@/store/authStore";
+import { normalizeEhrId } from "@/features/patient/components/patientProfileUtils";
 
 import type {
   AllergyFormErrors,
@@ -123,9 +124,6 @@ const typeIconMap: Record<AllergyType, typeof Apple> = {
   OTHER: CircleAlert,
 };
 
-const getPatientId = (
-  ehrId: string | undefined
-) => ehrId || "PT-20481";
 
 const validateForm = (
   values: AllergyFormValues
@@ -448,7 +446,7 @@ const AllergySkeleton = () => (
 
 const PatientAllergies = () => {
   const user = useAuthStore((state) => state.user);
-  const patientId = getPatientId(user?.ehrId);
+  const patientId = normalizeEhrId(user?.ehrId);
 
   const [allergies, setAllergies] = useState<
     PatientAllergy[]

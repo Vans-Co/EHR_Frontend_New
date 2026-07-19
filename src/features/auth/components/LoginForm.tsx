@@ -58,12 +58,15 @@ const LoginForm = () => {
         response.loginResponse.userResponseDTO;
 
       const accessToken =
-        response.tokenResponse.accessToken;
+        response.tokenResponse.generateAccessToken;
 
       const refreshToken =
-        response.tokenResponse.refreshToken;
+        response.tokenResponse.generateRefreshToken;
       console.log("here?")
 
+      console.log("[DEBUG] Full tokenResponse:", JSON.stringify(response.tokenResponse, null, 2));
+      console.log("[DEBUG] accessToken value:", accessToken);
+      console.log("[DEBUG] Full response keys:", Object.keys(response));
       console.log(response)
       login(
         user,
@@ -119,11 +122,10 @@ const LoginForm = () => {
             onClick={() =>
               setRole("PATIENT")
             }
-            className={`rounded-2xl border p-4 transition ${
-              role === "PATIENT"
-                ? "border-primary bg-primary text-white"
-                : "bg-white hover:bg-slate-50"
-            }`}
+            className={`rounded-2xl border p-4 transition ${role === "PATIENT"
+              ? "border-primary bg-primary text-white"
+              : "bg-white hover:bg-slate-50"
+              }`}
           >
             <User className="mx-auto mb-2" />
 
@@ -140,11 +142,10 @@ const LoginForm = () => {
             onClick={() =>
               setRole("DOCTOR")
             }
-            className={`rounded-2xl border p-4 transition ${
-              role === "DOCTOR"
-                ? "border-primary bg-primary text-white"
-                : "bg-white hover:bg-slate-50"
-            }`}
+            className={`rounded-2xl border p-4 transition ${role === "DOCTOR"
+              ? "border-primary bg-primary text-white"
+              : "bg-white hover:bg-slate-50"
+              }`}
           >
             <Stethoscope className="mx-auto mb-2" />
 
@@ -161,11 +162,10 @@ const LoginForm = () => {
             onClick={() =>
               setRole("ADMIN")
             }
-            className={`rounded-2xl border p-4 transition ${
-              role === "ADMIN"
-                ? "border-primary bg-primary text-white"
-                : "bg-white hover:bg-slate-50"
-            }`}
+            className={`rounded-2xl border p-4 transition ${role === "ADMIN"
+              ? "border-primary bg-primary text-white"
+              : "bg-white hover:bg-slate-50"
+              }`}
           >
             <ShieldCheck className="mx-auto mb-2" />
 

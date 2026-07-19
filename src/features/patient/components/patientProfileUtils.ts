@@ -22,15 +22,29 @@ export const maritalStatusOptions = [
 
 export const bloodGroupOptions = [
   { label: "Select Blood Group", value: "" },
-  { label: "A+", value: "A+" },
-  { label: "A-", value: "A-" },
-  { label: "B+", value: "B+" },
-  { label: "B-", value: "B-" },
-  { label: "AB+", value: "AB+" },
-  { label: "AB-", value: "AB-" },
-  { label: "O+", value: "O+" },
-  { label: "O-", value: "O-" },
+  { label: "A+", value: "A_POSITIVE" },
+  { label: "A-", value: "A_NEGATIVE" },
+  { label: "B+", value: "B_POSITIVE" },
+  { label: "B-", value: "B_NEGATIVE" },
+  { label: "AB+", value: "AB_POSITIVE" },
+  { label: "AB-", value: "AB_NEGATIVE" },
+  { label: "O+", value: "O_POSITIVE" },
+  { label: "O-", value: "O_NEGATIVE" },
 ];
+
+const bloodGroupDisplayMap: Record<string, string> = {
+  A_POSITIVE: "A+",
+  A_NEGATIVE: "A-",
+  B_POSITIVE: "B+",
+  B_NEGATIVE: "B-",
+  AB_POSITIVE: "AB+",
+  AB_NEGATIVE: "AB-",
+  O_POSITIVE: "O+",
+  O_NEGATIVE: "O-",
+};
+
+export const formatBloodGroup = (value: string) =>
+  bloodGroupDisplayMap[value] ?? value;
 
 export const formatProfileDate = (
   value: string
@@ -58,7 +72,10 @@ export const getProfileInitials = (
 
 export const normalizeEhrId = (
   ehrId: string | number | null | undefined
-) => String(ehrId ?? "").trim().toUpperCase();
+) => {
+  const id = String(ehrId ?? "").trim().toLowerCase();
+  return id.charAt(0).toUpperCase() + id.slice(1);
+};
 
 export const mapProfileToFormValues = (
   profile: PatientProfile
