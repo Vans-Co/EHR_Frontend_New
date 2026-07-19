@@ -56,6 +56,15 @@ const LoginForm = () => {
       const user =
         response.loginResponse.userResponseDTO;
 
+      // The selected role tab must match the account's actual role, so a
+      // patient account cannot sign in through the Doctor/Admin tab and vice versa.
+      if (user.role !== role) {
+        setError(
+          `This account is not registered as a ${role.toLowerCase()}. Please select the correct role.`
+        );
+        return;
+      }
+
       const accessToken =
         response.tokenResponse.accessToken;
 
