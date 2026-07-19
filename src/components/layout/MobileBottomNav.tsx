@@ -1,37 +1,35 @@
 import { NavLink } from "react-router-dom";
 
-import {
-  sidebarItems,
-} from "@/components/layout/config/sidebarItems";
-
+import { sidebarItems } from "@/components/layout/config/sidebarItems";
 import { useAuthStore } from "@/store/authStore";
 
-const MobileBottomNav = () => {
+interface MobileBottomNavProps {
+  hidden?: boolean;
+}
 
+const MobileBottomNav = ({
+  hidden = false,
+}: MobileBottomNavProps) => {
   const role =
-    useAuthStore(
-      (state) => state.role
-    ) ?? "PATIENT";
+    useAuthStore((state) => state.role) ??
+    "PATIENT";
 
-  /*
-    Show only the first 5 items.
+  if (hidden) return null;
 
-    Example
+  const items = sidebarItems[role].slice(0, 5);
 
-    Patient
-
-    Dashboard
-    Appointments
-    Medical Records
-    Billing
-    Profile
-  */
-
-  const items =
-    sidebarItems[role].slice(0, 5);
+  const mobileLabels: Record<string, string> = {
+    Dashboard: "Home",
+    Appointments: "Visits",
+    "Medical Records": "Records",
+    Prescriptions: "Meds",
+    Billing: "Bills",
+    Insurance: "Cover",
+    Profile: "Profile",
+    Settings: "Settings",
+  };
 
   return (
-
     <nav
       className="
         fixed
@@ -39,99 +37,76 @@ const MobileBottomNav = () => {
         left-0
         right-0
         z-40
-        border-t
-        border-outline-variant
-        bg-background/95
-        backdrop-blur-lg
         lg:hidden
+        border-t
+        border-slate-200
+        bg-white/95
+        backdrop-blur-xl
+        shadow-[0_-8px_24px_rgba(0,0,0,.08)]
+        rounded-t-3xl
+        pb-[env(safe-area-inset-bottom)]
       "
     >
+      <div className="grid grid-cols-5 px-2 py-2">
 
-      <div
-        className="
-          grid
-          grid-cols-5
-        "
-      >
-                {items.map((item) => {
-
+        {items.map((item) => {
           const Icon = item.icon;
 
           return (
-
             <NavLink
               key={item.title}
               to={item.path}
-              className={({ isActive }) =>
-                `
-                  flex
-                  flex-col
-                  items-center
-                  justify-center
-                  gap-1
-                  py-3
-                  transition-all
-                  duration-200
-                  ${
-                    isActive
-                      ? "text-primary"
-                      : "text-on-surface-variant hover:text-primary"
-                  }
-                `
-              }
             >
-
               {({ isActive }) => (
+                <div
+                  className={`
+                    flex
+                    flex-col
+                    items-center
+                    justify-center
+                    gap-1
+                    rounded-2xl
+                    px-2
+                    py-2
+                    transition-all
+                    duration-300
 
-                <>
-
-                  <Icon
-                    size={22}
-                    className={
+                    ${
                       isActive
-                        ? "text-primary"
-                        : "text-on-surface-variant"
+                        ? "bg-primary/10 text-primary"
+                        : "text-slate-500 hover:bg-slate-100"
                     }
+                  `}
+                >
+                  <Icon
+                    size={20}
+                    strokeWidth={2.2}
                   />
 
                   <span
-                    className="
-                      text-[11px]
+                    className={`
+                      text-[10px]
                       font-medium
-                    "
+                      leading-none
+
+                      ${
+                        isActive
+                          ? "text-primary"
+                          : "text-slate-600"
+                      }
+                    `}
                   >
-                    {item.title}
+                    {mobileLabels[item.title] ??
+                      item.title}
                   </span>
-
-                </>
-
+                </div>
               )}
-
             </NavLink>
-
           );
-
         })}
-              </div>
-
+      </div>
     </nav>
-
   );
 };
 
 export default MobileBottomNav;
-
-/*
-==========================================================
-Future Improvements
-
-✓ Notification Badge
-✓ Floating Center Action Button
-✓ Haptic Feedback (PWA)
-✓ Active Tab Animation
-✓ Role-based Bottom Navigation
-✓ Mobile Short Labels
-✓ Dark Mode Optimization
-
-==========================================================
-*/

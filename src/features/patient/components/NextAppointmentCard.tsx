@@ -6,21 +6,81 @@ import {
   MapPin,
   Stethoscope,
 } from "lucide-react";
-import { format, isTomorrow } from "date-fns";
-import type { NextAppointment } from "@/features/patient/types/dashboard.types";
+
+import {
+  format,
+  isTomorrow,
+} from "date-fns";
+
+import type {
+  Appointment,
+} from "@/features/patient/types/appointment.types";
 
 interface NextAppointmentCardProps {
-  data: NextAppointment;
+  data: Appointment | null;
+
+  onViewDetails?: (id: string) => void;
 }
 
 const NextAppointmentCard = ({
   data,
+  onViewDetails,
 }: NextAppointmentCardProps) => {
+  if (!data) {
+    return (
+      <section
+        className="
+          rounded-[28px]
+          border
+          border-cyan-100/70
+          bg-gradient-to-br
+          from-[#FCFEFF]
+          via-[#F2FCFE]
+          to-[#F5F4FF]
+          p-10
+          text-center
+          shadow-[0_12px_35px_rgba(0,175,198,0.10)]
+        "
+      >
+        <div
+          className="
+            mx-auto
+            flex
+            h-20
+            w-20
+            items-center
+            justify-center
+            rounded-3xl
+            bg-cyan-100
+          "
+        >
+          <CalendarDays
+            className="text-cyan-700"
+            size={34}
+          />
+        </div>
+
+        <h2 className="mt-6 text-2xl font-bold text-slate-900">
+          No Upcoming Appointment
+        </h2>
+
+        <p className="mt-3 text-slate-500">
+          You don't have any scheduled appointments.
+        </p>
+      </section>
+    );
+  }
+
   const appointmentDate = new Date(data.date);
 
-  const appointmentLabel = isTomorrow(appointmentDate)
+  const appointmentLabel = isTomorrow(
+    appointmentDate
+  )
     ? "Tomorrow"
-    : format(appointmentDate, "dd MMM yyyy");
+    : format(
+        appointmentDate,
+        "dd MMM yyyy"
+      );
 
   return (
     <section
@@ -37,7 +97,6 @@ const NextAppointmentCard = ({
         to-[#F5F4FF]
         p-6
         shadow-[0_12px_35px_rgba(0,175,198,0.10)]
-        backdrop-blur-xl
         transition-all
         duration-300
         hover:-translate-y-1
@@ -72,13 +131,16 @@ const NextAppointmentCard = ({
                 shadow-lg
               "
             >
-              <CalendarDays className="h-7 w-7 text-white" />
+              <CalendarDays
+                className="text-white"
+                size={28}
+              />
             </div>
 
             <div>
 
               <p className="text-sm font-medium tracking-wide text-slate-500">
-                Upcoming Appointment
+                Next Appointment
               </p>
 
               <h2 className="mt-1 text-3xl font-bold text-slate-900">
@@ -86,7 +148,11 @@ const NextAppointmentCard = ({
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                {format(appointmentDate, "EEEE")} • {data.time}
+                {format(
+                  appointmentDate,
+                  "EEEE"
+                )}{" "}
+                • {data.time}
               </p>
 
             </div>
@@ -110,8 +176,9 @@ const NextAppointmentCard = ({
               text-cyan-700
             "
           >
-            <CheckCircle2 className="h-4 w-4" />
-            Confirmed
+            <CheckCircle2 size={16} />
+
+            {data.status}
           </span>
 
         </div>
@@ -120,14 +187,17 @@ const NextAppointmentCard = ({
 
         <div className="my-6 h-px bg-gradient-to-r from-transparent via-cyan-100 to-transparent" />
 
-        {/* Appointment Details */}
+        {/* Details */}
 
         <div className="grid gap-4 md:grid-cols-3">
 
-          <div className="flex items-center gap-3 rounded-2xl bg-white/60 p-4 backdrop-blur">
+          <div className="flex items-center gap-3 rounded-2xl bg-white/60 p-4">
 
             <div className="rounded-xl bg-cyan-100 p-3">
-              <Clock3 className="h-5 w-5 text-cyan-700" />
+              <Clock3
+                className="text-cyan-700"
+                size={20}
+              />
             </div>
 
             <div>
@@ -144,10 +214,13 @@ const NextAppointmentCard = ({
 
           </div>
 
-          <div className="flex items-center gap-3 rounded-2xl bg-white/60 p-4 backdrop-blur">
+          <div className="flex items-center gap-3 rounded-2xl bg-white/60 p-4">
 
             <div className="rounded-xl bg-sky-100 p-3">
-              <Stethoscope className="h-5 w-5 text-sky-700" />
+              <Stethoscope
+                className="text-sky-700"
+                size={20}
+              />
             </div>
 
             <div>
@@ -168,16 +241,19 @@ const NextAppointmentCard = ({
 
           </div>
 
-          <div className="flex items-center gap-3 rounded-2xl bg-white/60 p-4 backdrop-blur">
+          <div className="flex items-center gap-3 rounded-2xl bg-white/60 p-4">
 
             <div className="rounded-xl bg-violet-100 p-3">
-              <MapPin className="h-5 w-5 text-violet-600" />
+              <MapPin
+                className="text-violet-600"
+                size={20}
+              />
             </div>
 
             <div>
 
               <p className="text-xs uppercase tracking-wider text-slate-400">
-                Location
+                Hospital
               </p>
 
               <p className="font-semibold text-slate-900">
@@ -199,8 +275,10 @@ const NextAppointmentCard = ({
           </p>
 
           <button
+            onClick={() =>
+              onViewDetails?.(data.id)
+            }
             className="
-              group/button
               inline-flex
               items-center
               gap-2
@@ -219,7 +297,10 @@ const NextAppointmentCard = ({
           >
             View Details
 
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/button:translate-x-1" />
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-300 hover:translate-x-1"
+            />
           </button>
 
         </div>

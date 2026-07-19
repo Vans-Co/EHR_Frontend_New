@@ -10,10 +10,10 @@ interface AppLogoProps {
 }
 
 const logoSizes = {
-  xs: "h-7",
-  sm: "h-9",
-  md: "h-12",
-  lg: "h-16",
+  xs: "h-9",
+  sm: "h-11",
+  md: "h-14",
+  lg: "h-18",
   xl: "h-20",
 };
 

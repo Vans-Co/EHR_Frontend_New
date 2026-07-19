@@ -1,139 +1,309 @@
-import { CalendarPlus, FileText, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  CalendarPlus,
+  FileText,
+  ArrowRight,
+} from "lucide-react";
 import { format } from "date-fns";
+
 import { useAuthStore } from "@/store/authStore";
+
 import type { WelcomeData } from "@/features/patient/types/dashboard.types";
 
 interface WelcomeBannerProps {
   data: WelcomeData;
+
+  onBookAppointment?: () => void;
+
+  onViewRecords?: () => void;
 }
 
-const WelcomeBanner = ({ data }: WelcomeBannerProps) => {
-  const user = useAuthStore((state) => state.user);
+const WelcomeBanner = ({
+  onBookAppointment,
+  onViewRecords,
+}: WelcomeBannerProps) => {
+  const user = useAuthStore(
+    (state) => state.user
+  );
 
-  const hour = new Date().getHours();
+  const [today, setToday] =
+    useState(new Date());
 
-  const greeting =
-    hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setToday(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section
       className="
         relative
         overflow-hidden
-        rounded-3xl
+        rounded-[32px]
         border
-        border-sky-100
-        bg-gradient-to-r
+        border-white/30
+        bg-gradient-to-br
         from-sky-50
         via-white
         to-cyan-50
-        p-6
-        shadow-sm
+        p-8
+        shadow-[0_20px_60px_rgba(15,23,42,0.08)]
       "
     >
-      {/* Background Decoration */}
+      {/* Background Glow */}
 
-      <div className="absolute -top-16 right-0 h-48 w-48 rounded-full bg-sky-100/50 blur-3xl" />
+      <div
+        className="
+          absolute
+          -top-24
+          -right-16
+          h-72
+          w-72
+          rounded-full
+          bg-cyan-300/20
+          blur-3xl
+        "
+      />
 
-      <div className="absolute -bottom-20 left-10 h-56 w-56 rounded-full bg-cyan-100/40 blur-3xl" />
+      <div
+        className="
+          absolute
+          -bottom-24
+          left-10
+          h-80
+          w-80
+          rounded-full
+          bg-sky-300/20
+          blur-3xl
+        "
+      />
 
-      <div className="relative z-10">
-        {/* Top */}
+      <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
 
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          {/* Left */}
+        {/* Left */}
 
-          <div>
-            <p className="text-sm font-medium uppercase tracking-wider text-sky-600">
-              Dashboard
-            </p>
+        <div className="max-w-3xl">
 
-            <h1 className="mt-2 text-3xl font-bold text-slate-900">
-              {greeting},{" "}
-              <span className="text-sky-700">
-                {user?.firstName ?? "Patient"} 👋
-              </span>
-            </h1>
+          <div
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-sky-200
+              bg-white/80
+              px-4
+              py-2
+              text-xs
+              font-semibold
+              uppercase
+              tracking-[0.18em]
+              text-sky-700
+              backdrop-blur-xl
+            "
+          >
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
 
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-              Welcome back! Here's your healthcare overview for today. Stay on
-              top of appointments, reports and prescriptions.
-            </p>
-
-            {/* Actions */}
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <button
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-full
-                  bg-primary
-                  px-5
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-white
-                  shadow-md
-                  transition-all
-                  duration-300
-                  hover:-translate-y-0.5
-                  hover:shadow-lg
-                "
-              >
-                <CalendarPlus size={18} />
-                Book Appointment
-                <ArrowRight
-                  size={16}
-                  className="transition group-hover:translate-x-1"
-                />
-              </button>
-
-              <button
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-full
-                  border
-                  border-sky-200
-                  bg-white/80
-                  px-5
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-sky-700
-                  shadow-sm
-                  backdrop-blur
-                  transition-all
-                  duration-300
-                  hover:-translate-y-0.5
-                  hover:border-sky-400
-                  hover:shadow-md
-                "
-              >
-                <FileText size={18} />
-                View Records
-                <ArrowRight
-                  size={16}
-                  className="transition group-hover:translate-x-1"
-                />
-              </button>
-            </div>
+            Patient Dashboard
           </div>
 
-          {/* Right */}
+          <h1
+            className="
+              mt-6
+              text-4xl
+              font-bold
+              tracking-tight
+              text-slate-900
+            "
+          >
+            {user?.firstName ?? "Patient"}'s
 
-          <div className="lg:text-right">
-            <p className="text-sm font-medium text-slate-500">
-              {format(new Date(data.todayDate), "EEEE")}
+            <span
+              className="
+                bg-gradient-to-r
+                from-sky-600
+                via-cyan-500
+                to-violet-500
+                bg-clip-text
+                text-transparent
+              "
+            >
+              {" "}
+              Health Dashboard
+            </span>
+
+          </h1>
+
+          <p
+            className="
+              mt-5
+              max-w-2xl
+              text-[15px]
+              leading-8
+              text-slate-600
+            "
+          >
+            Manage appointments, access medical records,
+            review prescriptions and stay updated with your
+            healthcare journey from one personalized dashboard.
+          </p>
+
+          {/* Buttons */}
+
+          <div className="mt-8 flex flex-wrap gap-4">
+
+            <button
+              onClick={onBookAppointment}
+              className="
+                group
+                inline-flex
+                items-center
+                gap-2
+                rounded-2xl
+                bg-gradient-to-r
+                from-cyan-500
+                via-sky-500
+                to-violet-500
+                px-6
+                py-3
+                text-sm
+                font-semibold
+                text-white
+                shadow-lg
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:shadow-xl
+              "
+            >
+              <CalendarPlus size={18} />
+
+              Schedule Appointment
+
+              <ArrowRight
+                size={16}
+                className="
+                  transition
+                  group-hover:translate-x-1
+                "
+              />
+            </button>
+
+            <button
+              onClick={onViewRecords}
+              className="
+                group
+                inline-flex
+                items-center
+                gap-2
+                rounded-2xl
+                border
+                border-sky-200
+                bg-white/80
+                px-6
+                py-3
+                text-sm
+                font-semibold
+                text-sky-700
+                shadow-md
+                backdrop-blur-xl
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:border-sky-400
+                hover:shadow-lg
+              "
+            >
+              <FileText size={18} />
+
+              Medical Records
+
+              <ArrowRight
+                size={16}
+                className="
+                  transition
+                  group-hover:translate-x-1
+                "
+              />
+            </button>
+
+          </div>
+
+        </div>
+
+        {/* Right Card */}
+
+        <div
+          className="
+            rounded-[30px]
+            border
+            border-white/40
+            bg-white/80
+            px-8
+            py-8
+            text-center
+            shadow-xl
+            backdrop-blur-xl
+            lg:min-w-[250px]
+          "
+        >
+
+          <p
+            className="
+              text-xs
+              font-semibold
+              uppercase
+              tracking-[0.2em]
+              text-sky-600
+            "
+          >
+            Today
+          </p>
+
+          <h2
+            className="
+              mt-3
+              text-6xl
+              font-bold
+              text-slate-900
+            "
+          >
+            {format(today, "dd")}
+          </h2>
+
+          <p className="mt-2 text-base font-semibold text-slate-600">
+            {format(today, "MMMM yyyy")}
+          </p>
+
+          <div
+            className="
+              mt-5
+              rounded-full
+              bg-gradient-to-r
+              from-sky-100
+              to-cyan-100
+              px-4
+              py-2
+              text-sm
+              font-semibold
+              text-sky-700
+            "
+          >
+            {format(today, "EEEE")}
+          </div>
+
+          <div className="mt-6">
+
+            <p className="text-xs uppercase tracking-wider text-slate-500">
+              Current Time
             </p>
 
-            <p className="mt-1 text-2xl font-bold text-slate-900">
-              {format(new Date(data.todayDate), "dd MMM yyyy")}
+            <p className="mt-2 text-3xl font-bold text-sky-700">
+              {format(today, "hh:mm:ss a")}
             </p>
           </div>
         </div>

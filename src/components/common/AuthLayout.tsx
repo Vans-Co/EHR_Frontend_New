@@ -34,7 +34,9 @@ const AuthLayout = ({
 
           <div>
 
-            <AppLogo />
+            <div className="inline-flex rounded-2xl bg-white px-5 py-3 shadow-xl">
+             <AppLogo />
+             </div>
 
             <div className="mt-24">
 

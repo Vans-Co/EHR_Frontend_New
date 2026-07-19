@@ -134,7 +134,7 @@ const HealthProfileCard = ({
               <div className="rounded-xl bg-white/10 px-3 py-2 text-right">
 
                 <p className="text-xs text-cyan-100">
-                  Relation
+                  {data.emergencyContact.name}
                 </p>
 
                 <p className="font-medium text-white">
