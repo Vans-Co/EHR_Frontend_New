@@ -1,7 +1,5 @@
-import type {
-  KPIData,
-  NextAppointment,
-} from "@/features/patient/types/dashboard.types";
+import type { KPIData } from "@/features/patient/types/dashboard.types";
+import type { Appointment } from "@/features/patient/types/appointment.types";
 
 import NextAppointmentCard from "./NextAppointmentCard";
 import ReportsCard from "./ReportsCard";
@@ -9,13 +7,17 @@ import PrescriptionCard from "./PrescriptionCard";
 import WellnessScore from "./WellnessScore";
 
 interface KPISectionProps {
-  appointment: NextAppointment;
+  appointment: Appointment | null;
+
   data: KPIData;
+
+  onViewAppointment?: (id: string) => void;
 }
 
 const KPISection = ({
   appointment,
   data,
+  onViewAppointment,
 }: KPISectionProps) => {
   return (
     <section className="space-y-6">
@@ -27,6 +29,7 @@ const KPISection = ({
 
           <NextAppointmentCard
             data={appointment}
+            onViewDetails={onViewAppointment}
           />
 
         </div>
@@ -43,8 +46,6 @@ const KPISection = ({
         <PrescriptionCard
           data={data.prescriptions}
         />
-
-        {/* Static Component (No API Required) */}
 
         <WellnessScore />
 

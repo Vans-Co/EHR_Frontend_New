@@ -106,7 +106,7 @@ const DashboardLayout = () => {
 
       {/* Mobile Bottom Navigation */}
 
-      <MobileBottomNav />
+      <MobileBottomNav hidden={isDrawerOpen}/>
     </div>
   );
 };

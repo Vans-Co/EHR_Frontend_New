@@ -17,39 +17,49 @@ const MobileDrawer = ({
   open,
   onClose,
 }: MobileDrawerProps) => {
+  // =============================
+  // Hooks (ALWAYS at top)
+  // =============================
+
   const navigate = useNavigate();
 
-  const user = useAuthStore(
-    (state) => state.user
-  );
+  const user = useAuthStore((state) => state.user);
+
+  const role =
+    useAuthStore((state) => state.role) ?? "PATIENT";
 
   const logout = useAuthStore(
     (state) => state.logout
   );
 
-  const role =
-    useAuthStore(
-      (state) => state.role
-    ) ?? "PATIENT";
+  const items = sidebarItems[role];
 
-  const items =
-    sidebarItems[role];
-
-  if (!open) return null;
+  // =============================
+  // Logout
+  // =============================
 
   const handleLogout = () => {
     logout();
+
     onClose();
+
     navigate("/login", {
       replace: true,
     });
   };
-  return (
 
+  // =============================
+  // IMPORTANT
+  // Return AFTER hooks
+  // =============================
+
+  if (!open) {
+    return null;
+  }
+
+  return (
     <>
-      {/* ============================= */}
       {/* Backdrop */}
-      {/* ============================= */}
 
       <div
         onClick={onClose}
@@ -63,9 +73,7 @@ const MobileDrawer = ({
         "
       />
 
-      {/* ============================= */}
       {/* Drawer */}
-      {/* ============================= */}
 
       <aside
         className="
@@ -84,7 +92,6 @@ const MobileDrawer = ({
           lg:hidden
         "
       >
-
         {/* Header */}
 
         <div
@@ -97,7 +104,6 @@ const MobileDrawer = ({
             p-5
           "
         >
-
           <AppLogo size="sm" />
 
           <button
@@ -110,18 +116,13 @@ const MobileDrawer = ({
               hover:bg-surface-container
             "
           >
-
             <X size={22} />
-
           </button>
-
         </div>
-                {/* ============================= */}
-        {/* User Info */}
-        {/* ============================= */}
+
+        {/* User */}
 
         {user && (
-
           <div
             className="
               border-b
@@ -129,11 +130,7 @@ const MobileDrawer = ({
               p-5
             "
           >
-
             <div className="flex items-center gap-4">
-
-              {/* Avatar */}
-
               <div
                 className="
                   flex
@@ -148,31 +145,16 @@ const MobileDrawer = ({
                   text-white
                 "
               >
-
                 {user.firstName.charAt(0)}
                 {user.lastName.charAt(0)}
-
               </div>
 
               <div className="min-w-0 flex-1">
-
-                <h3
-                  className="
-                    truncate
-                    font-semibold
-                    text-on-background
-                  "
-                >
+                <h3 className="truncate font-semibold text-on-background">
                   {user.firstName} {user.lastName}
                 </h3>
 
-                <p
-                  className="
-                    truncate
-                    text-sm
-                    text-on-surface-variant
-                  "
-                >
+                <p className="truncate text-sm text-on-surface-variant">
                   {user.email}
                 </p>
 
@@ -191,29 +173,19 @@ const MobileDrawer = ({
                 >
                   {role}
                 </span>
-
               </div>
-
             </div>
-
           </div>
-
         )}
 
-        {/* ============================= */}
         {/* Navigation */}
-        {/* ============================= */}
 
         <nav className="flex-1 overflow-y-auto p-4">
-
           <div className="space-y-2">
-
             {items.map((item) => {
-
               const Icon = item.icon;
 
               return (
-
                 <Link
                   key={item.title}
                   to={item.path}
@@ -232,30 +204,19 @@ const MobileDrawer = ({
                     hover:bg-surface-container
                   "
                 >
-
                   <Icon
                     size={20}
                     className="text-primary"
                   />
 
-                  <span>
-
-                    {item.title}
-
-                  </span>
-
+                  <span>{item.title}</span>
                 </Link>
-
               );
-
             })}
-
           </div>
-
         </nav>
-                {/* ============================= */}
+
         {/* Footer */}
-        {/* ============================= */}
 
         <div
           className="
@@ -264,13 +225,10 @@ const MobileDrawer = ({
             p-4
           "
         >
-
           {commonSidebarItems.map((item) => {
-
             const Icon = item.icon;
 
             return (
-
               <button
                 key={item.title}
                 type="button"
@@ -287,50 +245,23 @@ const MobileDrawer = ({
                   transition-all
                   duration-200
                   hover:bg-red-50
-                  dark:hover:bg-red-950/20
                 "
               >
-
                 <Icon
                   size={20}
                   className="text-red-500"
                 />
 
-                <span
-                  className="
-                    font-medium
-                    text-red-500
-                  "
-                >
+                <span className="font-medium text-red-500">
                   {item.title}
                 </span>
-
               </button>
-
             );
-
           })}
-
         </div>
-              </aside>
+      </aside>
     </>
   );
 };
 
 export default MobileDrawer;
-
-/*
-======================================================
-
-Future Improvements
-
-✓ Active Navigation Highlight
-✓ Slide Animation
-✓ Swipe to Close
-✓ Notification Badge
-✓ Theme Toggle
-✓ User Avatar Image
-✓ Search Navigation
-
-======================================================
-*/

@@ -15,16 +15,26 @@ interface NavbarProps {
   onMenuClick?: () => void;
 }
 
-const Navbar = ({ onMenuClick }: NavbarProps) => {
-  const authUser = useAuthStore((state) => state.user);
+const Navbar = ({
+  onMenuClick,
+}: NavbarProps) => {
 
-  const user = authUser ?? {
-    firstName: "Patient",
-    lastName: "",
-    email: "patient@demo.com",
-    role: "PATIENT",
-  };
-  const [showNotifications, setShowNotifications] = useState(false);
+  const authUser = useAuthStore(
+    (state) => state.user
+  );
+
+  const user =
+    authUser ?? {
+      firstName: "Patient",
+      lastName: "",
+      email: "patient@demo.com",
+      role: "PATIENT",
+    };
+
+  const [
+    showNotifications,
+    setShowNotifications,
+  ] = useState(false);
 
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -55,10 +65,13 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
   }, []);
 
   const greeting = (() => {
+
     const hour = new Date().getHours();
 
     if (hour < 12) return "Good Morning";
+    if (hour < 12) return "Good Morning";
 
+    if (hour < 17) return "Good Afternoon";
     if (hour < 17) return "Good Afternoon";
 
     return "Good Evening";
@@ -71,21 +84,25 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
         top-0
         z-40
         flex
-        h-20
+        h-16
+        lg:h-20
         items-center
         justify-between
         border-b
         border-outline-variant
         bg-background/90
-        px-6
+        px-4
+        lg:px-6
         backdrop-blur-xl
       "
     >
+
       {/* ========================= */}
       {/* Left Section */}
       {/* ========================= */}
 
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3 lg:gap-5">
+
         {/* Mobile Menu */}
 
         <button
@@ -93,8 +110,8 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
           onClick={onMenuClick}
           className="
             flex
-            h-11
-            w-11
+            h-10
+            w-10
             items-center
             justify-center
             rounded-xl
@@ -112,13 +129,14 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
           <AppLogo size="xs" clickable />
         </div>
 
-        {/* Greeting */}
+        {/* Desktop Greeting */}
 
-        <div>
+        <div className="hidden lg:block">
+
           <h2 className="text-2xl font-bold text-on-background">
-            {greeting}
-            {user && <> {user.firstName}</>}
-            👋
+
+            {greeting} {user.firstName} 👋
+
           </h2>
 
           <p className="mt-1 text-sm text-on-surface-variant">
@@ -181,24 +199,33 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
       {/* Right Section */}
       {/* ========================= */}
 
-      <div className="flex items-center gap-4">
-        {/* ========================= */}
-        {/* Notifications */}
-        {/* ========================= */}
+      <div className="flex items-center gap-2 lg:gap-4">
 
-        <div className="relative" ref={notificationRef}>
+        {/* Notifications */}
+
+        <div
+          className="relative"
+          ref={notificationRef}
+        >
+
           <button
             type="button"
             onClick={() => {
-              setShowNotifications(!showNotifications);
+
+              setShowNotifications(
+                !showNotifications
+              );
 
               setShowUserMenu(false);
+
             }}
             className="
               relative
               flex
-              h-11
-              w-11
+              h-10
+              w-10
+              lg:h-11
+              lg:w-11
               items-center
               justify-center
               rounded-xl
@@ -207,25 +234,30 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
               hover:bg-primary/10
             "
           >
-            <Bell size={22} className="text-on-background" />
 
-            {/* Notification Badge */}
+            <Bell
+              size={21}
+              className="text-on-background"
+            />
 
             <span
               className="
                 absolute
                 right-2
                 top-2
-                flex
                 h-2.5
                 w-2.5
                 rounded-full
                 bg-red-500
               "
             />
+
           </button>
 
-          {showNotifications && <NotificationDropdown />}
+          {showNotifications && (
+            <NotificationDropdown />
+          )}
+
         </div>
 
         {/* Divider */}
@@ -240,17 +272,25 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
           "
         />
 
-        {/* ========================= */}
-        {/* User Profile */}
-        {/* ========================= */}
+        {/* User */}
 
-        <div className="relative" ref={userMenuRef}>
+        <div
+          className="relative"
+          ref={userMenuRef}
+        >
+
           <button
             type="button"
             onClick={() => {
-              setShowUserMenu(!showUserMenu);
 
-              setShowNotifications(false);
+              setShowUserMenu(
+                !showUserMenu
+              );
+
+              setShowNotifications(
+                false
+              );
+
             }}
             className="
               flex
@@ -264,13 +304,14 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
               hover:bg-primary/10
             "
           >
-            {/* Avatar */}
 
             <div
               className="
                 flex
-                h-11
-                w-11
+                h-10
+                w-10
+                lg:h-11
+                lg:w-11
                 items-center
                 justify-center
                 rounded-full
@@ -281,30 +322,41 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                 shadow-md
               "
             >
-              {user?.firstName.charAt(0)}
-              {user?.lastName.charAt(0)}
+              {user.firstName.charAt(0)}
+              {user.lastName.charAt(0)}
             </div>
-
-            {/* User Info */}
 
             <div className="hidden text-left md:block">
               <p className="font-semibold text-on-background">
-                {user?.firstName} {user?.lastName}
+
+                {user.firstName} {user.lastName}
+
               </p>
 
-              <p className="text-xs text-on-surface-variant">{user?.role}</p>
+              <p className="text-xs text-on-surface-variant">
+
+                {user.role}
+
+              </p>
+
             </div>
 
             <ChevronDown
               size={18}
               className="hidden text-on-surface-variant md:block"
             />
+
           </button>
 
-          {showUserMenu && <UserMenu />}
+          {showUserMenu && (
+            <UserMenu />
+          )}
+
         </div>
       </div>
+
     </header>
+
   );
 };
 

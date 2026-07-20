@@ -23,6 +23,7 @@ import {
   ReadOnlyField,
 } from "@/features/patient/components/PatientProfileShared";
 import {
+  formatBloodGroup,
   formatProfileDate,
   normalizeEhrId,
 } from "@/features/patient/components/patientProfileUtils";
@@ -158,7 +159,7 @@ const PatientProfile = () => {
               label="Marital Status"
               value={profile.maritalStatus}
             />
-            <ReadOnlyField label="Blood Group" value={profile.bloodGroup} />
+            <ReadOnlyField label="Blood Group" value={formatBloodGroup(profile.bloodGroup)} />
           </div>
         </ProfileSectionCard>
 
@@ -225,7 +226,7 @@ const PatientProfile = () => {
             icon={<MedicalInfoIcon />}
           >
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              <ReadOnlyField label="Blood Group" value={profile.bloodGroup} />
+              <ReadOnlyField label="Blood Group" value={formatBloodGroup(profile.bloodGroup)} />
               <ReadOnlyField label="EHR ID" value={profile.ehrId} />
             </div>
           </ProfileSectionCard>

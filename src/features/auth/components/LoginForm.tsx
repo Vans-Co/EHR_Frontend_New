@@ -124,11 +124,10 @@ const LoginForm = () => {
             onClick={() =>
               setRole("PATIENT")
             }
-            className={`rounded-2xl border p-4 transition ${
-              role === "PATIENT"
-                ? "border-primary bg-primary text-white"
-                : "bg-white hover:bg-slate-50"
-            }`}
+            className={`rounded-2xl border p-4 transition ${role === "PATIENT"
+              ? "border-primary bg-primary text-white"
+              : "bg-white hover:bg-slate-50"
+              }`}
           >
             <User className="mx-auto mb-2" />
 
@@ -145,11 +144,10 @@ const LoginForm = () => {
             onClick={() =>
               setRole("DOCTOR")
             }
-            className={`rounded-2xl border p-4 transition ${
-              role === "DOCTOR"
-                ? "border-primary bg-primary text-white"
-                : "bg-white hover:bg-slate-50"
-            }`}
+            className={`rounded-2xl border p-4 transition ${role === "DOCTOR"
+              ? "border-primary bg-primary text-white"
+              : "bg-white hover:bg-slate-50"
+              }`}
           >
             <Stethoscope className="mx-auto mb-2" />
 
@@ -166,11 +164,10 @@ const LoginForm = () => {
             onClick={() =>
               setRole("ADMIN")
             }
-            className={`rounded-2xl border p-4 transition ${
-              role === "ADMIN"
-                ? "border-primary bg-primary text-white"
-                : "bg-white hover:bg-slate-50"
-            }`}
+            className={`rounded-2xl border p-4 transition ${role === "ADMIN"
+              ? "border-primary bg-primary text-white"
+              : "bg-white hover:bg-slate-50"
+              }`}
           >
             <ShieldCheck className="mx-auto mb-2" />
 

@@ -1,50 +1,36 @@
 import api from "@/config/axios";
-import {
-  getFallbackPatientProfile,
-  saveFallbackPatientProfile,
-} from "@/features/patient/mock/patientProfile.mock";
 
 import type {
   PatientProfile,
   UpdatePatientProfileRequest,
 } from "@/features/patient/types/patient.types";
 
-export const getPatientProfile =
-  async (
-    ehrId: string
-  ): Promise<PatientProfile> => {
-    try {
-      const response = await api.get(
-        `/users/${ehrId}`
-      );
+/**
+ * Fetch a patient/user profile by EHR ID.
+ * Calls GET /users/{ehrId} on the backend.
+ */
+export const getPatientProfile = async (
+  ehrId: string
+): Promise<PatientProfile> => {
+  const response = await api.get<PatientProfile>(
+    `/users/${ehrId}`
+  );
 
-      return response.data;
-    } catch (error) {
-      console.warn(
-        "Using fallback patient profile data because the backend request failed.",
-        error
-      );
+  return response.data;
+};
 
-      return getFallbackPatientProfile(ehrId);
-    }
-  };
-
+/**
+ * Update the patient profile by EHR ID.
+ * Calls PUT /users/{ehrId} on the backend.
+ */
 export const updatePatientProfile = async (
+  ehrId: string,
   data: UpdatePatientProfileRequest
 ): Promise<PatientProfile> => {
-  try {
-    const response = await api.put(
-      "/patient/profile",
-      data
-    );
+  const response = await api.put<PatientProfile>(
+    `/users/${ehrId}`,
+    data
+  );
 
-    return response.data;
-  } catch (error) {
-    console.warn(
-      "Saving patient profile to fallback storage because the backend update failed.",
-      error
-    );
-
-    return saveFallbackPatientProfile(data);
-  }
+  return response.data;
 };

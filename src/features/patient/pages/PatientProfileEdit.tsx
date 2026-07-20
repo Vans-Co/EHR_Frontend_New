@@ -235,11 +235,16 @@ const PatientProfileEdit = () => {
     return Object.keys(nextErrors).length === 0;
   };
 
+  const toMmDdYyyy = (isoDate: string) => {
+    const [year, month, day] = isoDate.split("-");
+    return `${month}-${day}-${year}`;
+  };
+
   const buildPayload = (): UpdatePatientProfileRequest => ({
     firstName: formValues?.firstName.trim() ?? "",
     lastName: formValues?.lastName.trim() ?? "",
     phoneNo: Number(formValues?.phoneNo ?? 0),
-    dob: formValues?.dob ?? "",
+    dob: toMmDdYyyy(formValues?.dob ?? ""),
     gender: formValues?.gender ?? "",
     bloodGroup: formValues?.bloodGroup ?? "",
     maritalStatus: formValues?.maritalStatus ?? "",
@@ -267,7 +272,8 @@ const PatientProfileEdit = () => {
       setIsSaving(true);
       setError("");
 
-      const updatedProfile = await updatePatientProfile(buildPayload());
+      const ehrId = normalizeEhrId(authUser?.ehrId);
+      const updatedProfile = await updatePatientProfile(ehrId, buildPayload());
 
       setProfile(updatedProfile);
       setFormValues(mapProfileToFormValues(updatedProfile));
