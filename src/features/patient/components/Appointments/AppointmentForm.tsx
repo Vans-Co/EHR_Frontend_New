@@ -141,15 +141,15 @@ const emptyForm: FormData = {
 const AppointmentForm = ({
   mode,
   appointment,
-  doctors,
   loading = false,
   onSubmit,
   onCancel,
 }: AppointmentFormProps) => {
 
-  // real doctors from the backend when provided, otherwise the sample list
-  const doctorList =
-    doctors && doctors.length ? doctors : doctorOptions;
+  // Same doctor list in every booking form (dashboard + appointments page).
+  // These names are registered in the backend so a booking resolves to a real
+  // doctor id on submit.
+  const doctorList = doctorOptions;
 
   const [form, setForm] =
     useState<FormData>(emptyForm);
