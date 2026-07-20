@@ -24,6 +24,8 @@ interface AppointmentFormProps {
 
   appointment?: Appointment | null;
 
+  doctors?: Doctor[];
+
   loading?: boolean;
 
   onSubmit: (data: FormData) => void;
@@ -62,21 +64,21 @@ appointmentService.getDoctors()
 const doctorOptions: Doctor[] = [
   {
     id: "doctor-1",
-    name: "Dr. Sarah Wilson",
+    name: "Dr. Dhruv sehgal",
     specialization: "Cardiologist",
     hospital: "Apollo Hospital",
     location: "Pune",
   },
   {
     id: "doctor-2",
-    name: "Dr. John Smith",
+    name: "Dr. Prashant Pandey",
     specialization: "Dermatologist",
     hospital: "Ruby Hall Clinic",
     location: "Pune",
   },
   {
     id: "doctor-3",
-    name: "Dr. Emily Brown",
+    name: "Dr. Harsh Tiwari",
     specialization: "Orthopedic",
     hospital: "Jehangir Hospital",
     location: "Pune",
@@ -139,10 +141,15 @@ const emptyForm: FormData = {
 const AppointmentForm = ({
   mode,
   appointment,
+  doctors,
   loading = false,
   onSubmit,
   onCancel,
 }: AppointmentFormProps) => {
+
+  // real doctors from the backend when provided, otherwise the sample list
+  const doctorList =
+    doctors && doctors.length ? doctors : doctorOptions;
 
   const [form, setForm] =
     useState<FormData>(emptyForm);
@@ -216,7 +223,7 @@ const AppointmentForm = ({
     ) {
 
       const doctor =
-        doctorOptions.find(
+        doctorList.find(
           (item) =>
             item.name === value
         );
@@ -445,7 +452,7 @@ const AppointmentForm = ({
 
         <AppointmentFormFields
           form={form}
-          doctors={doctorOptions}
+          doctors={doctorList}
           slots={slotOptions}
           loading={loading}
           onChange={handleChange}
