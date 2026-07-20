@@ -105,8 +105,11 @@ export interface AuthUser {
 // ===============================
 
 export interface TokenResponse {
-  accessToken: string;
-  refreshToken: string;
+  accessToken?: string;
+  refreshToken?: string;
+  // older backend field names (kept for compatibility with the deployed backend)
+  generateAccessToken?: string;
+  generateRefreshToken?: string;
 }
 
 // ===============================
