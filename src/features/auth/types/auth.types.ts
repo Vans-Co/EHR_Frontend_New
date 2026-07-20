@@ -105,8 +105,8 @@ export interface AuthUser {
 // ===============================
 
 export interface TokenResponse {
-  generateAccessToken: string;
-  generateRefreshToken: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 // ===============================

@@ -7,6 +7,7 @@ import {
 
 import type {
   Appointment,
+  Doctor,
   DrawerMode,
 } from "../../types/appointment.types";
 
@@ -23,6 +24,8 @@ interface AppointmentDrawerProps {
   mode: DrawerMode;
 
   appointment?: Appointment | null;
+
+  doctors?: Doctor[];
 
   loading?: boolean;
 
@@ -44,6 +47,7 @@ const AppointmentDrawer = ({
   open,
   mode,
   appointment,
+  doctors,
   loading = false,
   onClose,
   onSubmit,
@@ -280,6 +284,7 @@ const AppointmentDrawer = ({
               <AppointmentForm
                 mode={mode}
                 appointment={appointment}
+                doctors={doctors}
                 loading={loading}
                 onSubmit={onSubmit}
                 onCancel={onClose}
