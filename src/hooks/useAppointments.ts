@@ -1,19 +1,32 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { appointmentService } from "@/features/patient/services/appointment.service";
+import {
+  appointmentService,
+  dtoToAppointment,
+} from "@/features/patient/services/appointment.service";
 
 import { useAppointmentStore } from "@/store/appointmentStore";
+import { useAuthStore } from "@/store/authStore";
 
 import type {
   Appointment,
   AppointmentStats,
-  AppointmentStatus,
   CalendarEvent,
-  DrawerMode,
   AppointmentFormData,
+  Doctor,
 } from "@/features/patient/types/appointment.types";
 
+const errMsg = (err: unknown, fallback: string) => {
+  const axiosMsg = (err as { response?: { data?: unknown } })?.response?.data;
+  if (typeof axiosMsg === "string" && axiosMsg) return axiosMsg;
+  return err instanceof Error ? err.message : fallback;
+};
+
 export const useAppointments = () => {
+  const ehrId = useAuthStore((state) => state.user?.ehrId);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const doctorsRef = useRef<Doctor[]>([]);
+
   const {
     appointments,
     calendarEvents,
@@ -30,7 +43,6 @@ export const useAppointments = () => {
     error,
 
     setAppointments,
-    setCalendarEvents,
 
     setFilters,
     resetFilters,
@@ -52,38 +64,36 @@ export const useAppointments = () => {
   ========================================
   */
 
-  const refreshAppointments =
-    useCallback(async () => {
-      try {
-        setLoading(true);
+  const refreshAppointments = useCallback(async () => {
+    if (!ehrId) return;
+    try {
+      setLoading(true);
 
-        /*
-        Later
-
-        const data =
-          await appointmentService.getAppointments();
-
-        setAppointments(data);
-
-        */
-
-        setAppointments([...appointments]);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load appointments."
-        );
-      } finally {
-        setLoading(false);
+      // load doctors once so appointments can show doctor name/specialization
+      let docs = doctorsRef.current;
+      if (!docs.length) {
+        docs = await appointmentService.getDoctors();
+        doctorsRef.current = docs;
+        setDoctors(docs);
       }
-    }, [
-      appointments,
+      const byId: Record<string, Doctor> = {};
+      docs.forEach((d) => {
+        if (d.id) byId[d.id] = d;
+      });
 
-      setAppointments,
-      setLoading,
-      setError,
-    ]);
+      const dtos = await appointmentService.getAppointments(ehrId);
+      setAppointments(dtos.map((dto) => dtoToAppointment(dto, byId)));
+    } catch (err) {
+      setError(errMsg(err, "Unable to load appointments."));
+    } finally {
+      setLoading(false);
+    }
+  }, [ehrId, setAppointments, setLoading, setError]);
+
+  const resolveDoctorId = useCallback(
+    (name: string) => doctorsRef.current.find((d) => d.name === name)?.id ?? "",
+    []
+  );
 
   useEffect(() => {
     refreshAppointments();
@@ -299,76 +309,25 @@ const nextAppointment = useMemo(() => {
   */
 
   const createAppointment = useCallback(
-    async (
-      formData: AppointmentFormData
-    ) => {
+    async (formData: AppointmentFormData) => {
+      if (!ehrId) return;
+      const doctorId = resolveDoctorId(formData.doctorName);
+      if (!doctorId) {
+        setError("Please select a valid doctor.");
+        return;
+      }
       try {
         setLoading(true);
-
-        /*
-        Future API
-
-        const appointment =
-          await appointmentService.createAppointment(formData);
-
-        setAppointments([...appointments, appointment]);
-        */
-
-        const newAppointment: Appointment = {
-          id: crypto.randomUUID(),
-
-          doctorName: formData.doctorName,
-          specialization: formData.specialization,
-
-          hospital: formData.hospital,
-          location: formData.location,
-
-          date: formData.date,
-          time: formData.time,
-
-          appointmentType:
-            formData.appointmentType,
-
-          reason: formData.reason,
-
-          status: "Upcoming",
-
-          notes: formData.notes,
-
-          prescriptionAvailable: false,
-
-          reportsRequired: false,
-
-          insuranceRequired: false,
-        };
-
-        setAppointments([
-          newAppointment,
-          ...appointments,
-        ]);
-
+        await appointmentService.createAppointment(formData, ehrId, doctorId);
         closeDrawer();
+        await refreshAppointments();
       } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to create appointment."
-        );
+        setError(errMsg(err, "Unable to create appointment."));
       } finally {
         setLoading(false);
       }
     },
-    [
-      appointments,
-
-      setAppointments,
-
-      setLoading,
-
-      setError,
-
-      closeDrawer,
-    ]
+    [ehrId, resolveDoctorId, refreshAppointments, closeDrawer, setLoading, setError]
   );
 
   /*
@@ -378,75 +337,25 @@ const nextAppointment = useMemo(() => {
   */
 
   const updateAppointment = useCallback(
-    async (
-      id: string,
-      formData: AppointmentFormData
-    ) => {
+    async (id: string, formData: AppointmentFormData) => {
+      if (!ehrId) return;
+      const doctorId = resolveDoctorId(formData.doctorName);
+      if (!doctorId) {
+        setError("Please select a valid doctor.");
+        return;
+      }
       try {
         setLoading(true);
-
-        /*
-        await appointmentService.updateAppointment(id, formData);
-        */
-
-        const updated =
-          appointments.map((appointment) =>
-            appointment.id === id
-              ? {
-                  ...appointment,
-
-                  doctorName:
-                   formData.doctorName,
-
-                 specialization:
-                   formData.specialization,
-
-                 hospital:
-                    formData.hospital,
-
-                location:
-                    formData.location,
-
-                date: formData.date,
-
-                time: formData.time,
-
-                appointmentType:
-                formData.appointmentType,
-
-                reason:
-                  formData.reason,
-
-                notes:
-                  formData.notes,
-                }
-              : appointment
-          );
-
-        setAppointments(updated);
-
+        await appointmentService.rescheduleAppointment(id, formData, ehrId, doctorId);
         closeDrawer();
+        await refreshAppointments();
       } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to update appointment."
-        );
+        setError(errMsg(err, "Unable to update appointment."));
       } finally {
         setLoading(false);
       }
     },
-    [
-      appointments,
-
-      setAppointments,
-
-      setLoading,
-
-      setError,
-
-      closeDrawer,
-    ]
+    [ehrId, resolveDoctorId, refreshAppointments, closeDrawer, setLoading, setError]
   );
 
   /*
@@ -455,49 +364,20 @@ const nextAppointment = useMemo(() => {
   ========================================
   */
 
-  const cancelAppointment =
-    useCallback(
-      async (id: string) => {
-        try {
-          setLoading(true);
-
-          /*
-          await appointmentService.cancelAppointment(id);
-          */
-
-          const updated =
-            appointments.map(
-              (appointment) =>
-                appointment.id === id
-                  ? {
-                      ...appointment,
-                      status:
-                        "Cancelled" as AppointmentStatus,
-                    }
-                  : appointment
-            );
-
-          setAppointments(updated);
-        } catch (err) {
-          setError(
-            err instanceof Error
-              ? err.message
-              : "Unable to cancel appointment."
-          );
-        } finally {
-          setLoading(false);
-        }
-      },
-      [
-        appointments,
-
-        setAppointments,
-
-        setLoading,
-
-        setError,
-      ]
-    );
+  const cancelAppointment = useCallback(
+    async (id: string) => {
+      try {
+        setLoading(true);
+        await appointmentService.cancelAppointment(id);
+        await refreshAppointments();
+      } catch (err) {
+        setError(errMsg(err, "Unable to cancel appointment."));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [refreshAppointments, setLoading, setError]
+  );
 
   /*
   ========================================
@@ -505,66 +385,30 @@ const nextAppointment = useMemo(() => {
   ========================================
   */
 
-  const rescheduleAppointment =
-    useCallback(
-      async (
-        id: string,
-        date: string,
-        time: string
-      ) => {
-        try {
-          setLoading(true);
-
-          /*
-          await appointmentService.rescheduleAppointment(
-              id,
-              date,
-              time
-          );
-          */
-
-          const updated =
-            appointments.map(
-              (appointment) =>
-                appointment.id === id
-                  ? {
-                      ...appointment,
-
-                      date,
-
-                      time,
-
-                      status:
-                        "Rescheduled" as AppointmentStatus,
-                    }
-                  : appointment
-            );
-
-          setAppointments(updated);
-
-          closeDrawer();
-        } catch (err) {
-          setError(
-            err instanceof Error
-              ? err.message
-              : "Unable to reschedule appointment."
-          );
-        } finally {
-          setLoading(false);
-        }
-      },
-      [
-        appointments,
-
-        setAppointments,
-
-        setLoading,
-
-        setError,
-
-        closeDrawer,
-      ]
-    );
+  const rescheduleAppointment = useCallback(
+    async (id: string, date: string, time: string) => {
+      if (!ehrId) return;
+      const existing = appointments.find((a) => a.id === id);
+      if (!existing) return;
+      const doctorId = resolveDoctorId(existing.doctorName);
+      try {
+        setLoading(true);
+        await appointmentService.rescheduleAppointment(
+          id,
+          { ...existing, date, time } as AppointmentFormData,
+          ehrId,
+          doctorId
+        );
+        closeDrawer();
+        await refreshAppointments();
+      } catch (err) {
+        setError(errMsg(err, "Unable to reschedule appointment."));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [ehrId, appointments, resolveDoctorId, refreshAppointments, closeDrawer, setLoading, setError]
+  );
       /*
   ========================================
   Return
@@ -577,6 +421,8 @@ const nextAppointment = useMemo(() => {
     // ==========================
 
    appointments,
+
+doctors,
 
 filteredAppointments,
 
