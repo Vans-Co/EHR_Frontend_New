@@ -4,6 +4,7 @@ import {
   Sunrise,
   Moon,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import type {
   PrescriptionData,
@@ -60,6 +61,8 @@ const getMedicineTime = (
 const PrescriptionCard = ({
   data,
 }: PrescriptionCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <section
       className="
@@ -105,6 +108,9 @@ const PrescriptionCard = ({
           </div>
 
           <button
+            type="button"
+            aria-label="View all medication"
+            onClick={() => navigate("/patient/medication")}
             className="
               flex
               h-9
