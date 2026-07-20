@@ -37,6 +37,7 @@ const Appointments = () => {
   const {
     // Data
     stats,
+    doctors,
     calendarEvents,
     filteredAppointments,
 
@@ -162,6 +163,7 @@ const Appointments = () => {
         open={drawerOpen}
         mode={drawerMode}
         appointment={selectedAppointment}
+        doctors={doctors}
         loading={loading}
         onClose={closeDrawer}
         onSubmit={(data) => {

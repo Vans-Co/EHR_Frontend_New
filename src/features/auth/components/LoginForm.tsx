@@ -52,28 +52,30 @@ const LoginForm = () => {
         email,
         password,
       });
-      console.log("came here")
 
       const user =
         response.loginResponse.userResponseDTO;
 
+      // The selected role tab must match the account's actual role, so a
+      // patient account cannot sign in through the Doctor/Admin tab and vice versa.
+      if (user.role !== role) {
+        setError(
+          `This account is not registered as a ${role.toLowerCase()}. Please select the correct role.`
+        );
+        return;
+      }
+
       const accessToken =
-        response.tokenResponse.generateAccessToken;
+        response.tokenResponse.accessToken;
 
       const refreshToken =
-        response.tokenResponse.generateRefreshToken;
-      console.log("here?")
+        response.tokenResponse.refreshToken;
 
-      console.log("[DEBUG] Full tokenResponse:", JSON.stringify(response.tokenResponse, null, 2));
-      console.log("[DEBUG] accessToken value:", accessToken);
-      console.log("[DEBUG] Full response keys:", Object.keys(response));
-      console.log(response)
       login(
         user,
         accessToken,
         refreshToken
       );
-      console.log(user.role)
 
       switch (user.role) {
         case "ADMIN":
