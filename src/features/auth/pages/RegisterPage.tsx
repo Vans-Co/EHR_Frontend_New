@@ -20,6 +20,8 @@ const Register = () => {
 
   const [error, setError] = useState("");
 
+  const tenDigitPattern = /^\d{10}$/;
+
   const [formData, setFormData] = useState({
     // Basic
     firstName: "",
@@ -95,6 +97,15 @@ const Register = () => {
           return false;
         }
 
+        if (
+          !tenDigitPattern.test(formData.phoneNo)
+        ) {
+          setError(
+            "Phone number must contain exactly 10 digits."
+          );
+          return false;
+        }
+
         return true;
 
       case 3:
@@ -120,6 +131,17 @@ const Register = () => {
         ) {
           setError(
             "Please complete emergency contact."
+          );
+          return false;
+        }
+
+        if (
+          !tenDigitPattern.test(
+            formData.contactPhoneNo
+          )
+        ) {
+          setError(
+            "Emergency contact number must contain exactly 10 digits."
           );
           return false;
         }

@@ -13,6 +13,7 @@ interface AuthState {
   role: UserRole | null;
 
   isAuthenticated: boolean;
+  isHydrated: boolean;
 
   login: (
     user: AuthUser,
@@ -43,6 +44,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   role: null,
 
   isAuthenticated: false,
+  isHydrated: false,
 
   login: (
     user,
@@ -72,6 +74,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       refreshToken,
 
       isAuthenticated: true,
+      isHydrated: true,
     });
   },
 
@@ -112,6 +115,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       accessToken,
       refreshToken,
       isAuthenticated: true,
+      isHydrated: true,
     });
   },
 
@@ -129,6 +133,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       refreshToken: null,
 
       isAuthenticated: false,
+      isHydrated: true,
     });
   },
 
@@ -154,6 +159,7 @@ export const useAuthStore = create<AuthState>((set) => ({
           refreshToken,
 
           isAuthenticated: true,
+          isHydrated: true,
         });
       } catch {
         localStorage.removeItem("accessToken");
@@ -166,8 +172,18 @@ export const useAuthStore = create<AuthState>((set) => ({
           accessToken: null,
           refreshToken: null,
           isAuthenticated: false,
+          isHydrated: true,
         });
       }
+    } else {
+      set({
+        user: null,
+        role: null,
+        accessToken: null,
+        refreshToken: null,
+        isAuthenticated: false,
+        isHydrated: true,
+      });
     }
   },
 }));

@@ -14,7 +14,6 @@ import {
   Hospital,
   ClipboardList,
   Receipt,
-  AlertTriangle,
   Pill,
   type LucideIcon,
 } from "lucide-react";
@@ -68,11 +67,7 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       path: "/patient/insurance",
       icon: ShieldCheck,
     },
-    {
-      title: "Allergies",
-      path: "/patient/allergies",
-      icon: AlertTriangle,
-    },
+    
     {
       title: "Profile",
       path: "/patient/profile",

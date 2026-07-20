@@ -149,13 +149,18 @@ const PersonalInfoStep = ({
       <AppInput
         label="Phone Number"
         required
-        placeholder="+91 9876543210"
+        placeholder="9876543210"
         value={formData.phoneNo}
+        inputMode="numeric"
+        maxLength={10}
+        helperText="Enter exactly 10 digits."
         leftIcon={<Phone size={18} />}
         onChange={(e) =>
           updateField(
             "phoneNo",
             e.target.value
+              .replace(/\D/g, "")
+              .slice(0, 10)
           )
         }
       />

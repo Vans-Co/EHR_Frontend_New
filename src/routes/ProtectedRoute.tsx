@@ -14,11 +14,17 @@ const ProtectedRoute = ({
   const isAuthenticated = useAuthStore(
     (state) => state.isAuthenticated
   );
+  const isHydrated = useAuthStore(
+    (state) => state.isHydrated
+  );
 
   const role = useAuthStore(
     (state) => state.role
   );
 
+  if (!isHydrated) {
+    return null;
+  }
 
    // Original authentication
      if(!isAuthenticated) {

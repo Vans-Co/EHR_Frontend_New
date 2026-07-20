@@ -75,13 +75,18 @@ const EmergencyContactStep = ({
       <AppInput
         label="Phone Number"
         required
-        placeholder="+91 9876543210"
+        placeholder="9876543210"
         value={formData.contactPhoneNo}
+        inputMode="numeric"
+        maxLength={10}
+        helperText="Enter exactly 10 digits."
         leftIcon={<Phone size={18} />}
         onChange={(e) =>
           updateField(
             "contactPhoneNo",
             e.target.value
+              .replace(/\D/g, "")
+              .slice(0, 10)
           )
         }
       />

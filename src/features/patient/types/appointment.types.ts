@@ -91,11 +91,6 @@ export interface AppointmentAnalytics {
 
   growth: number;
 }
-interface AppointmentTrendCardProps {
-  data: AppointmentTrend[];
-
-  analytics: AppointmentAnalytics;
-}
 
 /* =========================================
    Calendar

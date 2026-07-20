@@ -1,6 +1,7 @@
 import {
   Activity,
   CalendarDays,
+  ChevronRight,
   HeartPulse,
   Phone,
   Pill,
@@ -13,10 +14,12 @@ import type { HealthProfileData } from "@/features/patient/types/dashboard.types
 
 interface HealthProfileCardProps {
   data: HealthProfileData;
+  onAllergiesClick?: () => void;
 }
 
 const HealthProfileCard = ({
   data,
+  onAllergiesClick,
 }: HealthProfileCardProps) => {
   return (
     <section className="relative overflow-hidden rounded-[30px] bg-gradient-to-br from-[#1976E8] via-[#1693EA] to-[#09B5D8] p-6 shadow-[0_20px_45px_rgba(16,120,230,.18)]">
@@ -81,19 +84,33 @@ const HealthProfileCard = ({
 
           {/* Allergies */}
 
-          <div className="rounded-2xl bg-white/12 p-4 backdrop-blur-xl">
+          <button
+            type="button"
+            onClick={onAllergiesClick}
+            className="rounded-2xl bg-white/12 p-4 text-left backdrop-blur-xl transition hover:bg-white/18"
+          >
 
-            <ShieldAlert className="mb-3 h-5 w-5 text-cyan-100" />
+            <div className="flex items-start justify-between gap-3">
 
-            <p className="text-xs uppercase tracking-wide text-cyan-100">
-              Allergies
-            </p>
+              <div>
 
-            <h3 className="mt-1 text-lg font-semibold text-white">
-              {data.allergies}
-            </h3>
+                <ShieldAlert className="mb-3 h-5 w-5 text-cyan-100" />
 
-          </div>
+                <p className="text-xs uppercase tracking-wide text-cyan-100">
+                  Allergies
+                </p>
+
+                <h3 className="mt-1 text-lg font-semibold text-white">
+                  {data.allergies}
+                </h3>
+
+              </div>
+
+              <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-cyan-100" />
+
+            </div>
+
+          </button>
 
           {/* Condition */}
 
