@@ -11,7 +11,7 @@ import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import DoctorDashboard from "@/features/doctor/pages/DoctorDashboard";
 import PatientAllergies from "@/features/patient/pages/PatientAllergies";
 import PatientDashboard from "@/features/patient/pages/PatientDashboard";
-import PatientMedication from "@/features/patient/pages/PatientMedication";
+//import PatientMedication from "@/features/patient/pages/PatientMedication";
 import PatientBilling from "@/features/patient/pages/PatientBilling";
 import PatientBillingDue from "@/features/patient/pages/PatientBillingDue";
 import PatientBillingHistory from "@/features/patient/pages/PatientBillingHistory";
@@ -30,7 +30,6 @@ import PatientAppointments from "@/features/patient/pages/PatientAppointments";
 const AppRoutes = () => {
   return (
     <Routes>
-
       {/* ========================= */}
       {/* Public Routes */}
       {/* ========================= */}
@@ -85,65 +84,29 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route
-          index
-          element={<Navigate to="dashboard" replace />}
-        />
+        <Route index element={<Navigate to="dashboard" replace />} />
 
-        <Route
-          path="dashboard"
-          element={<PatientDashboard />}
-        />
-        { <Route
-          path="appointments"
-          element={<PatientAppointments />}
-         />}
+        <Route path="dashboard" element={<PatientDashboard />} />
+        {<Route path="appointments" element={<PatientAppointments />} />}
 
-        <Route
-          path="medication"
-          element={<PatientMedication />}
-        />
+        <Route path="profile" element={<PatientProfile />} />
 
-        <Route
-          path="profile"
-          element={<PatientProfile />}
-        />
+        <Route path="profile/edit" element={<PatientProfileEdit />} />
 
-        <Route
-          path="profile/edit"
-          element={<PatientProfileEdit />}
-        />
-
-        <Route
-          path="billing"
-          element={<PatientBilling />}
-        />
+        <Route path="billing" element={<PatientBilling />} />
 
         <Route
           path="billing/invoices/:id"
           element={<PatientBillingInvoiceDetails />}
         />
 
-        <Route
-          path="billing/due"
-          element={<PatientBillingDue />}
-        />
+        <Route path="billing/due" element={<PatientBillingDue />} />
 
-        <Route
-          path="billing/history"
-          element={<PatientBillingHistory />}
-        />
+        <Route path="billing/history" element={<PatientBillingHistory />} />
 
-        <Route
-          path="billing/recurring"
-          element={<PatientBillingRecurring />}
-        />
+        <Route path="billing/recurring" element={<PatientBillingRecurring />} />
 
-        <Route
-          path="allergies"
-          element={<PatientAllergies />}
-        />
-
+        <Route path="allergies" element={<PatientAllergies />} />
       </Route>
 
       {/* ========================= */}
@@ -158,16 +121,9 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route
-          index
-          element={<Navigate to="dashboard" replace />}
-        />
+        <Route index element={<Navigate to="dashboard" replace />} />
 
-        <Route
-          path="dashboard"
-          element={<DoctorDashboard />}
-        />
-
+        <Route path="dashboard" element={<DoctorDashboard />} />
       </Route>
 
       {/* ========================= */}
@@ -182,27 +138,16 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route
-          index
-          element={<Navigate to="dashboard" replace />}
-        />
+        <Route index element={<Navigate to="dashboard" replace />} />
 
-        <Route
-          path="dashboard"
-          element={<AdminDashboard />}
-        />
-
+        <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
 
       {/* ========================= */}
       {/* 404 */}
       {/* ========================= */}
 
-      <Route
-        path="*"
-        element={<Navigate to="/" replace />}
-      />
-
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
