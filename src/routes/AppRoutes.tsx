@@ -23,6 +23,7 @@ import PatientBillingDue from "@/features/patient/pages/PatientBillingDue";
 import PatientBillingHistory from "@/features/patient/pages/PatientBillingHistory";
 import PatientBillingInvoiceDetails from "@/features/patient/pages/PatientBillingInvoiceDetails";
 import PatientBillingRecurring from "@/features/patient/pages/PatientBillingRecurring";
+import PatientMedicalRecords from "@/features/patient/pages/PatientMedicalRecords";
 import PatientProfile from "@/features/patient/pages/PatientProfile";
 import PatientProfileEdit from "@/features/patient/pages/PatientProfileEdit";
 
@@ -113,6 +114,8 @@ const AppRoutes = () => {
         <Route path="billing/recurring" element={<PatientBillingRecurring />} />
 
         <Route path="allergies" element={<PatientAllergies />} />
+
+        <Route path="medical-records" element={<PatientMedicalRecords />} />
 
         <Route path="permissions" element={<PatientPermissions />} />
       </Route>
