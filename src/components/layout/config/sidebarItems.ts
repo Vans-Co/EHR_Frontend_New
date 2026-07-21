@@ -53,11 +53,7 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       path: "/patient/prescriptions",
       icon: FileText,
     },
-    {
-      title: "Medication",
-      path: "/patient/medication",
-      icon: Pill,
-    },
+    
     {
       title: "Billing",
       path: "/patient/billing",
