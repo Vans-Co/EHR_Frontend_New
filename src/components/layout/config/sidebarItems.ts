@@ -75,6 +75,11 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       icon: AlertTriangle,
     },
     {
+      title: "Permissions",
+      path: "/patient/permissions",
+      icon: ShieldCheck,
+    },
+    {
       title: "Profile",
       path: "/patient/profile",
       icon: UserCircle,
@@ -101,6 +106,11 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       title: "Patients",
       path: "/doctor/patients",
       icon: Users,
+    },
+    {
+      title: "Availability",
+      path: "/doctor/availability",
+      icon: CalendarDays,
     },
     {
       title: "Medical Records",

@@ -9,6 +9,9 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPassword";
 
 import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import DoctorDashboard from "@/features/doctor/pages/DoctorDashboard";
+import DoctorAvailability from "@/features/doctor/pages/DoctorAvailability";
+import DoctorPatients from "@/features/doctor/pages/DoctorPatients";
+import PatientPermissions from "@/features/patient/pages/PatientPermissions";
 import PatientAllergies from "@/features/patient/pages/PatientAllergies";
 import PatientDashboard from "@/features/patient/pages/PatientDashboard";
 //import PatientMedication from "@/features/patient/pages/PatientMedication";
@@ -107,6 +110,8 @@ const AppRoutes = () => {
         <Route path="billing/recurring" element={<PatientBillingRecurring />} />
 
         <Route path="allergies" element={<PatientAllergies />} />
+
+        <Route path="permissions" element={<PatientPermissions />} />
       </Route>
 
       {/* ========================= */}
@@ -124,6 +129,10 @@ const AppRoutes = () => {
         <Route index element={<Navigate to="dashboard" replace />} />
 
         <Route path="dashboard" element={<DoctorDashboard />} />
+
+        <Route path="availability" element={<DoctorAvailability />} />
+
+        <Route path="patients" element={<DoctorPatients />} />
       </Route>
 
       {/* ========================= */}
