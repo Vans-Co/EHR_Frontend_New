@@ -75,6 +75,29 @@ const TimeSlotPicker = ({
 
       </div>
 
+      {/* Empty = doctor has no working hours on the chosen day */}
+
+      {slots.length === 0 && (
+        <div
+          className="
+            flex
+            items-center
+            gap-3
+            rounded-2xl
+            border
+            border-amber-200/60
+            bg-amber-50/80
+            px-5
+            py-4
+            text-sm
+            text-amber-700
+          "
+        >
+          <Lock size={16} className="shrink-0" />
+          The doctor is not available on this day. Please pick another date.
+        </div>
+      )}
+
       {/* Slots */}
 
       <div
@@ -210,6 +233,7 @@ const TimeSlotPicker = ({
 
       {/* Legend */}
 
+      {slots.length > 0 && (
       <div
         className="
           mt-6
@@ -275,6 +299,7 @@ const TimeSlotPicker = ({
         </div>
 
       </div>
+      )}
 
     </section>
   );

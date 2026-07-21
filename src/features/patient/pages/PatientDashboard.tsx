@@ -19,12 +19,15 @@ const PatientDashboard = () => {
   const {
     nextAppointment,
 
+    doctors,
+
     drawerOpen,
     drawerMode,
 
     selectedAppointment,
 
     loading,
+    error,
 
     openCreateDrawer,
     openViewDrawer,
@@ -97,7 +100,9 @@ const PatientDashboard = () => {
         open={drawerOpen}
         mode={drawerMode}
         appointment={selectedAppointment}
+        doctors={doctors}
         loading={loading}
+        error={error}
         onClose={closeDrawer}
         onSubmit={(data) => {
           if (drawerMode === "create") {
