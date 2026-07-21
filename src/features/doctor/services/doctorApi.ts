@@ -37,7 +37,53 @@ export const REQUESTABLE_ATTRIBUTES = [
   "allergies",
 ] as const;
 
+export interface DoctorAppointment {
+  token: number;
+  tokenNumber: number | null;
+  patientId: string;
+  patientName: string | null;
+  date: string; // ISO yyyy-MM-dd in responses
+  startTime: string;
+  lastTime: string;
+  status: "SCHEDULED" | "CANCELLED" | "COMPLETED" | "ON_HOLD";
+}
+
+export interface DoctorProfileData {
+  firstName?: string;
+  lastName?: string;
+  phoneNo?: number;
+  specialization?: string;
+  licenseNumber?: string;
+  aboutDoctor?: string;
+  degrees?: string[];
+}
+
 export const doctorApi = {
+  /** Doctor's queue: all appointments, or a single day (date = MM-dd-yyyy). */
+  async getAppointments(
+    doctorId: string,
+    date?: string
+  ): Promise<DoctorAppointment[]> {
+    const { data } = await api.get(`/appointments/doctor/${doctorId}`, {
+      params: date ? { date } : {},
+    });
+    return Array.isArray(data) ? data : [];
+  },
+
+  async getProfile(doctorId: string) {
+    const { data } = await api.get(`/doctors/${doctorId}/profile`);
+    return data;
+  },
+
+  updateProfile(doctorId: string, profile: DoctorProfileData) {
+    const { specialization, licenseNumber, aboutDoctor, degrees, ...user } =
+      profile;
+    return api.put(`/doctors/${doctorId}/profile`, {
+      ...user,
+      doctorProfile: { specialization, licenseNumber, aboutDoctor, degrees },
+    });
+  },
+
   async getSchedule(doctorId: string): Promise<ScheduleEntry[]> {
     const { data } = await api.get(`/doctors/${doctorId}/schedule`);
     return Array.isArray(data) ? data : [];
