@@ -58,7 +58,64 @@ export interface DoctorProfileData {
   degrees?: string[];
 }
 
+export interface ReportAccessEntry {
+  id: number;
+  patientId: string;
+  patientName: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  requestedAt: string;
+  respondedAt: string | null;
+}
+
+export interface PatientReport {
+  id: number;
+  patientId: string;
+  patientName: string;
+  doctorId: string;
+  doctorName: string;
+  dateTime: string;
+  info: string;
+  desc: string;
+  conclusion: string;
+  fileName: string | null;
+  fileType: string | null;
+}
+
+export interface NewReport {
+  patientId: string;
+  doctorId: string;
+  dateTime: string; // MM-dd-yyyy
+  info: string;
+  desc: string;
+  conclusion: string;
+  fileBase64?: string;
+  fileName?: string;
+  fileType?: string;
+}
+
 export const doctorApi = {
+  /** Report-access requests this doctor has sent, any status. */
+  async getReportAccess(doctorId: string): Promise<ReportAccessEntry[]> {
+    const { data } = await api.get(`/reports/access/doctor/${doctorId}`);
+    return Array.isArray(data) ? data : [];
+  },
+
+  async getPatientReports(patientId: string): Promise<PatientReport[]> {
+    const { data } = await api.get(`/reports/patient/${patientId}`);
+    return Array.isArray(data) ? data : [];
+  },
+
+  addReport({ patientId, ...report }: NewReport) {
+    return api.post("/reports", { ...report, patientIds: [patientId] });
+  },
+
+  async downloadReport(id: number): Promise<Blob> {
+    const { data } = await api.get(`/reports/${id}/download`, {
+      responseType: "blob",
+    });
+    return data;
+  },
+
   /** Doctor's queue: all appointments, or a single day (date = MM-dd-yyyy). */
   async getAppointments(
     doctorId: string,
