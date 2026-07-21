@@ -13,6 +13,7 @@ import DoctorAvailability from "@/features/doctor/pages/DoctorAvailability";
 import DoctorAppointments from "@/features/doctor/pages/DoctorAppointments";
 import DoctorPatients from "@/features/doctor/pages/DoctorPatients";
 import DoctorProfile from "@/features/doctor/pages/DoctorProfile";
+import DoctorReports from "@/features/doctor/pages/DoctorReports";
 import PatientPermissions from "@/features/patient/pages/PatientPermissions";
 import PatientAllergies from "@/features/patient/pages/PatientAllergies";
 import PatientDashboard from "@/features/patient/pages/PatientDashboard";
@@ -137,6 +138,8 @@ const AppRoutes = () => {
         <Route path="appointments" element={<DoctorAppointments />} />
 
         <Route path="patients" element={<DoctorPatients />} />
+
+        <Route path="reports" element={<DoctorReports />} />
 
         <Route path="profile" element={<DoctorProfile />} />
       </Route>

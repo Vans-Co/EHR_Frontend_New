@@ -113,6 +113,11 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       icon: CalendarDays,
     },
     {
+      title: "Reports",
+      path: "/doctor/reports",
+      icon: FileHeart,
+    },
+    {
       title: "Profile",
       path: "/doctor/profile",
       icon: Stethoscope,
