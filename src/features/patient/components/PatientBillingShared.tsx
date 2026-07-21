@@ -336,6 +336,10 @@ export const BillingSummaryCard = ({
   description,
   icon,
   accentClassName,
+  glowClassName,
+  pillClassName,
+  dotClassName,
+  statusLabel,
 }: {
   title: string;
   amount?: number;
@@ -344,37 +348,72 @@ export const BillingSummaryCard = ({
   description: string;
   icon: React.ReactNode;
   accentClassName: string;
+  glowClassName?: string;
+  pillClassName?: string;
+  dotClassName?: string;
+  statusLabel?: string;
 }) => (
-  <AppCard
-    className="border-white/30 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(248,252,255,0.82))] shadow-[0_18px_38px_rgba(15,23,42,0.08)] backdrop-blur-xl"
-    bodyClassName="p-5 sm:p-6"
+  <div
+    className={cn(
+      "group relative overflow-hidden rounded-[24px] border px-5 py-4 backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1",
+      accentClassName,
+    )}
   >
-    <div className="flex items-start justify-between gap-4">
-      <div>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-on-surface-variant">
-          {title}
-        </p>
-        <h2 className="mt-3 text-3xl font-bold tracking-tight text-on-background">
-          {value ??
-            (formatAsCurrency
-              ? formatCurrency(amount ?? 0)
-              : String(amount ?? 0))}
-        </h2>
-        <p className="mt-2 max-w-[26ch] text-sm leading-6 text-on-surface-variant">
-          {description}
-        </p>
+    <div
+      className={cn(
+        "absolute -right-10 -top-10 h-28 w-28 rounded-full blur-3xl opacity-60 transition-all duration-300 group-hover:opacity-90",
+        glowClassName ?? "bg-sky-400/20",
+      )}
+    />
+
+    <div className={cn("absolute bottom-5 left-0 top-5 w-1 rounded-r-full", dotClassName ?? "bg-sky-400/80")} />
+
+    <div className="relative">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-on-surface-variant">
+            {title}
+          </p>
+          <h2 className="mt-2 text-[30px] font-bold leading-none text-on-background">
+            {value ??
+              (formatAsCurrency
+                ? formatCurrency(amount ?? 0)
+                : String(amount ?? 0))}
+          </h2>
+          <p className="mt-3 max-w-[28ch] text-sm leading-5 text-on-surface-variant">
+            {description}
+          </p>
+        </div>
+
+        <div
+          className={cn(
+            "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br shadow-lg",
+            pillClassName,
+          )}
+        >
+          {icon}
+        </div>
       </div>
 
-      <div
-        className={cn(
-          "flex h-13 w-13 shrink-0 items-center justify-center rounded-[20px] shadow-sm",
-          accentClassName,
-        )}
-      >
-        {icon}
+      <div className="mt-5 flex items-center justify-between">
+        <span
+          className={cn(
+            "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold backdrop-blur-xl",
+            pillClassName ? "border-white/20 bg-white/45 text-on-background" : "border-sky-300/30 bg-sky-500/10 text-sky-700",
+          )}
+        >
+          {statusLabel ?? "Billing"}
+        </span>
+
+        <div
+          className={cn(
+            "h-2.5 w-2.5 rounded-full shadow-md",
+            dotClassName ?? "bg-sky-500",
+          )}
+        />
       </div>
     </div>
-  </AppCard>
+  </div>
 );
 
 export const BillingStatusBadge = ({ status }: { status: BillingStatus }) => (
@@ -444,34 +483,34 @@ export const BillingReminderCard = ({
   </div>
 );
 
-export const InsuranceBillingCard = ({
-  insurance,
-}: {
-  insurance: NonNullable<PatientBillingData["insurance"]>;
-}) => (
-  <AppCard
-    title="Insurance Billing"
-    subtitle="Coverage and claim details tied to the current patient account."
-    icon={<Receipt size={22} />}
-    className="border-white/30 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(248,252,255,0.82))] shadow-[0_18px_38px_rgba(15,23,42,0.08)] backdrop-blur-xl"
-  >
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      <MetricTile
-        label="Total Bill"
-        value={formatCurrency(insurance.totalBill)}
-      />
-      <MetricTile
-        label="Insurance Covered"
-        value={formatCurrency(insurance.insuranceCovered)}
-      />
-      <MetricTile
-        label="Patient Payable"
-        value={formatCurrency(insurance.patientPayable)}
-      />
-      <MetricTile label="Claim Status" value={insurance.claimStatus} />
-    </div>
-  </AppCard>
-);
+// export const InsuranceBillingCard = ({
+//   insurance,
+// }: {
+//   insurance: NonNullable<PatientBillingData["insurance"]>;
+// }) => (
+//   <AppCard
+//     title="Insurance Billing"
+//     subtitle="Coverage and claim details tied to the current patient account."
+//     icon={<Receipt size={22} />}
+//     className="border-white/30 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(248,252,255,0.82))] shadow-[0_18px_38px_rgba(15,23,42,0.08)] backdrop-blur-xl"
+//   >
+//     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+//       <MetricTile
+//         label="Total Bill"
+//         value={formatCurrency(insurance.totalBill)}
+//       />
+//       <MetricTile
+//         label="Insurance Covered"
+//         value={formatCurrency(insurance.insuranceCovered)}
+//       />
+//       <MetricTile
+//         label="Patient Payable"
+//         value={formatCurrency(insurance.patientPayable)}
+//       />
+//       <MetricTile label="Claim Status" value={insurance.claimStatus} />
+//     </div>
+//   </AppCard>
+// );
 
 const MetricTile = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-[22px] border border-slate-200/80 bg-white/80 px-4 py-4 shadow-sm">
@@ -1093,7 +1132,11 @@ export const DueSummaryTiles = ({ items }: { items: BillingItem[] }) => {
         formatAsCurrency={false}
         description="Open charges currently waiting for payment."
         icon={<Receipt size={22} className="text-white" />}
-        accentClassName="bg-gradient-to-br from-sky-500 to-cyan-500 text-white"
+        accentClassName="border-cyan-200/40 bg-gradient-to-br from-cyan-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(6,182,212,.08)]"
+        glowClassName="bg-cyan-400/20"
+        pillClassName="from-cyan-400 via-sky-400 to-blue-500"
+        dotClassName="bg-cyan-500"
+        statusLabel="Open"
       />
       <BillingSummaryCard
         title="Overdue Bills"
@@ -1101,14 +1144,22 @@ export const DueSummaryTiles = ({ items }: { items: BillingItem[] }) => {
         formatAsCurrency={false}
         description="Invoices that have crossed their due date."
         icon={<AlertTriangle size={22} className="text-white" />}
-        accentClassName="bg-gradient-to-br from-red-500 to-orange-500 text-white"
+        accentClassName="border-red-200/40 bg-gradient-to-br from-red-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(244,63,94,.08)]"
+        glowClassName="bg-red-400/20"
+        pillClassName="from-red-400 via-rose-400 to-orange-500"
+        dotClassName="bg-red-500"
+        statusLabel="Urgent"
       />
       <BillingSummaryCard
         title="Amount Due"
         amount={totalOutstanding}
         description="Combined value of all pending and overdue bills."
         icon={<IndianRupee size={22} className="text-white" />}
-        accentClassName="bg-gradient-to-br from-emerald-500 to-teal-500 text-white"
+        accentClassName="border-emerald-200/40 bg-gradient-to-br from-emerald-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(16,185,129,.08)]"
+        glowClassName="bg-emerald-400/20"
+        pillClassName="from-emerald-400 via-green-400 to-teal-500"
+        dotClassName="bg-emerald-500"
+        statusLabel="Payable"
       />
       <BillingSummaryCard
         title="Due Tomorrow"
@@ -1116,7 +1167,11 @@ export const DueSummaryTiles = ({ items }: { items: BillingItem[] }) => {
         formatAsCurrency={false}
         description="Bills that need attention by the next day."
         icon={<CalendarClock size={22} className="text-white" />}
-        accentClassName="bg-gradient-to-br from-amber-500 to-yellow-500 text-white"
+        accentClassName="border-amber-200/40 bg-gradient-to-br from-amber-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(245,158,11,.08)]"
+        glowClassName="bg-amber-400/20"
+        pillClassName="from-amber-400 via-yellow-400 to-orange-500"
+        dotClassName="bg-amber-500"
+        statusLabel="Next Up"
       />
     </div>
   );

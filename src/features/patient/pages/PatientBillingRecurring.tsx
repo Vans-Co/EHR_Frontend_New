@@ -89,7 +89,11 @@ const PatientBillingRecurring = () => {
           formatAsCurrency={false}
           description="Recurring healthcare payments currently running."
           icon={<RotateCw size={22} className="text-white" />}
-          accentClassName="bg-gradient-to-br from-sky-500 to-cyan-500 text-white"
+          accentClassName="border-cyan-200/40 bg-gradient-to-br from-cyan-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(6,182,212,.08)]"
+          glowClassName="bg-cyan-400/20"
+          pillClassName="from-cyan-400 via-sky-400 to-blue-500"
+          dotClassName="bg-cyan-500"
+          statusLabel="Running"
         />
         <BillingSummaryCard
           title="Due Soon"
@@ -97,7 +101,11 @@ const PatientBillingRecurring = () => {
           formatAsCurrency={false}
           description="Subscriptions renewing in the immediate cycle."
           icon={<RotateCw size={22} className="text-white" />}
-          accentClassName="bg-gradient-to-br from-amber-500 to-yellow-500 text-white"
+          accentClassName="border-amber-200/40 bg-gradient-to-br from-amber-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(245,158,11,.08)]"
+          glowClassName="bg-amber-400/20"
+          pillClassName="from-amber-400 via-yellow-400 to-orange-500"
+          dotClassName="bg-amber-500"
+          statusLabel="Renewal"
         />
         <BillingSummaryCard
           title="Paused"
@@ -105,7 +113,11 @@ const PatientBillingRecurring = () => {
           formatAsCurrency={false}
           description="UI-only cancellations or paused recurring payments."
           icon={<RotateCw size={22} className="text-white" />}
-          accentClassName="bg-gradient-to-br from-slate-500 to-slate-700 text-white"
+          accentClassName="border-slate-200/60 bg-gradient-to-br from-slate-400/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(100,116,139,.08)]"
+          glowClassName="bg-slate-400/20"
+          pillClassName="from-slate-400 via-slate-500 to-slate-700"
+          dotClassName="bg-slate-500"
+          statusLabel="On Hold"
         />
       </section>
 

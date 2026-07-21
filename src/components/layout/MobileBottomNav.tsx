@@ -22,7 +22,7 @@ const MobileBottomNav = ({
     Dashboard: "Home",
     Appointments: "Visits",
     "Medical Records": "Records",
-    Prescriptions: "Meds",
+    Prescription: "Meds",
     Billing: "Bills",
     Insurance: "Cover",
     Profile: "Profile",

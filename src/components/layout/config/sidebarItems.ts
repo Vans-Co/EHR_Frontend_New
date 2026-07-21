@@ -14,7 +14,6 @@ import {
   Hospital,
   ClipboardList,
   Receipt,
-  Pill,
   type LucideIcon,
 } from "lucide-react";
 
@@ -48,15 +47,9 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       icon: FileHeart,
     },
     {
-      title: "Prescriptions",
-      path: "/patient/prescriptions",
+      title: "Prescription",
+      path: "/patient/prescription",
       icon: FileText,
-    },
-    
-    {
-      title: "Medication",
-      path: "/patient/medication",
-      icon: Pill,
     },
     {
       title: "Billing",

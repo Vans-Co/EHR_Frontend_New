@@ -18,8 +18,7 @@ import {
 const PatientBillingInvoiceDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data, isLoading, isError, retry } =
-    usePatientBillingData();
+  const { data, isLoading, isError, retry } = usePatientBillingData();
   const invoice = getInvoiceById(data.invoices, id);
 
   if (isLoading) {
@@ -71,10 +70,7 @@ const PatientBillingInvoiceDetails = () => {
       title="Invoice Details"
       description="Review the full invoice, line-item charges, discounts, insurance coverage, and receipt actions."
       actions={
-        <AppButton
-          variant="outline"
-          onClick={() => navigate("/patient/billing")}
-        >
+        <AppButton variant="outline" onClick={() => navigate("/patient/billing")}>
           <ArrowLeft size={16} />
           Back to Billing
         </AppButton>
@@ -87,33 +83,45 @@ const PatientBillingInvoiceDetails = () => {
           title="Final Amount"
           amount={invoice.finalAmount}
           description="Final payable amount after discounts and coverage."
-          icon={<span className="text-xl text-white">₹</span>}
-          accentClassName="bg-gradient-to-br from-emerald-500 to-teal-500 text-white"
+          icon={<span className="text-sm font-bold text-white">Rs</span>}
+          accentClassName="border-emerald-200/40 bg-gradient-to-br from-emerald-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(16,185,129,.08)]"
+          glowClassName="bg-emerald-400/20"
+          pillClassName="from-emerald-400 via-green-400 to-teal-500"
+          dotClassName="bg-emerald-500"
+          statusLabel="Payable"
         />
         <BillingSummaryCard
           title="Discounts"
           amount={invoice.discounts}
           description="Savings applied to this invoice."
           icon={<span className="text-xl text-white">%</span>}
-          accentClassName="bg-gradient-to-br from-sky-500 to-cyan-500 text-white"
+          accentClassName="border-cyan-200/40 bg-gradient-to-br from-cyan-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(6,182,212,.08)]"
+          glowClassName="bg-cyan-400/20"
+          pillClassName="from-cyan-400 via-sky-400 to-blue-500"
+          dotClassName="bg-cyan-500"
+          statusLabel="Savings"
         />
         <BillingSummaryCard
           title="Insurance Coverage"
           amount={invoice.insuranceCoverage}
           description="Amount covered by insurance for this bill."
           icon={<span className="text-xl text-white">+</span>}
-          accentClassName="bg-gradient-to-br from-violet-500 to-indigo-500 text-white"
+          accentClassName="border-violet-200/40 bg-gradient-to-br from-violet-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(168,85,247,.08)]"
+          glowClassName="bg-violet-400/20"
+          pillClassName="from-violet-400 via-fuchsia-400 to-indigo-500"
+          dotClassName="bg-violet-500"
+          statusLabel="Covered"
         />
         <BillingSummaryCard
           title="Outstanding Payments"
-          amount={
-            invoice.paymentStatus === "paid"
-              ? 0
-              : invoice.finalAmount
-          }
+          amount={invoice.paymentStatus === "paid" ? 0 : invoice.finalAmount}
           description="Remaining balance still due on this invoice."
           icon={<span className="text-xl text-white">!</span>}
-          accentClassName="bg-gradient-to-br from-red-500 to-orange-500 text-white"
+          accentClassName="border-red-200/40 bg-gradient-to-br from-red-500/10 via-white/75 to-white/65 shadow-[0_12px_35px_rgba(244,63,94,.08)]"
+          glowClassName="bg-red-400/20"
+          pillClassName="from-red-400 via-rose-400 to-orange-500"
+          dotClassName="bg-red-500"
+          statusLabel="Action"
         />
       </section>
 

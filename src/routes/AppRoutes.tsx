@@ -11,7 +11,7 @@ import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import DoctorDashboard from "@/features/doctor/pages/DoctorDashboard";
 import PatientAllergies from "@/features/patient/pages/PatientAllergies";
 import PatientDashboard from "@/features/patient/pages/PatientDashboard";
-//import PatientMedication from "@/features/patient/pages/PatientMedication";
+import PatientPrescription from "@/features/patient/pages/PatientPrescription";
 import PatientBilling from "@/features/patient/pages/PatientBilling";
 import PatientBillingDue from "@/features/patient/pages/PatientBillingDue";
 import PatientBillingHistory from "@/features/patient/pages/PatientBillingHistory";
@@ -105,6 +105,16 @@ const AppRoutes = () => {
         <Route path="billing/history" element={<PatientBillingHistory />} />
 
         <Route path="billing/recurring" element={<PatientBillingRecurring />} />
+
+        <Route path="prescription" element={<PatientPrescription />} />
+        <Route
+          path="prescriptions"
+          element={<Navigate to="/patient/prescription" replace />}
+        />
+        <Route
+          path="medication"
+          element={<Navigate to="/patient/prescription" replace />}
+        />
 
         <Route path="allergies" element={<PatientAllergies />} />
       </Route>

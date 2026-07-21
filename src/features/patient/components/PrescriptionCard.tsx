@@ -62,6 +62,7 @@ const PrescriptionCard = ({
   data,
 }: PrescriptionCardProps) => {
   const navigate = useNavigate();
+  const todaysDoses = data.medicines.length;
 
   return (
     <section
@@ -84,7 +85,7 @@ const PrescriptionCard = ({
 
       <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-300/20 blur-3xl" />
 
-      <div className="relative flex h-full flex-col">
+      <div className="relative flex h-full flex-col gap-3">
 
         {/* Header */}
 
@@ -109,8 +110,8 @@ const PrescriptionCard = ({
 
           <button
             type="button"
-            aria-label="View all medication"
-            onClick={() => navigate("/patient/medication")}
+            aria-label="View all prescriptions"
+            onClick={() => navigate("/patient/prescription")}
             className="
               flex
               h-9
@@ -131,7 +132,7 @@ const PrescriptionCard = ({
 
         {/* Heading */}
 
-        <div className="mt-4">
+        <div>
 
           <p className="text-lg font-medium text-slate-700">
             Today's Medicines
@@ -144,9 +145,28 @@ const PrescriptionCard = ({
 
         </div>
 
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="rounded-2xl bg-white/50 px-3 py-3 backdrop-blur-xl">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+              Today's Doses
+            </p>
+            <p className="mt-1 text-lg font-bold text-slate-800">
+              {todaysDoses}
+            </p>
+          </div>
+          <div className="rounded-2xl bg-white/50 px-3 py-3 backdrop-blur-xl">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+              Next Refill
+            </p>
+            <p className="mt-1 text-sm font-semibold text-slate-800">
+              {data.nextRefill}
+            </p>
+          </div>
+        </div>
+
         {/* Medicine List */}
 
-        <div className="mt-3 flex-1 space-y-2">
+        <div className="flex-1 space-y-2">
 
           {data.medicines.map((medicine) => (
 
@@ -154,12 +174,12 @@ const PrescriptionCard = ({
               key={medicine.id}
               className="
                 flex
-                items-center
+                items-start
                 justify-between
                 rounded-2xl
                 bg-white/45
                 px-3
-                py-2
+                py-2.5
                 backdrop-blur-xl
               "
             >
@@ -182,7 +202,7 @@ const PrescriptionCard = ({
                   {getMedicineIcon(medicine)}
                 </div>
 
-                <div>
+                <div className="space-y-1">
 
                   <p className="text-sm font-semibold text-slate-800">
                     {medicine.name}
@@ -192,13 +212,22 @@ const PrescriptionCard = ({
                     {medicine.dosage}
                   </p>
 
+                  <p className="text-xs font-medium text-slate-600">
+                    {medicine.duration}
+                  </p>
+
                 </div>
 
               </div>
 
-              <span className="text-xs font-semibold text-slate-600">
-                {getMedicineTime(medicine)}
-              </span>
+              <div className="text-right">
+                <p className="text-xs font-semibold text-slate-600">
+                  {getMedicineTime(medicine)}
+                </p>
+                <p className="mt-1 text-[11px] text-slate-500">
+                  Next dose today
+                </p>
+              </div>
 
             </div>
 
@@ -210,11 +239,10 @@ const PrescriptionCard = ({
 
         <div
           className="
-            mt-3
             rounded-2xl
             bg-white/45
             px-4
-            py-2
+            py-2.5
             backdrop-blur-xl
           "
         >
