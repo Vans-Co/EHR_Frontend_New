@@ -65,11 +65,20 @@ const LoginForm = () => {
         return;
       }
 
+      // accept either token field name so it works whether the backend uses
+      // the new accessToken/refreshToken or the older generateAccessToken/…
       const accessToken =
-        response.tokenResponse.accessToken;
+        response.tokenResponse.accessToken ??
+        response.tokenResponse.generateAccessToken;
 
       const refreshToken =
-        response.tokenResponse.refreshToken;
+        response.tokenResponse.refreshToken ??
+        response.tokenResponse.generateRefreshToken;
+
+      if (!accessToken || !refreshToken) {
+        setError("Login failed. Please try again.");
+        return;
+      }
 
       login(
         user,

@@ -66,6 +66,7 @@ const Appointments = () => {
 
     // Loading
     loading,
+    error,
   } = useAppointments();
 
   return (
@@ -165,6 +166,7 @@ const Appointments = () => {
         appointment={selectedAppointment}
         doctors={doctors}
         loading={loading}
+        error={error}
         onClose={closeDrawer}
         onSubmit={(data) => {
           if (drawerMode === "create") {

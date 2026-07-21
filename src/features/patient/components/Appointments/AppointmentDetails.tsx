@@ -354,6 +354,14 @@ const AppointmentDetails = ({
           value={appointment.time}
         />
 
+        {appointment.tokenNumber != null && (
+          <DetailItem
+            icon={<Clock3 size={18} />}
+            label="Token Number"
+            value={`#${appointment.tokenNumber}`}
+          />
+        )}
+
         <DetailItem
           icon={<Hospital size={18} />}
           label="Hospital"

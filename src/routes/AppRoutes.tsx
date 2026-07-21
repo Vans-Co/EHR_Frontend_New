@@ -9,6 +9,12 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPassword";
 
 import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import DoctorDashboard from "@/features/doctor/pages/DoctorDashboard";
+import DoctorAvailability from "@/features/doctor/pages/DoctorAvailability";
+import DoctorAppointments from "@/features/doctor/pages/DoctorAppointments";
+import DoctorPatients from "@/features/doctor/pages/DoctorPatients";
+import DoctorProfile from "@/features/doctor/pages/DoctorProfile";
+import DoctorReports from "@/features/doctor/pages/DoctorReports";
+import PatientPermissions from "@/features/patient/pages/PatientPermissions";
 import PatientAllergies from "@/features/patient/pages/PatientAllergies";
 import PatientDashboard from "@/features/patient/pages/PatientDashboard";
 //import PatientMedication from "@/features/patient/pages/PatientMedication";
@@ -17,6 +23,7 @@ import PatientBillingDue from "@/features/patient/pages/PatientBillingDue";
 import PatientBillingHistory from "@/features/patient/pages/PatientBillingHistory";
 import PatientBillingInvoiceDetails from "@/features/patient/pages/PatientBillingInvoiceDetails";
 import PatientBillingRecurring from "@/features/patient/pages/PatientBillingRecurring";
+import PatientMedicalRecords from "@/features/patient/pages/PatientMedicalRecords";
 import PatientProfile from "@/features/patient/pages/PatientProfile";
 import PatientProfileEdit from "@/features/patient/pages/PatientProfileEdit";
 
@@ -107,6 +114,10 @@ const AppRoutes = () => {
         <Route path="billing/recurring" element={<PatientBillingRecurring />} />
 
         <Route path="allergies" element={<PatientAllergies />} />
+
+        <Route path="medical-records" element={<PatientMedicalRecords />} />
+
+        <Route path="permissions" element={<PatientPermissions />} />
       </Route>
 
       {/* ========================= */}
@@ -124,6 +135,16 @@ const AppRoutes = () => {
         <Route index element={<Navigate to="dashboard" replace />} />
 
         <Route path="dashboard" element={<DoctorDashboard />} />
+
+        <Route path="availability" element={<DoctorAvailability />} />
+
+        <Route path="appointments" element={<DoctorAppointments />} />
+
+        <Route path="patients" element={<DoctorPatients />} />
+
+        <Route path="reports" element={<DoctorReports />} />
+
+        <Route path="profile" element={<DoctorProfile />} />
       </Route>
 
       {/* ========================= */}

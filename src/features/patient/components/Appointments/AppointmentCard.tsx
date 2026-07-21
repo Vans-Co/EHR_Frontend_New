@@ -203,6 +203,24 @@ const AppointmentCard = ({
                   {appointment.status}
                 </span>
 
+                {appointment.tokenNumber != null && (
+                  <span
+                    className="
+                      rounded-full
+                      border
+                      border-violet-300/30
+                      bg-violet-500/10
+                      px-3
+                      py-1
+                      text-[11px]
+                      font-semibold
+                      text-violet-700
+                    "
+                  >
+                    Token #{appointment.tokenNumber}
+                  </span>
+                )}
+
               </div>
 
             </div>

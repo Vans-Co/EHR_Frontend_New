@@ -285,8 +285,9 @@ const nextAppointment = useMemo(() => {
   */
 
   const openCreateDrawer = useCallback(() => {
+    setError(null);
     openDrawer("create");
-  }, [openDrawer]);
+  }, [openDrawer, setError]);
 
   const openEditDrawer = useCallback(
     (appointment: Appointment) => {

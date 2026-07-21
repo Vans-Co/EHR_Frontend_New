@@ -344,6 +344,26 @@ const AppointmentList = ({
 
                         </div>
 
+                        {appointment.tokenNumber != null && (
+                          <span
+                            className="
+                              ml-auto
+                              shrink-0
+                              rounded-full
+                              border
+                              border-violet-300/30
+                              bg-violet-500/10
+                              px-3
+                              py-1
+                              text-[11px]
+                              font-semibold
+                              text-violet-700
+                            "
+                          >
+                            Token #{appointment.tokenNumber}
+                          </span>
+                        )}
+
                       </div>
 
                       {/* Date */}

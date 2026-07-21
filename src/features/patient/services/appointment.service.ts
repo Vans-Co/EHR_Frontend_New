@@ -8,6 +8,7 @@ import type {
 /* Backend DTO */
 interface AppointmentResponseDTO {
   token: number;
+  tokenNumber: number | null;
   patientId: string;
   doctorId: string;
   date: string; // MM-dd-yyyy
@@ -74,6 +75,7 @@ export const dtoToAppointment = (
   const doctor = doctorsById[dto.doctorId];
   return {
     id: String(dto.token),
+    tokenNumber: dto.tokenNumber ?? undefined,
     doctorName: doctor?.name ?? dto.doctorId,
     specialization: doctor?.specialization ?? "",
     hospital: doctor?.hospital ?? "",
@@ -126,16 +128,24 @@ export const appointmentService = {
     return data.map(
       (d: {
         id: string;
-        user?: { firstName?: string; lastName?: string };
-        doctorProfile?: { specialization?: string };
+        firstName?: string;
+        lastName?: string;
+        specialization?: string;
       }): Doctor => ({
         id: d.id,
-        name: `Dr. ${d.user?.firstName ?? ""} ${d.user?.lastName ?? ""}`.trim(),
-        specialization: d.doctorProfile?.specialization ?? "",
+        name: `Dr. ${d.firstName ?? ""} ${d.lastName ?? ""}`.trim(),
+        specialization: d.specialization ?? "",
         hospital: "",
         location: "",
       })
     );
+  },
+
+  async getDoctorSchedule(
+    doctorId: string
+  ): Promise<{ day: string; startTime: string; endTime: string }[]> {
+    const { data } = await api.get(`/doctors/${doctorId}/schedule`);
+    return Array.isArray(data) ? data : [];
   },
 
   createAppointment(form: AppointmentFormData, patientId: string, doctorId: string) {

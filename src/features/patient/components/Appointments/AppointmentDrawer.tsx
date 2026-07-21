@@ -29,6 +29,8 @@ interface AppointmentDrawerProps {
 
   loading?: boolean;
 
+  error?: string | null;
+
   onClose: () => void;
 
   onSubmit: (data: any) => void;
@@ -49,6 +51,7 @@ const AppointmentDrawer = ({
   appointment,
   doctors,
   loading = false,
+  error = null,
   onClose,
   onSubmit,
 }: AppointmentDrawerProps) => {
@@ -272,6 +275,31 @@ const AppointmentDrawer = ({
               scrollbar-track-transparent
             "
           >
+
+            {error && mode !== "view" && (
+              <div
+                className="
+                  mb-6
+                  flex
+                  items-start
+                  gap-3
+                  rounded-[22px]
+                  border
+                  border-red-200/60
+                  bg-red-50/90
+                  px-5
+                  py-4
+                  text-sm
+                  text-red-600
+                "
+              >
+                <span className="mt-0.5">⚠️</span>
+                <div>
+                  <p className="font-semibold">Booking failed</p>
+                  <p className="text-red-500">{error}</p>
+                </div>
+              </div>
+            )}
 
             {mode === "view" ? (
 

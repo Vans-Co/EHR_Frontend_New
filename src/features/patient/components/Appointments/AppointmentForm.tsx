@@ -17,6 +17,8 @@ import type {
   DrawerMode,
 } from "../../types/appointment.types";
 
+import { appointmentService } from "../../services/appointment.service";
+
 import AppointmentFormFields from "./AppointmentFormFields";
 
 interface AppointmentFormProps {
@@ -118,6 +120,34 @@ const slotOptions = [
   },
 ];
 
+/** Build 30-minute slots between two "HH:mm:ss" times. */
+const buildSlots = (startTime: string, endTime: string) => {
+  const toMinutes = (hms: string) => {
+    const [h, m] = hms.split(":").map(Number);
+    return h * 60 + m;
+  };
+
+  const format12 = (total: number) => {
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    const period = h >= 12 ? "PM" : "AM";
+    const hour12 = h % 12 === 0 ? 12 : h % 12;
+    return `${String(hour12).padStart(2, "0")}:${String(m).padStart(2, "0")} ${period}`;
+  };
+
+  const slots = [];
+  for (
+    let t = toMinutes(startTime);
+    t + 30 <= toMinutes(endTime);
+    t += 30
+  ) {
+    const hh = String(Math.floor(t / 60)).padStart(2, "0");
+    const mm = String(t % 60).padStart(2, "0");
+    slots.push({ id: `${hh}:${mm}`, time: format12(t), available: true });
+  }
+  return slots;
+};
+
 const emptyForm: FormData = {
   doctorName: "",
 
@@ -141,18 +171,68 @@ const emptyForm: FormData = {
 const AppointmentForm = ({
   mode,
   appointment,
+  doctors,
   loading = false,
   onSubmit,
   onCancel,
 }: AppointmentFormProps) => {
 
-  // Same doctor list in every booking form (dashboard + appointments page).
-  // These names are registered in the backend so a booking resolves to a real
-  // doctor id on submit.
-  const doctorList = doctorOptions;
+  // Real doctors fetched from the backend; the mock list is only a fallback
+  // so the form stays usable when the API is unreachable.
+  const doctorList =
+    doctors && doctors.length > 0 ? doctors : doctorOptions;
 
   const [form, setForm] =
     useState<FormData>(emptyForm);
+
+  // Time slots follow the selected doctor's real weekly schedule; the static
+  // list is only a fallback when the doctor has not configured one.
+  const [slots, setSlots] = useState(slotOptions);
+
+  useEffect(() => {
+
+    const doctor = doctorList.find(
+      (item) => item.name === form.doctorName
+    );
+
+    if (!doctor?.id || !form.date) {
+      setSlots(slotOptions);
+      return;
+    }
+
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const schedule =
+          await appointmentService.getDoctorSchedule(doctor.id!);
+
+        if (cancelled) return;
+
+        if (schedule.length === 0) {
+          setSlots(slotOptions);
+          return;
+        }
+
+        const weekday = new Date(`${form.date}T00:00:00`)
+          .toLocaleDateString("en-US", { weekday: "long" })
+          .toUpperCase();
+
+        setSlots(
+          schedule
+            .filter((entry) => entry.day === weekday)
+            .flatMap((entry) => buildSlots(entry.startTime, entry.endTime))
+        );
+      } catch {
+        if (!cancelled) setSlots(slotOptions);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+
+  }, [form.doctorName, form.date, doctorList]);
 
   const [errors, setErrors] =
     useState<
@@ -453,7 +533,7 @@ const AppointmentForm = ({
         <AppointmentFormFields
           form={form}
           doctors={doctorList}
-          slots={slotOptions}
+          slots={slots}
           loading={loading}
           onChange={handleChange}
         />
