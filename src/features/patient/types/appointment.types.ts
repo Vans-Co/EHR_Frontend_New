@@ -36,6 +36,9 @@ export interface Doctor {
 export interface Appointment {
   id: string;
 
+  /** Queue number for the doctor's day: 1, 2, 3... */
+  tokenNumber?: number;
+
   doctorName: string;
 
   specialization: string;
@@ -90,11 +93,6 @@ export interface AppointmentAnalytics {
   average: number;
 
   growth: number;
-}
-interface AppointmentTrendCardProps {
-  data: AppointmentTrend[];
-
-  analytics: AppointmentAnalytics;
 }
 
 /* =========================================

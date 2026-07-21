@@ -10,10 +10,6 @@ import type {
   CalendarEvent,
 } from "../../types/appointment.types";
 
-import {
-  CALENDAR_EVENT_COLORS,
-} from "./appointment.constants";
-
 interface MiniCalendarProps {
   events: CalendarEvent[];
 
