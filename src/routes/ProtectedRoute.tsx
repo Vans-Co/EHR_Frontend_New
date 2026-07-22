@@ -21,12 +21,11 @@ const ProtectedRoute = ({
 
 
    // Original authentication
-     if(!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-   }
-  // // Temporary for frontend development without backend
-  // if (!isAuthenticated) {
-  //   return <>{children}</>;
+ git status
+ 
+   // // Temporary for frontend development without backend
+  //  if (!isAuthenticated) {
+  //    return <>{children}</>;
   // }
 
   if (

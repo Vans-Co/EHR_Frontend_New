@@ -1,0 +1,3 @@
+export const QUICK_ACTION_GRID_COLUMNS = 4;
+
+export const QUICK_ACTION_CARD_HEIGHT = 140;
