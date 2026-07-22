@@ -13,6 +13,7 @@ import {
   reportsApi,
   type MyReport,
 } from "@/features/patient/services/reportsApi";
+import { realtime } from "@/services/realtime.service";
 
 const PatientMedicalRecords = () => {
   const user = useAuthStore((state) => state.user);
@@ -33,6 +34,19 @@ const PatientMedicalRecords = () => {
       }
     })();
   }, [user?.ehrId]);
+
+  // New reports arrive over the websocket as soon as a doctor uploads them.
+  useEffect(
+    () =>
+      realtime.on("reports", (data) => {
+        const incoming = data as MyReport;
+        setReports((prev) => [
+          incoming,
+          ...prev.filter((r) => r.id !== incoming.id),
+        ]);
+      }),
+    []
+  );
 
   const download = async (report: MyReport) => {
     try {
