@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import AuthLayout from "@/components/common/AuthLayout";
 
@@ -8,17 +8,18 @@ import BasicInfoStep from "../components/register/BasicInfoStep";
 import PersonalInfoStep from "../components/register/PersonalInfoStep";
 import AddressStep from "../components/register/AddressStep";
 import EmergencyContactStep from "../components/register/EmergencyContactStep";
+import RegisterSuccess from "../components/register/RegisterSuccess";
 
 import { registerUser } from "../services/authApi";
 
 const Register = () => {
-  const navigate = useNavigate();
-
   const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState("");
+
+  const [registered, setRegistered] = useState(false);
 
   const [formData, setFormData] = useState({
     // Basic
@@ -218,7 +219,7 @@ const Register = () => {
         },
       });
 
-      navigate("/login");
+      setRegistered(true);
     } catch {
       setError(
         "Registration failed. Please try again."
@@ -227,6 +228,17 @@ const Register = () => {
       setLoading(false);
     }
   };
+
+  if (registered) {
+    return (
+      <AuthLayout
+        title="Almost there"
+        subtitle="One last step to secure your account."
+      >
+        <RegisterSuccess email={formData.email} />
+      </AuthLayout>
+    );
+  }
 
   return (
     <AuthLayout
