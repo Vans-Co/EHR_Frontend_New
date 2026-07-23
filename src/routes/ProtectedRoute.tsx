@@ -11,22 +11,12 @@ const ProtectedRoute = ({
   children,
   allowedRoles,
 }: ProtectedRouteProps) => {
-  // const isAuthenticated = useAuthStore(
-  //   (state) => state.isAuthenticated
-  // );
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const role = useAuthStore((state) => state.role);
 
-  const role = useAuthStore(
-    (state) => state.role
-  );
-
-
-   // Original authentication
-// git status;
- 
-   // // Temporary for frontend development without backend
-  //  if (!isAuthenticated) {
-  //    return <>{children}</>;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   if (
     allowedRoles &&
