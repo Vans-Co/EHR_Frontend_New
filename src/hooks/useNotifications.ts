@@ -5,6 +5,7 @@ import {
   notificationService,
   type AppNotification,
 } from "@/services/notification.service";
+import { realtime } from "@/services/realtime.service";
 
 const useNotifications = () => {
   const user = useAuthStore((state) => state.user);
@@ -28,9 +29,29 @@ const useNotifications = () => {
     refresh();
   }, [refresh]);
 
+  // Live pushes: new notifications and read-state changes from other tabs.
+  useEffect(
+    () =>
+      realtime.on("notifications", (data) => {
+        const incoming = data as AppNotification;
+        setNotifications((prev) =>
+          prev.some((n) => n.id === incoming.id)
+            ? prev.map((n) => (n.id === incoming.id ? incoming : n))
+            : [incoming, ...prev]
+        );
+      }),
+    []
+  );
+
+  const sendMarkAsRead = async (id: number) => {
+    if (!realtime.publish("notifications/read", { id })) {
+      await notificationService.markAsRead(id);
+    }
+  };
+
   const markAsRead = async (id: number) => {
     try {
-      await notificationService.markAsRead(id);
+      await sendMarkAsRead(id);
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, readStatus: true } : n))
       );
@@ -41,9 +62,7 @@ const useNotifications = () => {
 
   const markAllAsRead = async () => {
     const unread = notifications.filter((n) => !n.readStatus);
-    await Promise.allSettled(
-      unread.map((n) => notificationService.markAsRead(n.id))
-    );
+    await Promise.allSettled(unread.map((n) => sendMarkAsRead(n.id)));
     setNotifications((prev) =>
       prev.map((n) => ({ ...n, readStatus: true }))
     );
