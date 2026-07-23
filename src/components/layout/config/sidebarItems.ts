@@ -39,7 +39,12 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       icon: LayoutDashboard,
     },
     {
-      title: "Appointments",
+      title: "Find a Doctor",
+      path: "/patient/doctors",
+      icon: Stethoscope,
+    },
+    {
+      title: "My Appointments",
       path: "/patient/appointments",
       icon: CalendarDays,
     },
