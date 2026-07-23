@@ -5,6 +5,7 @@ import {
   FileText,
   Loader2,
   ShieldCheck,
+  ShieldOff,
   X,
 } from "lucide-react";
 
@@ -152,6 +153,46 @@ const PatientPermissions = () => {
     </div>
   );
 
+  // Revoking an already-approved grant reuses the reject endpoint: access is
+  // only honoured while the status is APPROVED, so flipping it removes access.
+  const RevokeButton = ({
+    busy,
+    onRevoke,
+  }: {
+    busy: boolean;
+    onRevoke: () => void;
+  }) => (
+    <button
+      type="button"
+      disabled={busy}
+      onClick={onRevoke}
+      className="
+        inline-flex
+        items-center
+        gap-1.5
+        rounded-xl
+        border
+        border-red-300/50
+        bg-red-500/10
+        px-4
+        py-2
+        text-sm
+        font-semibold
+        text-red-600
+        transition-all
+        hover:bg-red-500/20
+        disabled:opacity-50
+      "
+    >
+      {busy ? (
+        <Loader2 size={15} className="animate-spin" />
+      ) : (
+        <ShieldOff size={15} />
+      )}
+      Revoke access
+    </button>
+  );
+
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
 
@@ -277,6 +318,13 @@ const PatientPermissions = () => {
                         onReject={() => respondRestriction(req, false)}
                       />
                     )}
+
+                    {req.status === "APPROVED" && (
+                      <RevokeButton
+                        busy={busyKey === `r-${req.id}`}
+                        onRevoke={() => respondRestriction(req, false)}
+                      />
+                    )}
                   </div>
                 </div>
               ))}
@@ -350,6 +398,13 @@ const PatientPermissions = () => {
                         busy={busyKey === `p-${req.id}`}
                         onApprove={() => respondReport(req, true)}
                         onReject={() => respondReport(req, false)}
+                      />
+                    )}
+
+                    {req.status === "APPROVED" && (
+                      <RevokeButton
+                        busy={busyKey === `p-${req.id}`}
+                        onRevoke={() => respondReport(req, false)}
                       />
                     )}
                   </div>

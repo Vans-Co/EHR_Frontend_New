@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 import {
   Mail,
   Lock,
@@ -102,10 +103,22 @@ const LoginForm = () => {
         default:
           navigate("/");
       }
-    } catch {
-      setError(
-        "Invalid email or password."
-      );
+    } catch (err) {
+      // The backend returns 403 with this message when the account exists but
+      // the email has not been verified yet (see email-verification flow).
+      if (isAxiosError(err) && err.response?.status === 403) {
+        const message = (
+          err.response?.data as
+            | { loginResponse?: { message?: string } }
+            | undefined
+        )?.loginResponse?.message;
+        setError(
+          message ??
+            "Please verify your email before signing in. Check your inbox for the verification link."
+        );
+      } else {
+        setError("Invalid email or password.");
+      }
     } finally {
       setLoading(false);
     }

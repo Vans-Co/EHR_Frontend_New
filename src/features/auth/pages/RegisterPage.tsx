@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import AuthLayout from "@/components/common/AuthLayout";
 
@@ -8,17 +8,26 @@ import BasicInfoStep from "../components/register/BasicInfoStep";
 import PersonalInfoStep from "../components/register/PersonalInfoStep";
 import AddressStep from "../components/register/AddressStep";
 import EmergencyContactStep from "../components/register/EmergencyContactStep";
+import RegisterSuccess from "../components/register/RegisterSuccess";
 
 import { registerUser } from "../services/authApi";
+import {
+  validateName,
+  validateEmail,
+  validatePassword,
+  validatePhone,
+  validatePinCode,
+  validateRequired,
+} from "@/utils/validators";
 
 const Register = () => {
-  const navigate = useNavigate();
-
   const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState("");
+
+  const [registered, setRegistered] = useState(false);
 
   const [formData, setFormData] = useState({
     // Basic
@@ -59,72 +68,93 @@ const Register = () => {
   const validateStep = () => {
     setError("");
 
+    const fail = (message: string) => {
+      setError(message);
+      return false;
+    };
+
     switch (step) {
-      case 1:
-        if (
-          !formData.firstName ||
-          !formData.lastName ||
-          !formData.email ||
-          !formData.password ||
-          !formData.confirmPassword
-        ) {
-          setError("Please fill all required fields.");
-          return false;
-        }
+      case 1: {
+        const firstNameError = validateName(
+          formData.firstName,
+          "First name"
+        );
+        if (firstNameError) return fail(firstNameError);
 
-        if (
-          formData.password !==
-          formData.confirmPassword
-        ) {
-          setError("Passwords do not match.");
-          return false;
-        }
+        const lastNameError = validateName(
+          formData.lastName,
+          "Last name"
+        );
+        if (lastNameError) return fail(lastNameError);
 
-        return true;
+        const emailError = validateEmail(formData.email);
+        if (emailError) return fail(emailError);
 
-      case 2:
-        if (
-          !formData.dob ||
-          !formData.gender ||
-          !formData.bloodGroup ||
-          !formData.phoneNo
-        ) {
-          setError(
-            "Please complete all personal details."
-          );
-          return false;
+        const passwordError = validatePassword(formData.password);
+        if (passwordError) return fail(passwordError);
+
+        if (formData.password !== formData.confirmPassword) {
+          return fail("Passwords do not match.");
         }
 
         return true;
+      }
 
-      case 3:
-        if (
-          !formData.addressLine ||
-          !formData.city ||
-          !formData.state ||
-          !formData.pinCode
-        ) {
-          setError(
-            "Please complete address details."
-          );
-          return false;
+      case 2: {
+        if (!formData.dob) return fail("Date of birth is required.");
+        if (new Date(formData.dob) > new Date()) {
+          return fail("Date of birth cannot be in the future.");
         }
+        if (!formData.gender) return fail("Please select a gender.");
+        if (!formData.bloodGroup)
+          return fail("Please select a blood group.");
+
+        const phoneError = validatePhone(formData.phoneNo);
+        if (phoneError) return fail(phoneError);
 
         return true;
+      }
 
-      case 4:
-        if (
-          !formData.contactName ||
-          !formData.relationship ||
-          !formData.contactPhoneNo
-        ) {
-          setError(
-            "Please complete emergency contact."
-          );
-          return false;
-        }
+      case 3: {
+        const addressError = validateRequired(
+          formData.addressLine,
+          "Address"
+        );
+        if (addressError) return fail(addressError);
+
+        const cityError = validateRequired(formData.city, "City");
+        if (cityError) return fail(cityError);
+
+        const stateError = validateRequired(formData.state, "State");
+        if (stateError) return fail(stateError);
+
+        const pinError = validatePinCode(formData.pinCode);
+        if (pinError) return fail(pinError);
 
         return true;
+      }
+
+      case 4: {
+        const nameError = validateName(
+          formData.contactName,
+          "Contact name"
+        );
+        if (nameError) return fail(nameError);
+
+        const relationshipError = validateRequired(
+          formData.relationship,
+          "Relationship"
+        );
+        if (relationshipError) return fail(relationshipError);
+
+        const contactPhoneError = validatePhone(
+          formData.contactPhoneNo,
+          "Contact phone"
+        );
+        if (contactPhoneError) return fail(contactPhoneError);
+
+        return true;
+      }
 
       default:
         return true;
@@ -218,7 +248,7 @@ const Register = () => {
         },
       });
 
-      navigate("/login");
+      setRegistered(true);
     } catch {
       setError(
         "Registration failed. Please try again."
@@ -227,6 +257,17 @@ const Register = () => {
       setLoading(false);
     }
   };
+
+  if (registered) {
+    return (
+      <AuthLayout
+        title="Almost there"
+        subtitle="One last step to secure your account."
+      >
+        <RegisterSuccess email={formData.email} />
+      </AuthLayout>
+    );
+  }
 
   return (
     <AuthLayout

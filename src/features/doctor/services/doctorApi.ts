@@ -56,6 +56,7 @@ export interface DoctorProfileData {
   licenseNumber?: string;
   aboutDoctor?: string;
   degrees?: string[];
+  consultationFee?: number;
 }
 
 export interface ReportAccessEntry {
@@ -133,11 +134,23 @@ export const doctorApi = {
   },
 
   updateProfile(doctorId: string, profile: DoctorProfileData) {
-    const { specialization, licenseNumber, aboutDoctor, degrees, ...user } =
-      profile;
+    const {
+      specialization,
+      licenseNumber,
+      aboutDoctor,
+      degrees,
+      consultationFee,
+      ...user
+    } = profile;
     return api.put(`/doctors/${doctorId}/profile`, {
       ...user,
-      doctorProfile: { specialization, licenseNumber, aboutDoctor, degrees },
+      doctorProfile: {
+        specialization,
+        licenseNumber,
+        aboutDoctor,
+        degrees,
+        consultationFee,
+      },
     });
   },
 

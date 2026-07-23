@@ -13,6 +13,7 @@ interface ProfileForm {
   licenseNumber: string;
   aboutDoctor: string;
   degrees: string; // comma separated in the form
+  consultationFee: string;
 }
 
 const EMPTY: ProfileForm = {
@@ -23,6 +24,7 @@ const EMPTY: ProfileForm = {
   licenseNumber: "",
   aboutDoctor: "",
   degrees: "",
+  consultationFee: "",
 };
 
 const FIELDS: {
@@ -36,6 +38,7 @@ const FIELDS: {
   { key: "specialization", label: "Specialization", placeholder: "Cardiology" },
   { key: "licenseNumber", label: "License Number" },
   { key: "degrees", label: "Degrees", placeholder: "MBBS, MD" },
+  { key: "consultationFee", label: "Consultation Fee (₹)", placeholder: "500" },
 ];
 
 const DoctorProfile = () => {
@@ -64,6 +67,8 @@ const DoctorProfile = () => {
           licenseNumber: p.licenseNumber ?? "",
           aboutDoctor: p.aboutDoctor ?? "",
           degrees: Array.isArray(p.degrees) ? p.degrees.join(", ") : "",
+          consultationFee:
+            p.consultationFee != null ? String(p.consultationFee) : "",
         });
       } catch {
         setMessage({ ok: false, text: "Could not load your profile." });
@@ -92,6 +97,9 @@ const DoctorProfile = () => {
         aboutDoctor: form.aboutDoctor || undefined,
         degrees: form.degrees
           ? form.degrees.split(",").map((d) => d.trim()).filter(Boolean)
+          : undefined,
+        consultationFee: form.consultationFee
+          ? Number(form.consultationFee)
           : undefined,
       });
       // keep the navbar greeting in sync

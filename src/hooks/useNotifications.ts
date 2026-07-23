@@ -25,9 +25,14 @@ const useNotifications = () => {
     }
   }, [user?.ehrId]);
 
+  // Fetch on mount, then poll as a fallback so notifications still arrive when
+  // the WebSocket is unavailable (e.g. backend not yet redeployed with sockets).
   useEffect(() => {
+    if (!user?.ehrId) return;
     refresh();
-  }, [refresh]);
+    const interval = window.setInterval(refresh, 30000);
+    return () => window.clearInterval(interval);
+  }, [refresh, user?.ehrId]);
 
   // Live pushes: new notifications and read-state changes from other tabs.
   useEffect(
@@ -70,8 +75,15 @@ const useNotifications = () => {
 
   const unreadCount = notifications.filter((n) => !n.readStatus).length;
 
+  // Unseen (unread) notifications float to the top of the bar; each group stays
+  // in newest-first order.
+  const ordered = [...notifications].sort((a, b) => {
+    if (a.readStatus !== b.readStatus) return a.readStatus ? 1 : -1;
+    return b.timestamp.localeCompare(a.timestamp);
+  });
+
   return {
-    notifications,
+    notifications: ordered,
     unreadCount,
     loading,
     refresh,
