@@ -21,7 +21,7 @@ const ProtectedRoute = ({
 
 
    // Original authentication
- git status
+ git status;
  
    // // Temporary for frontend development without backend
   //  if (!isAuthenticated) {
