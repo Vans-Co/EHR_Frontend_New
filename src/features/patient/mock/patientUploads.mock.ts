@@ -1,5 +1,4 @@
 import {
-  Department,
   DocumentStatus,
   DocumentType,
   DoctorReviewStatus,

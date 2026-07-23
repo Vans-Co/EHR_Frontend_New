@@ -11,21 +11,18 @@ const ProtectedRoute = ({
   children,
   allowedRoles,
 }: ProtectedRouteProps) => {
-  const isAuthenticated = useAuthStore(
-    (state) => state.isAuthenticated
-  );
+  // const isAuthenticated = useAuthStore(
+  //   (state) => state.isAuthenticated
+  // );
 
   const role = useAuthStore(
     (state) => state.role
   );
 
-<<<<<<< Updated upstream
 
    // Original authentication
 // git status;
  
-=======
->>>>>>> Stashed changes
    // // Temporary for frontend development without backend
   //  if (!isAuthenticated) {
   //    return <>{children}</>;
