@@ -19,10 +19,13 @@ const ProtectedRoute = ({
     (state) => state.role
   );
 
+<<<<<<< Updated upstream
 
    // Original authentication
 // git status;
  
+=======
+>>>>>>> Stashed changes
    // // Temporary for frontend development without backend
   //  if (!isAuthenticated) {
   //    return <>{children}</>;
@@ -59,7 +62,8 @@ const ProtectedRoute = ({
         );
 
       default:
-        return <Navigate to="/" replace />;
+         return <Navigate to="/" replace />;
+
     }
   }
 
